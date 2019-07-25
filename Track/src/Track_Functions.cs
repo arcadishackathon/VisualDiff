@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Collections;
 using System.Windows;
+using Dynamo.Wpf.Extensions;
+using Dynamo.ViewModels;
 
 namespace Track.src
 {
@@ -26,7 +28,7 @@ namespace Track.src
             }
         }
 
-        public void CompareSomeGraphs()
+        public void CompareSomeGraphs(ViewLoadedParams viewLoadedParams)
         { 
             //Add Laurence's stuff here to generate the lists
 
