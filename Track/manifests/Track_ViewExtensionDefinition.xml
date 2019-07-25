@@ -1,0 +1,4 @@
+﻿<ViewExtensionDefinition>
+  <AssemblyPath>..\bin\Track.dll</AssemblyPath>
+  <TypeName>Track.TrackViewExtension</TypeName>
+</ViewExtensionDefinition>
