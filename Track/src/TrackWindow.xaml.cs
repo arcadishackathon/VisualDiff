@@ -1,4 +1,6 @@
 ﻿using System.Windows;
+using Dynamo.Wpf.Extensions;
+using Dynamo.ViewModels;
 
 namespace Track
 {
@@ -7,12 +9,20 @@ namespace Track
     /// </summary>
     public partial class TrackWindow : Window 
     {
+
+
+
+        private ViewLoadedParams viewLoadedParams;
+
+
         //Fields
         src.Track_Functions functions;
 
 
-        public TrackWindow()
+        public TrackWindow(ViewLoadedParams p)
         {
+            viewLoadedParams = p;
+
             InitializeComponent();
 
             functions = new src.Track_Functions();
@@ -49,7 +59,7 @@ namespace Track
 
                 MessageBox.Show("File exists, ready to compare graphs");
 
-                functions.CompareSomeGraphs();
+                functions.CompareSomeGraphs(viewLoadedParams);
             }
             else if (ButtonLoadDispose.Content.ToString() == "Lock and load reference graph")
             {

@@ -5,6 +5,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using Dynamo.Wpf.Extensions;
+using Dynamo.ViewModels;
 
 namespace Track
 {
@@ -26,6 +27,12 @@ namespace Track
     {
         private MenuItem sampleMenuItem;
 
+
+        private ViewLoadedParams viewLoadedParams;
+
+        private DynamoViewModel dynamoViewModel => viewLoadedParams.DynamoWindow.DataContext as DynamoViewModel;
+
+
         public void Dispose()
         {
         }
@@ -36,6 +43,11 @@ namespace Track
 
         public void Loaded(ViewLoadedParams p)
         {
+
+            // Hold a reference to the Dynamo params to be used later
+            viewLoadedParams = p;
+
+
             // Save a reference to your loaded parameters.
             // You'll need these later when you want to use
             // the supplied workspaces
@@ -44,7 +56,7 @@ namespace Track
             sampleMenuItem.Click += (sender, args) =>
             {
                 var viewModel = new TrackWindowViewModel();
-                var window = new TrackWindow
+                var window = new TrackWindow(viewLoadedParams)
                 {
                     // Set the data context for the main grid in the window.
                     MainGrid = { DataContext = viewModel },
