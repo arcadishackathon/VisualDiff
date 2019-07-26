@@ -43,7 +43,8 @@ namespace Track
 
             //1) check if the location if OK
             bool FileExists = functions.CheckReferenceDynamoGraphFileLocationValidity(FilePath);
-            //test location for Michael C:\Users\vantelgm7702\OneDrive - ARCADIS\Michael\Dynamo\CLO vloertje.dyn
+        //test location for Michael 
+        //C:\Users\vantelgm7702\OneDrive - ARCADIS\Michael\Computation\35. Toronto Hackaton\01. Dynamo files\Version 1.dyn
 
             //2) Unlock checkboxes, set text to grey and grey out the textbox
             if (FileExists && ButtonLoadDispose.Content.ToString() == "Lock and load reference graph")
@@ -59,7 +60,14 @@ namespace Track
 
                 MessageBox.Show("File exists, ready to compare graphs");
 
-                functions.CompareSomeGraphs(viewLoadedParams);
+
+                //start the comparison using the filelocation
+
+                functions.CompareSomeGraphs(viewLoadedParams, FilePath);
+
+
+
+
             }
             else if (ButtonLoadDispose.Content.ToString() == "Lock and load reference graph")
             {
