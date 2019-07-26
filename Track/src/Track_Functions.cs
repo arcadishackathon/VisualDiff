@@ -42,9 +42,6 @@ namespace Track.src
         DynamoViewModel viewModelField;
         ViewLoadedParams ViewLoadedParamsField;
 
-        
-        //private static double delay = 200;
-
         //Methods
         public bool CheckReferenceDynamoGraphFileLocationValidity(string FilePath)
         {
@@ -295,6 +292,48 @@ namespace Track.src
             }
         }
 
+        public async void ColourNodesGrey(Color colour, Dictionary<string, NodeModel> nodes)
+        {
+
+            await Task.Delay(delay);
+
+            List<NodeView> _nodeViews = ViewLoadedParamsField.DynamoWindow.FindVisualChildren<NodeView>().ToList();
+
+            // Colour each node
+            foreach (var n in _nodeViews)
+            {
+                //Color brush = Colors.Gray;
+                if (nodes.ContainsKey(n.ViewModel.Id.ToString()))
+                {
+                    ((Rectangle)n.grid.FindName("nodeBackground")).Fill = new SolidColorBrush(Color.FromArgb(
+                        Convert.ToByte(255),
+                        Convert.ToByte(203),
+                        Convert.ToByte(198),
+                        Convert.ToByte(190)
+                    ));
+                    ((Rectangle)n.grid.FindName("NameBackground")).Fill = new SolidColorBrush(Color.FromArgb(
+                        Convert.ToByte(255),
+                        Convert.ToByte(94),
+                        Convert.ToByte(92),
+                        Convert.ToByte(90)
+                    ));
+                    ((Rectangle)n.grid.FindName("nodeBorder")).Stroke = new SolidColorBrush(Color.FromArgb(
+                        Convert.ToByte(255),
+                        Convert.ToByte(203),
+                        Convert.ToByte(198),
+                        Convert.ToByte(190)
+                    ));
+                    ((Rectangle)n.grid.FindName("NameBackground")).Stroke = new SolidColorBrush(Color.FromArgb(
+                        Convert.ToByte(255),
+                        Convert.ToByte(203),
+                        Convert.ToByte(198),
+                        Convert.ToByte(190)
+                    ));
+                }
+
+            }
+        }
+
 
 
         public async void UnFadeNodes()
@@ -408,7 +447,7 @@ namespace Track.src
             // 3) When fed up with looking at it, remove the node upon toggle disable or closing the viewextention
 
             //add the node on the graph
-            if (IsChecked) 
+            if (IsChecked == false) 
             {
                 //create the nodes
                 foreach (var node in AddedNodesDictionary)
@@ -442,18 +481,20 @@ namespace Track.src
                 //put Rob&Laurence's code here
                 ColourNodes(Colors.Green, AddedNodesDictionary);
             }
-            if (IsChecked == false) 
+            if (IsChecked == true) 
             {
                 //delete the node
-                foreach (var node in AddedNodesDictionary)
+                /*foreach (var node in AddedNodesDictionary)
                 {
                     ViewLoadedParamsField.CommandExecutive.ExecuteCommand(new DeleteModelCommand(node.Value.GUID), "", "");
-                }
+                }*/
 
                 //colour the node
                 //put Rob&Laurence's code here
 
                 //UnFadeNodes();
+
+                ColourNodesGrey(Colors.Gray, AddedNodesDictionary);
             }
         }
 
