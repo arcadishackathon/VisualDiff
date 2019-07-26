@@ -447,7 +447,7 @@ namespace Track.src
             // 3) When fed up with looking at it, remove the node upon toggle disable or closing the viewextention
 
             //add the node on the graph
-            if (IsChecked) 
+            if (IsChecked == false) 
             {
                 //create the nodes
                 foreach (var node in AddedNodesDictionary)
@@ -481,7 +481,7 @@ namespace Track.src
                 //put Rob&Laurence's code here
                 ColourNodes(Colors.Green, AddedNodesDictionary);
             }
-            if (IsChecked == false) 
+            if (IsChecked == true) 
             {
                 //delete the node
                 /*foreach (var node in AddedNodesDictionary)
