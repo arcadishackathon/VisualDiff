@@ -36,8 +36,14 @@ namespace Track.src
         Dictionary<string, ConnectorModel> AddedConnectorsDictionary = new Dictionary<string, ConnectorModel>();
         Dictionary<string, ConnectorModel> DeletedConnectorsDictionary = new Dictionary<string, ConnectorModel>();
 
+
+        int delay = 200;
+
         DynamoViewModel viewModelField;
         ViewLoadedParams ViewLoadedParamsField;
+
+        
+        //private static double delay = 200;
 
         //Methods
         public bool CheckReferenceDynamoGraphFileLocationValidity(string FilePath)
@@ -193,98 +199,142 @@ namespace Track.src
         // 2) wiring is deleted when hiding the added nodes. I will have to make sure that is put back on the graph
 
 
-        public async void FadeNodes(ViewLoadedParams ViewLoadedParamsField) {
-            //Application.Current.Dispatcher.BeginInvoke(new Action(() =>
-            //{
+        public async void FadeNodes()
+        {
 
-            //System.Threading.Thread.Sleep(5000);
+            await Task.Delay(delay);
 
-            await Task.Delay(500);
+            List<NodeView> _nodeViews = ViewLoadedParamsField.DynamoWindow.FindVisualChildren<NodeView>().ToList();
 
-                List<NodeView> _nodeViews = ViewLoadedParamsField.DynamoWindow.FindVisualChildren<NodeView>().ToList();
+            // Colour each node
+            foreach (var n in _nodeViews)
+            {
 
-                // Colour each node
-                foreach (var n in _nodeViews)
+                ((Rectangle)n.grid.FindName("nodeBackground")).Fill = new SolidColorBrush(Color.FromArgb(
+                    Convert.ToByte(50),
+                    Convert.ToByte(203),
+                    Convert.ToByte(198),
+                    Convert.ToByte(190)
+                ));
+
+                ((Rectangle)n.grid.FindName("NameBackground")).Fill = new SolidColorBrush(Color.FromArgb(
+                    Convert.ToByte(50),
+                    Convert.ToByte(94),
+                    Convert.ToByte(92),
+                    Convert.ToByte(90)
+                ));
+
+                ((Rectangle)n.grid.FindName("nodeBorder")).Stroke = new SolidColorBrush(Color.FromArgb(
+                    Convert.ToByte(50),
+                    Convert.ToByte(203),
+                    Convert.ToByte(198),
+                    Convert.ToByte(190)
+                ));
+
+                ((Rectangle)n.grid.FindName("NameBackground")).Stroke = new SolidColorBrush(Color.FromArgb(
+                    Convert.ToByte(50),
+                    Convert.ToByte(203),
+                    Convert.ToByte(198),
+                    Convert.ToByte(190)
+                ));
+
+            }
+        }
+        public async void ColourNodes(Color colour, Dictionary<string, NodeModel> nodes)
+        {
+
+            await Task.Delay(delay);
+
+            List<NodeView> _nodeViews = ViewLoadedParamsField.DynamoWindow.FindVisualChildren<NodeView>().ToList();
+            
+            //var nodeView = _nodeViews.First(n => n.ViewModel.Id.ToString().Equals(node.GUID.ToString()));
+
+            // Colour each node
+            foreach (var n in _nodeViews)
+            {
+                //Color brush = Colors.Gray;
+                if (nodes.ContainsKey(n.ViewModel.Id.ToString()))
                 {
-               
-                    ((Rectangle)n.grid.FindName("nodeBackground")).Fill = new SolidColorBrush(Color.FromArgb(
-                       Convert.ToByte(50),
-                       Convert.ToByte(203),
-                       Convert.ToByte(198),
-                       Convert.ToByte(190)
-                   ));
-
+                    //brush = colour;
+                    //SolidColorBrush brush = colour;
+                    ((Rectangle)n.grid.FindName("nodeBackground")).Fill = new SolidColorBrush(colour);
+                    ((Rectangle)n.grid.FindName("NameBackground")).Fill = new SolidColorBrush(colour);
+                    ((Rectangle)n.grid.FindName("nodeBorder")).Stroke = new SolidColorBrush(colour);
+                    ((Rectangle)n.grid.FindName("NameBackground")).Stroke = new SolidColorBrush(colour);
+                }
+                else {
+                    // Else style as default
+                    // @todo style by STATE
+                    /*((Rectangle)n.grid.FindName("nodeBackground")).Fill = new SolidColorBrush(Color.FromArgb(
+                        Convert.ToByte(255),
+                        Convert.ToByte(203),
+                        Convert.ToByte(198),
+                        Convert.ToByte(190)
+                    ));
                     ((Rectangle)n.grid.FindName("NameBackground")).Fill = new SolidColorBrush(Color.FromArgb(
-                        Convert.ToByte(50),
+                        Convert.ToByte(255),
                         Convert.ToByte(94),
                         Convert.ToByte(92),
                         Convert.ToByte(90)
                     ));
-
                     ((Rectangle)n.grid.FindName("nodeBorder")).Stroke = new SolidColorBrush(Color.FromArgb(
-                        Convert.ToByte(50),
+                        Convert.ToByte(255),
                         Convert.ToByte(203),
                         Convert.ToByte(198),
                         Convert.ToByte(190)
                     ));
-
                     ((Rectangle)n.grid.FindName("NameBackground")).Stroke = new SolidColorBrush(Color.FromArgb(
-                        Convert.ToByte(50),
+                        Convert.ToByte(255),
                         Convert.ToByte(203),
                         Convert.ToByte(198),
                         Convert.ToByte(190)
-                    ));
-
+                    ));*/
                 }
-            //}));
+
+
+            }
         }
 
 
 
-        public async void UnFadeNodes(ViewLoadedParams ViewLoadedParamsField)
+        public async void UnFadeNodes()
         {
             await Task.Delay(500);
 
-            //Application.Current.Dispatcher.BeginInvoke(new Action(() =>
-            //{
+            List<NodeView> _nodeViews = ViewLoadedParamsField.DynamoWindow.FindVisualChildren<NodeView>().ToList();
 
-                //System.Threading.Thread.Sleep(5000);
+            // Colour each node
+            foreach (var n in _nodeViews)
+            {
+                ((Rectangle)n.grid.FindName("nodeBackground")).Fill = new SolidColorBrush(Color.FromArgb(
+                    Convert.ToByte(255),
+                    Convert.ToByte(203),
+                    Convert.ToByte(198),
+                    Convert.ToByte(190)
+                ));
 
-                List<NodeView> _nodeViews = ViewLoadedParamsField.DynamoWindow.FindVisualChildren<NodeView>().ToList();
+                ((Rectangle)n.grid.FindName("NameBackground")).Fill = new SolidColorBrush(Color.FromArgb(
+                    Convert.ToByte(255),
+                    Convert.ToByte(94),
+                    Convert.ToByte(92),
+                    Convert.ToByte(90)
+                ));
 
-                // Colour each node
-                foreach (var n in _nodeViews)
-                {
-                    ((Rectangle)n.grid.FindName("nodeBackground")).Fill = new SolidColorBrush(Color.FromArgb(
-                       Convert.ToByte(255),
-                       Convert.ToByte(203),
-                       Convert.ToByte(198),
-                       Convert.ToByte(190)
-                   ));
+                ((Rectangle)n.grid.FindName("nodeBorder")).Stroke = new SolidColorBrush(Color.FromArgb(
+                    Convert.ToByte(255),
+                    Convert.ToByte(203),
+                    Convert.ToByte(198),
+                    Convert.ToByte(190)
+                ));
 
-                    ((Rectangle)n.grid.FindName("NameBackground")).Fill = new SolidColorBrush(Color.FromArgb(
-                        Convert.ToByte(255),
-                        Convert.ToByte(94),
-                        Convert.ToByte(92),
-                        Convert.ToByte(90)
-                    ));
+                ((Rectangle)n.grid.FindName("NameBackground")).Stroke = new SolidColorBrush(Color.FromArgb(
+                    Convert.ToByte(255),
+                    Convert.ToByte(203),
+                    Convert.ToByte(198),
+                    Convert.ToByte(190)
+                ));
 
-                    ((Rectangle)n.grid.FindName("nodeBorder")).Stroke = new SolidColorBrush(Color.FromArgb(
-                        Convert.ToByte(255),
-                        Convert.ToByte(203),
-                        Convert.ToByte(198),
-                        Convert.ToByte(190)
-                    ));
-
-                    ((Rectangle)n.grid.FindName("NameBackground")).Stroke = new SolidColorBrush(Color.FromArgb(
-                        Convert.ToByte(255),
-                        Convert.ToByte(203),
-                        Convert.ToByte(198),
-                        Convert.ToByte(190)
-                    ));
-
-                }
-            //}));
+            }
         }
 
 
@@ -332,7 +382,7 @@ namespace Track.src
 
 
                 //}
-                FadeNodes(ViewLoadedParamsField);
+                ColourNodes(Colors.Red, DeletedNodesDictionary);
             }
 
             //Remove the node from the graph
@@ -346,7 +396,7 @@ namespace Track.src
 
                 //colour the node
                 //put Rob&Laurence's code here
-                UnFadeNodes(ViewLoadedParamsField);
+                //UnFadeNodes();
             }
         }
         public void ToggleAddedNodes(bool IsChecked)
@@ -390,7 +440,7 @@ namespace Track.src
                 }
                 //colour the node
                 //put Rob&Laurence's code here
-                FadeNodes(ViewLoadedParamsField);
+                ColourNodes(Colors.Green, AddedNodesDictionary);
             }
             if (IsChecked == false) 
             {
@@ -403,7 +453,7 @@ namespace Track.src
                 //colour the node
                 //put Rob&Laurence's code here
 
-                UnFadeNodes(ViewLoadedParamsField);
+                //UnFadeNodes();
             }
         }
 
