@@ -58,8 +58,14 @@ namespace Track
                 CheckBox_ShowAddedWires.IsEnabled = true;
                 CheckBox_ShowDeletedWires.IsEnabled = true;
 
+                CheckBox_ShowAddedNodes.IsChecked = true;
+                CheckBox_ShowDeletedNodes.IsChecked = true;
+
+
                 //start the comparison using the filelocation
                 functions.CompareSomeGraphs(viewLoadedParams, FilePath);
+                functions.ToggleRemovedNodes(true);
+                functions.ToggleAddedNodes(true);
 
                 MessageBox.Show("File exists, ready to compare graphs", "Reference Dynamo graph", 
                     MessageBoxButton.OK, MessageBoxImage.Information);
