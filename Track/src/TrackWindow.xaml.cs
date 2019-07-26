@@ -58,14 +58,17 @@ namespace Track
                 CheckBox_ShowAddedWires.IsEnabled = true;
                 CheckBox_ShowDeletedWires.IsEnabled = true;
 
-                MessageBox.Show("File exists, ready to compare graphs");
-
                 //start the comparison using the filelocation
                 functions.CompareSomeGraphs(viewLoadedParams, FilePath);
+
+                MessageBox.Show("File exists, ready to compare graphs", "Reference Dynamo graph", 
+                    MessageBoxButton.OK, MessageBoxImage.Information);
+
             }
             else if (ButtonLoadDispose.Content.ToString() == "Lock and load reference graph")
             {
-                MessageBox.Show("File was not found, please try again");
+                MessageBox.Show("File was not found, please try again", "Reference Dynamo graph",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else
             {
@@ -84,7 +87,10 @@ namespace Track
                 CheckBox_ShowAddedWires.IsChecked = false;
                 CheckBox_ShowDeletedWires.IsChecked = false;
 
-                MessageBox.Show("File unloaded");
+                UnloadAllChanges();
+
+                MessageBox.Show("File unloaded", "Reference Dynamo graph",
+                    MessageBoxButton.OK, MessageBoxImage.Information);
 
             }
 
@@ -116,6 +122,17 @@ namespace Track
             bool checkbox = false;
             functions.ToggleAddedNodes(checkbox);
 
+        }
+
+        private void Window_Closed(object sender, System.EventArgs e)
+        {
+            UnloadAllChanges();
+        }
+        private void UnloadAllChanges()
+        {
+            //Disable all active states to return to the current graph
+            functions.ToggleAddedNodes(true);
+            functions.ToggleRemovedNodes(false);
         }
     }
 }

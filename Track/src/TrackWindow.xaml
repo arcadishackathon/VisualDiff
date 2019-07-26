@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:Track"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
-            Width="408" Height="300">
+            Width="408" Height="300" Closed="Window_Closed" Title="Trainwreck tracker tool - Arcadis team Toronto Hackathon">
     <Grid Name="MainGrid" 
           HorizontalAlignment="Stretch"
           VerticalAlignment="Stretch" Margin="0,0,-6.4,0.4">
@@ -29,7 +29,7 @@
         <Label Content="Toggle active wiring states:" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.ColumnSpan="4" FontWeight="Bold" Margin="0,190,0,0" Width="394" Height="26"/>
 
         <!--Active states checkboxes-->
-        <CheckBox x:Name="CheckBox_ShowAddedNodes" Content="Show added nodes" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="17,130,0,0" Grid.Column="2" Height="15" Width="241" IsEnabled="False" Unchecked="CheckBox_ShowAddedNodes_Unchecked" Checked="CheckBox_ShowAddedNodes_Checked"/>
+        <CheckBox x:Name="CheckBox_ShowAddedNodes" Content="Hide added nodes" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="17,130,0,0" Grid.Column="2" Height="15" Width="241" IsEnabled="False" Unchecked="CheckBox_ShowAddedNodes_Unchecked" Checked="CheckBox_ShowAddedNodes_Checked"/>
         <CheckBox x:Name="CheckBox_ShowDeletedNodes" Content="Show deleted nodes" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="17,150,0,0" Grid.Column="2" Height="15" Width="158" IsEnabled="False" Checked="CheckBox_ShowDeletedNodes_Checked" Unchecked="CheckBox_ShowDeletedNodes_Unchecked"/>
         <CheckBox x:Name="CheckBox_CompareModifiedNodes" Content="Compare modified nodes - to be implemented" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="17,170,0,0" Grid.Column="2" Height="15" Width="276" IsEnabled="False"/>
         <CheckBox x:Name="CheckBox_ShowAddedWires" Content="Show added nodes - to be implemented" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="17,216,0,0" Grid.Column="2" Height="15" Width="241" IsEnabled="False"/>
