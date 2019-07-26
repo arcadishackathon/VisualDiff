@@ -33,6 +33,8 @@ namespace Track.src
         //Fields
         Dictionary<string, NodeModel> AddedNodesDictionary = new Dictionary<string, NodeModel>();
         Dictionary<string, NodeModel> DeletedNodesDictionary = new Dictionary<string, NodeModel>();
+        Dictionary<string, ConnectorModel> AddedConnectorsDictionary = new Dictionary<string, ConnectorModel>();
+        Dictionary<string, ConnectorModel> DeletedConnectorsDictionary = new Dictionary<string, ConnectorModel>();
 
         DynamoViewModel viewModelField;
         ViewLoadedParams ViewLoadedParamsField;
@@ -55,9 +57,9 @@ namespace Track.src
             AddedNodesDictionary.Clear();
             DeletedNodesDictionary.Clear();
 
-
-            //Get the data from the currently opened Dynamo graph
-            var CurrentDynamoGraph = viewLoadedParams.CurrentWorkspaceModel.Nodes;
+            //Get the data from the currently opened Dynamo graph, nodes and connectors
+            var CurrentDynamoGraphNodes = viewLoadedParams.CurrentWorkspaceModel.Nodes;
+            var CurrentDynamoGraphConnectors = viewLoadedParams.CurrentWorkspaceModel.Connectors;
 
             //store the filename so it can be reopened later
             string CurrentDynamoGraphFileName = viewLoadedParams.CurrentWorkspaceModel.FileName;
@@ -87,70 +89,34 @@ namespace Track.src
                 //UnfancifyMsg += "Unfancified " + graph + "\n";
             }
 
-
             // Read the reference graph
-            var ReferenceDynamoGraph = viewLoadedParams.CurrentWorkspaceModel.Nodes;
+            var ReferenceDynamoGraphNodes = viewLoadedParams.CurrentWorkspaceModel.Nodes;
+            var ReferenceDynamoGraphConnectors = viewLoadedParams.CurrentWorkspaceModel.Connectors;
 
             // Reset the loaded file by reopening the initially opened (current) graph
             viewModelField.OpenCommand.Execute(CurrentDynamoGraphFileName);
 
-            // v1
-            //Console.WriteLine(v1.CurrentWorkspaceModel.Nodes);
-            Console.WriteLine(CurrentDynamoGraph);
-
-            // v2
-            Console.WriteLine(ReferenceDynamoGraph);
-
-            // It could be this simple!
-            /*var added = v1.Except(v2);
-            var deleted = v2.Except(v1);*/
-
-            //v1.Nodes
-
-            /*var added = new List<string>();
-            var deleted = new List<string>();
-            var modified = new List<string>();*/
+            // -----> do stuff with nodes <----- 
 
             //create dictionaries containing the nodes
             var currentNodeDict = new Dictionary<string, NodeModel>();
             var referenceNodeDict = new Dictionary<string, NodeModel>();
 
-            // Dictionary of V1
-            foreach (var node1 in CurrentDynamoGraph)
-            {
+            // Dictionary of current nodes
+            foreach (var node1 in CurrentDynamoGraphNodes)
                 currentNodeDict.Add(node1.GUID.ToString(), node1);
-            }
              
-            // Dictionary of V2
-            foreach (var node2 in ReferenceDynamoGraph)
-            {
+            // Dictionary of reference nodes
+            foreach (var node2 in ReferenceDynamoGraphNodes)
                 referenceNodeDict.Add(node2.GUID.ToString(), node2);
-            }
 
-
-            // Why Doesn't this work? It does work ;)
-            IEnumerable<string> added = currentNodeDict.Keys.Except(referenceNodeDict.Keys);
-            IEnumerable<string> deleted = referenceNodeDict.Keys.Except(currentNodeDict.Keys);
-            IEnumerable<string> remaining = currentNodeDict.Keys.Except(added.ToList());
-
-
-            //Console.WriteLine(deleted.ToList());
-            //Console.WriteLine(added.ToList());
-
-
-            Debug.WriteLine(string.Join("\n\n", new string[] {
-                "",
-                "These were added:",
-                string.Join(", ", added.ToList()),
-                "These were deleted:",
-                string.Join(", ", deleted.ToList()),
-                "These are the remaining:",
-                string.Join(", ", remaining.ToList()),
-                ""
-            }));
+            // Create the difference sets of the nodes
+            IEnumerable<string> addedNodes = currentNodeDict.Keys.Except(referenceNodeDict.Keys);
+            IEnumerable<string> deletedNodes = referenceNodeDict.Keys.Except(currentNodeDict.Keys);
+            IEnumerable<string> remainingNodes = currentNodeDict.Keys.Except(addedNodes.ToList());
 
             //Put the __added__ nodes list in the private field list
-            foreach (var key in added)
+            foreach (var key in addedNodes)
             {
                 // Do stuff with all added nodes
                 // Then do the same with all removed/modified etc.
@@ -159,13 +125,58 @@ namespace Track.src
             }
 
             //Put the __deleted__ nodes list in the private field list
-            foreach (var key in deleted)
+            foreach (var key in deletedNodes)
             {
                 // Do stuff with all added nodes
                 // Then do the same with all removed/modified etc.
                 var node = referenceNodeDict[key];
                 DeletedNodesDictionary.Add(key, node);
             }
+
+
+            // -----> do stuff with wires (connectors) <----- 
+            //create dictionaries containing the nodes
+            var currentConnectorDict = new Dictionary<string, ConnectorModel>();
+            var referenceConnectorDict = new Dictionary<string, ConnectorModel>();
+
+            // Dictionary of current connectors
+            foreach (var CurrentConnector in CurrentDynamoGraphConnectors)
+                currentConnectorDict.Add(CurrentConnector.GUID.ToString(), CurrentConnector);
+
+            // Dictionary of reference connectors
+            foreach (var ReferenceConnector in ReferenceDynamoGraphConnectors)
+                referenceConnectorDict.Add(ReferenceConnector.GUID.ToString(), ReferenceConnector);
+
+            // Create the difference sets of the connectors
+            IEnumerable<string> addedConnectors = currentConnectorDict.Keys.Except(referenceConnectorDict.Keys);
+            IEnumerable<string> deletedConnectors = referenceConnectorDict.Keys.Except(currentConnectorDict.Keys);
+            IEnumerable<string> remainingConnectors = currentConnectorDict.Keys.Except(addedConnectors.ToList());
+
+            //Put the __added__ connectors list in the private field list
+            foreach (var key in addedConnectors)
+            {
+                // Do stuff with all added nodes
+                // Then do the same with all removed/modified etc.
+                var connector = currentConnectorDict[key];
+                AddedConnectorsDictionary.Add(key, connector);
+            }
+
+            //Put the __deleted__ connectors list in the private field list
+            foreach (var key in deletedConnectors)
+            {
+                // Do stuff with all added nodes
+                // Then do the same with all removed/modified etc.
+                var connector = referenceConnectorDict[key];
+                DeletedConnectorsDictionary.Add(key, connector);
+            }
+
+
+
+
+
+
+
+
             //ToggleRemovedNodes();
 
             //test zone
@@ -178,8 +189,8 @@ namespace Track.src
 
         //Two ideas for the code below
         // 1) should I put all this code in one function and just fill another list with the nodes to handle? 
-        //    that would save some extra lines of code
-        // 2) wiring is deleted when showing the added nodes. I will have to make sure that is put back on the graph
+        //    that would save some extra lines of code -- not right now
+        // 2) wiring is deleted when hiding the added nodes. I will have to make sure that is put back on the graph
 
 
         public void FadeNodes(ViewLoadedParams ViewLoadedParamsField) {
@@ -289,6 +300,27 @@ namespace Track.src
 
                 }
 
+                //create the connectors
+                foreach (var connector in DeletedConnectorsDictionary)
+                {
+                    var startGUID = connector.Value.Start.Owner.GUID;
+                    var startPortIndex = connector.Value.Start.Index;
+                    var startPortType = connector.Value.Start.PortType;
+                    var startMode = MakeConnectionCommand.Mode.Begin; 
+
+                    var endGUID = connector.Value.End.Owner.GUID;
+                    var endPortIndex = connector.Value.End.Index;
+                    var endPortType = connector.Value.End.PortType;
+                    var endMode = MakeConnectionCommand.Mode.End; 
+
+                    ////start
+                    ViewLoadedParamsField.CommandExecutive.ExecuteCommand(new MakeConnectionCommand(
+                        startGUID, startPortIndex, startPortType, startMode), "", "");
+                    ////end
+                    ViewLoadedParamsField.CommandExecutive.ExecuteCommand(new MakeConnectionCommand(
+                        endGUID, endPortIndex, endPortType, endMode), "", "");
+                }
+
                 //colour the node
                 //put Rob&Laurence's code here
                 /*
@@ -377,7 +409,26 @@ namespace Track.src
                         node.Value.X, node.Value.Y, false, false), "", "");
                     //will the ModelBase.X actually become obsolete? If this happens, ask Michael Kirschner
                 }
+                //create the connectors
+                foreach (var connector in AddedConnectorsDictionary)
+                {
+                    var startGUID = connector.Value.Start.Owner.GUID;
+                    var startPortIndex = connector.Value.Start.Index;
+                    var startPortType = connector.Value.Start.PortType;
+                    var startMode = MakeConnectionCommand.Mode.Begin;
 
+                    var endGUID = connector.Value.End.Owner.GUID;
+                    var endPortIndex = connector.Value.End.Index;
+                    var endPortType = connector.Value.End.PortType;
+                    var endMode = MakeConnectionCommand.Mode.End;
+
+                    ////start
+                    ViewLoadedParamsField.CommandExecutive.ExecuteCommand(new MakeConnectionCommand(
+                        startGUID, startPortIndex, startPortType, startMode), "", "");
+                    ////end
+                    ViewLoadedParamsField.CommandExecutive.ExecuteCommand(new MakeConnectionCommand(
+                        endGUID, endPortIndex, endPortType, endMode), "", "");
+                }
                 //colour the node
                 //put Rob&Laurence's code here
                 FadeNodes(ViewLoadedParamsField);
