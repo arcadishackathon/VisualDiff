@@ -9,7 +9,6 @@ using System.Collections;
 using System.Windows;
 using Dynamo.Wpf.Extensions;
 using Dynamo.ViewModels;
-
 using System.Windows.Media;
 using System.Windows.Shapes;
 using Dynamo.Core;
@@ -25,7 +24,12 @@ namespace Track.src
     {
         //Fields
         private bool ReferenceFileExists = false;
+        Dictionary<string, Object> AddedNodesDictionary = new Dictionary<string, Object>();
+        Dictionary<string, Object> DeletedNodesDictionary = new Dictionary<string, Object>();
 
+
+
+        //Methods
         public bool CheckReferenceDynamoGraphFileLocationValidity(string FilePath)
         {
             if (File.Exists(FilePath))
@@ -108,10 +112,11 @@ namespace Track.src
             }
 
 
-            // Why Doesn't this work?
-            IEnumerable<string> deleted = v1Dict.Keys.Except(v2Dict.Keys);
-            IEnumerable<string> added = v2Dict.Keys.Except(v1Dict.Keys);
-            IEnumerable<string> remaining = v2Dict.Keys.Except(added.ToList());
+            // Why Doesn't this work? It does work ;)
+            IEnumerable<string> added = v1Dict.Keys.Except(v2Dict.Keys);
+            IEnumerable<string> deleted = v2Dict.Keys.Except(v1Dict.Keys);
+            IEnumerable<string> remaining = v1Dict.Keys.Except(added.ToList());
+
 
             //Console.WriteLine(deleted.ToList());
             //Console.WriteLine(added.ToList());
@@ -128,17 +133,23 @@ namespace Track.src
                 ""
             }));
 
+            //Put the __added__ nodes list in the private field list
             foreach (var key in added)
             {
+                // Do stuff with all added nodes
+                // Then do the same with all removed/modified etc.
+                var node = v1Dict[key];
+                AddedNodesDictionary.Add(v1Dict[key].ToString(), node);
+            }
 
+            //Put the __deleted__ nodes list in the private field list
+            foreach (var key in deleted)
+            {
                 // Do stuff with all added nodes
                 // Then do the same with all removed/modified etc.
                 var node = v2Dict[key];
-
-                //keep the data to another method
-                ToggleAddedNodes();
+                DeletedNodesDictionary.Add(v2Dict[key].ToString(), node);
             }
-
 
         }
         public void ToggleRemovedNodes()
