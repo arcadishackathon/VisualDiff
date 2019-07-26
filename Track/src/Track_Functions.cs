@@ -412,7 +412,9 @@ namespace Track.src
                 //DynamoViewModel model = ViewLoadedParamsField.DynamoWindow.DataContext as DynamoViewModel;
 
                 // Replace the reference file with the current file
-                //model.OpenCommand.Execute(referenceFilePath);
+                //model.OpenCommand.Execute(currentFilePath);
+
+                // HERE
 
 
                 //create the nodes
@@ -438,16 +440,15 @@ namespace Track.src
             {
                 // Delete the ADDED node
                 // ERROR. WE'RE USING THE DELETED nodes dictionary for this.
-                foreach (var node in DeletedNodesDictionary)
+                /*foreach (var node in DeletedNodesDictionary)
                 {
                     ViewLoadedParamsField.CommandExecutive.ExecuteCommand(new DeleteModelCommand(node.Value.GUID), "", "");
-                }
+                }*/
 
                 //colour the node
                 //put Rob&Laurence's code here
 
-                //UnFadeNodes(ViewLoadedParamsField);
-
+                UnFadeNodes();
 
                 // This ONLY colours original nodes. Not nodes added by CreateNodeCommand.
                 //MakeNodesRed(ViewLoadedParamsField);
