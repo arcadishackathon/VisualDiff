@@ -17,56 +17,61 @@ using Dynamo.Graph.Nodes;
 using Dynamo.Graph;
 using Dynamo.Models;
 using Dynamo.UI.Commands;
+using CoreNodeModels;
+using Dynamo.Graph.Connectors;
+using Dynamo.Graph.Nodes.ZeroTouch;
+using Dynamo.Nodes;
+using static Dynamo.Models.DynamoModel;
 
 namespace Track.src
 {
     class Track_Functions
     {
         //Fields
-        private bool ReferenceFileExists = false;
-        Dictionary<string, Object> AddedNodesDictionary = new Dictionary<string, Object>();
-        Dictionary<string, Object> DeletedNodesDictionary = new Dictionary<string, Object>();
+        Dictionary<string, NodeModel> AddedNodesDictionary = new Dictionary<string, NodeModel>();
+        Dictionary<string, NodeModel> DeletedNodesDictionary = new Dictionary<string, NodeModel>();
 
-
+        DynamoViewModel viewModelField;
+        ViewLoadedParams ViewLoadedParamsField;
 
         //Methods
         public bool CheckReferenceDynamoGraphFileLocationValidity(string FilePath)
         {
             if (File.Exists(FilePath))
-            {
-                return ReferenceFileExists = true;
-            }
+                return true;
             else
-            {
-                return ReferenceFileExists = false;
-            }
+                return false;
         }
+
 
         public void CompareSomeGraphs(ViewLoadedParams viewLoadedParams, string FilePath)
         {
-            //Add Laurence's stuff here to generate the lists
+            //first clear any old stuff that may be present in the dictionaries
+            //for now just clear the dictionaries. There should be a better way to do it, 
+            //maybe by creating a new instance of this class?
+            AddedNodesDictionary.Clear();
+            DeletedNodesDictionary.Clear();
 
 
-            var v1 = viewLoadedParams.CurrentWorkspaceModel.Nodes;
+            //Get the data from the currently opened Dynamo graph
+            var CurrentDynamoGraph = viewLoadedParams.CurrentWorkspaceModel.Nodes;
 
-            string v1FileName = viewLoadedParams.CurrentWorkspaceModel.FileName;
+            //store the filename so it can be reopened later
+            string CurrentDynamoGraphFileName = viewLoadedParams.CurrentWorkspaceModel.FileName;
 
-            DynamoViewModel viewModel = viewLoadedParams.DynamoWindow.DataContext as DynamoViewModel;
+            //Store the viewModel and ViewLoadedParams als fields so they can be used in other methods
+            viewModelField = viewLoadedParams.DynamoWindow.DataContext as DynamoViewModel;
+            ViewLoadedParamsField = viewLoadedParams;
 
-            // DynamoViewModel dynamoViewModel => viewLoadedParams.DynamoWindow.DataContext as DynamoViewModel;
-
-            string referenceFile = FilePath; // "C:\\Users\\elsdonl0213\\Repos\\Collaborate\\Resources\\example-v2.dyn";
-
-            var graphCount = 0;
-            // Cycle through all files found in the directory
-            var ext = System.IO.Path.GetExtension(referenceFile);
+            //Check if the opened file is actually a Dynamo graph and if so open it
+            var ext = System.IO.Path.GetExtension(FilePath);
             // We're only interested in *.dyn files
             if (ext == ".dyn")
             {
                 // Open the graph
-                viewModel.OpenCommand.Execute(referenceFile);
+                viewModelField.OpenCommand.Execute(FilePath);
                 // Set the graph run type to manual mode (otherwise some graphs might auto-execute at this point)
-                viewModel.CurrentSpaceViewModel.RunSettingsViewModel.Model.RunType = RunType.Manual;
+                viewModelField.CurrentSpaceViewModel.RunSettingsViewModel.Model.RunType = RunType.Manual;
                 // Call our main method
                 //UnfancifyGraph();
                 // Save the graph
@@ -74,24 +79,24 @@ namespace Track.src
                 // Close it
                 //viewModel.CloseHomeWorkspaceCommand.Execute(null);
                 // Increment our counter
-                graphCount += 1;
+                //graphCount += 1;
                 // Update the message in the UI
                 //UnfancifyMsg += "Unfancified " + graph + "\n";
             }
 
 
-            // Read v2 
-            var v2 = viewLoadedParams.CurrentWorkspaceModel.Nodes;
+            // Read the reference graph
+            var ReferenceDynamoGraph = viewLoadedParams.CurrentWorkspaceModel.Nodes;
 
-            // Reset the loaded file
-            viewModel.OpenCommand.Execute(v1FileName);
+            // Reset the loaded file by reopening the initially opened (current) graph
+            viewModelField.OpenCommand.Execute(CurrentDynamoGraphFileName);
 
             // v1
             //Console.WriteLine(v1.CurrentWorkspaceModel.Nodes);
-            Console.WriteLine(v1);
+            Console.WriteLine(CurrentDynamoGraph);
 
             // v2
-            Console.WriteLine(v2);
+            Console.WriteLine(ReferenceDynamoGraph);
 
             // It could be this simple!
             /*var added = v1.Except(v2);
@@ -103,26 +108,27 @@ namespace Track.src
             var deleted = new List<string>();
             var modified = new List<string>();*/
 
-            var v1Dict = new Dictionary<string, Object>();
-            var v2Dict = new Dictionary<string, Object>();
+            //create dictionaries containing the nodes
+            var currentNodeDict = new Dictionary<string, NodeModel>();
+            var referenceNodeDict = new Dictionary<string, NodeModel>();
 
             // Dictionary of V1
-            foreach (var node1 in v1)
+            foreach (var node1 in CurrentDynamoGraph)
             {
-                v1Dict.Add(node1.GUID.ToString(), node1);
+                currentNodeDict.Add(node1.GUID.ToString(), node1);
             }
              
             // Dictionary of V2
-            foreach (var node2 in v2)
+            foreach (var node2 in ReferenceDynamoGraph)
             {
-                v2Dict.Add(node2.GUID.ToString(), node2);
+                referenceNodeDict.Add(node2.GUID.ToString(), node2);
             }
 
 
             // Why Doesn't this work? It does work ;)
-            IEnumerable<string> added = v1Dict.Keys.Except(v2Dict.Keys);
-            IEnumerable<string> deleted = v2Dict.Keys.Except(v1Dict.Keys);
-            IEnumerable<string> remaining = v1Dict.Keys.Except(added.ToList());
+            IEnumerable<string> added = currentNodeDict.Keys.Except(referenceNodeDict.Keys);
+            IEnumerable<string> deleted = referenceNodeDict.Keys.Except(currentNodeDict.Keys);
+            IEnumerable<string> remaining = currentNodeDict.Keys.Except(added.ToList());
 
 
             //Console.WriteLine(deleted.ToList());
@@ -132,11 +138,11 @@ namespace Track.src
             Debug.WriteLine(string.Join("\n\n", new string[] {
                 "",
                 "These were added:",
-                String.Join(", ", added.ToList()),
+                string.Join(", ", added.ToList()),
                 "These were deleted:",
-                String.Join(", ", deleted.ToList()),
+                string.Join(", ", deleted.ToList()),
                 "These are the remaining:",
-                String.Join(", ", remaining.ToList()),
+                string.Join(", ", remaining.ToList()),
                 ""
             }));
 
@@ -145,8 +151,8 @@ namespace Track.src
             {
                 // Do stuff with all added nodes
                 // Then do the same with all removed/modified etc.
-                var node = v1Dict[key];
-                AddedNodesDictionary.Add(v1Dict[key].ToString(), node);
+                var node = currentNodeDict[key];
+                AddedNodesDictionary.Add(key, node);
             }
 
             //Put the __deleted__ nodes list in the private field list
@@ -154,28 +160,98 @@ namespace Track.src
             {
                 // Do stuff with all added nodes
                 // Then do the same with all removed/modified etc.
-                var node = v2Dict[key];
-                DeletedNodesDictionary.Add(v2Dict[key].ToString(), node);
+                var node = referenceNodeDict[key];
+                DeletedNodesDictionary.Add(key, node);
+            }
+            //ToggleRemovedNodes();
+
+            //test zone
+
+
+
+        }
+
+
+
+        //Two ideas for the code below
+        // 1) should I put all this code in one function and just fill another list with the nodes to handle? 
+        //    that would save some extra lines of code
+        // 2) wiring is deleted when showing the added nodes. I will have to make sure that is put back on the graph
+
+
+
+
+
+        public void ToggleRemovedNodes(bool IsChecked)
+        {
+            //Code for comparing added nodes here
+            //DeletedNodesDictionary
+            // 1) First add the node on the graph
+            // 2) Colour the node on the graph
+            // 3) When fed up with looking at it, remove the node upon toggle disable or closing the viewextention
+
+            //add the node on the graph
+            if (IsChecked)
+            {
+                //create the nodes
+                foreach (var node in DeletedNodesDictionary)
+                {
+                    ViewLoadedParamsField.CommandExecutive.ExecuteCommand(new CreateNodeCommand(node.Value,
+                        node.Value.X, node.Value.Y, false, false), "", "");
+                    //will the ModelBase.X actually become obsolete? If this happens, ask Michael Kirschner
+                }
+
+                //colour the node
+                //put Rob&Laurence's code here
             }
 
+            //Remove the node from the graph
+            if (IsChecked == false)
+            {
+                //delete the node
+                foreach (var node in DeletedNodesDictionary)
+                {
+                    ViewLoadedParamsField.CommandExecutive.ExecuteCommand(new DeleteModelCommand(node.Value.GUID), "", "");
+                }
+
+                //colour the node
+                //put Rob&Laurence's code here
+            }
         }
-        public void ToggleRemovedNodes()
+        public void ToggleAddedNodes(bool IsChecked)
         {
             //Code for comparing added nodes here
-
+            //DeletedNodesDictionary
             // 1) First add the node on the graph
+            // 2) Colour the node on the graph
+            // 3) When fed up with looking at it, remove the node upon toggle disable or closing the viewextention
 
+            //add the node on the graph
+            if (IsChecked) 
+            {
+                //create the nodes
+                foreach (var node in AddedNodesDictionary)
+                {
 
-        }
+                    ViewLoadedParamsField.CommandExecutive.ExecuteCommand(new CreateNodeCommand(node.Value,
+                        node.Value.X, node.Value.Y, false, false), "", "");
+                    //will the ModelBase.X actually become obsolete? If this happens, ask Michael Kirschner
+                }
 
+                //colour the node
+                //put Rob&Laurence's code here
+            }
+            if (IsChecked == false) 
+            {
+                //delete the node
+                foreach (var node in AddedNodesDictionary)
+                {
+                    ViewLoadedParamsField.CommandExecutive.ExecuteCommand(new DeleteModelCommand(node.Value.GUID), "", "");
+                }
 
-        public void ToggleAddedNodes()
-        {
-            //Code for comparing added nodes here
-
-            // 1) First add the node on the graph
-
-
+                //colour the node
+                //put Rob&Laurence's code here
+            }
         }
 
     }
