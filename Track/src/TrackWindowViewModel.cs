@@ -11,9 +11,6 @@ namespace Track
 
         public TrackWindowViewModel()
         {
-
-
-
         }
 
 
@@ -28,14 +25,12 @@ namespace Track
             }
         }
 
-
-
-
         public void Dispose()
         {
-
         }
 
+
+        //non-deleted stuff from the original viewextension, could be useful in the future
 
 
         //private string activeNodeTypes;

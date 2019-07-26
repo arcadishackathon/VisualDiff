@@ -46,7 +46,7 @@ namespace Track
 
             // Hold a reference to the Dynamo params to be used later
             viewLoadedParams = p;
-
+            //p.CommandExecutive.ExecuteCommand(new CreateNodeCommand()
 
             // Save a reference to your loaded parameters.
             // You'll need these later when you want to use
