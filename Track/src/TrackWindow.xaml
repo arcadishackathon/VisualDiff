@@ -26,14 +26,14 @@
 
         <Separator Height="10" Margin="10,94,17.6,0" VerticalAlignment="Top" Grid.Column="2" Grid.ColumnSpan="2"/>
         <Label Content="Toggle active node states:" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.ColumnSpan="5" FontWeight="Bold" Margin="0,104,0,0" Width="394" Height="26"/>
-        <Label Content="Toggle active wiring states:" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.ColumnSpan="4" FontWeight="Bold" Margin="0,190,0,0" Width="394" Height="26"/>
+        <Label Content="Toggle active connector states:" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.ColumnSpan="4" FontWeight="Bold" Margin="0,190,0,0" Width="394" Height="26"/>
 
         <!--Active states checkboxes-->
-        <CheckBox x:Name="CheckBox_ShowAddedNodes" Content="Hide added nodes" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="17,130,0,0" Grid.Column="2" Height="15" Width="241" IsEnabled="False" Unchecked="CheckBox_ShowAddedNodes_Unchecked" Checked="CheckBox_ShowAddedNodes_Checked"/>
-        <CheckBox x:Name="CheckBox_ShowDeletedNodes" Content="Show deleted nodes" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="17,150,0,0" Grid.Column="2" Height="15" Width="158" IsEnabled="False" Checked="CheckBox_ShowDeletedNodes_Checked" Unchecked="CheckBox_ShowDeletedNodes_Unchecked"/>
-        <CheckBox x:Name="CheckBox_CompareModifiedNodes" Content="Compare modified nodes - to be implemented" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="17,170,0,0" Grid.Column="2" Height="15" Width="276" IsEnabled="False"/>
-        <CheckBox x:Name="CheckBox_ShowAddedWires" Content="Show added nodes - to be implemented" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="17,216,0,0" Grid.Column="2" Height="15" Width="241" IsEnabled="False"/>
-        <CheckBox x:Name="CheckBox_ShowDeletedWires" Content="Show deleted nodes - to be implemented" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="17,236,0,0" Grid.Column="2" Height="15" Width="251" IsEnabled="False"/>
+        <CheckBox x:Name="CheckBox_ShowAddedNodes" Content="Show added nodes" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,130,0,0" Grid.Column="2" Height="15" Width="248" IsEnabled="False" Unchecked="CheckBox_ShowAddedNodes_Unchecked" Checked="CheckBox_ShowAddedNodes_Checked"/>
+        <CheckBox x:Name="CheckBox_ShowDeletedNodes" Content="Show deleted nodes" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,150,0,0" Grid.Column="2" Height="15" Width="158" IsEnabled="False" Checked="CheckBox_ShowDeletedNodes_Checked" Unchecked="CheckBox_ShowDeletedNodes_Unchecked"/>
+        <CheckBox x:Name="CheckBox_CompareModifiedNodes" Content="Show modified nodes - to be implemented" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,170,0,0" Grid.Column="2" Height="15" Width="276" IsEnabled="False"/>
+        <CheckBox x:Name="CheckBox_ShowAddedWires" Content="Show added connectors - to be implemented" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,216,0,0" Grid.Column="2" Height="15" Width="276" IsEnabled="False"/>
+        <CheckBox x:Name="CheckBox_ShowDeletedWires" Content="Show deleted connectors - to be implemented" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,236,0,0" Grid.Column="2" Height="15" Width="276" IsEnabled="False"/>
 
 
         <!--<TextBlock HorizontalAlignment="Stretch" Text="{Binding ActiveNodeTypes}"
