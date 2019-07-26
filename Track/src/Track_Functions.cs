@@ -38,18 +38,20 @@ namespace Track.src
             }
         }
 
-        public void CompareSomeGraphs(ViewLoadedParams viewLoadedParams)
+        public void CompareSomeGraphs(ViewLoadedParams viewLoadedParams, string FilePath)
         {
             //Add Laurence's stuff here to generate the lists
 
 
             var v1 = viewLoadedParams.CurrentWorkspaceModel.Nodes;
 
+            string v1FileName = viewLoadedParams.CurrentWorkspaceModel.FileName;
+
             DynamoViewModel viewModel = viewLoadedParams.DynamoWindow.DataContext as DynamoViewModel;
 
             // DynamoViewModel dynamoViewModel => viewLoadedParams.DynamoWindow.DataContext as DynamoViewModel;
 
-            string referenceFile = "C:\\Users\\elsdonl0213\\Repos\\Collaborate\\Resources\\example-v2.dyn";
+            string referenceFile = FilePath; // "C:\\Users\\elsdonl0213\\Repos\\Collaborate\\Resources\\example-v2.dyn";
 
             var graphCount = 0;
             // Cycle through all files found in the directory
@@ -73,7 +75,12 @@ namespace Track.src
                 //UnfancifyMsg += "Unfancified " + graph + "\n";
             }
 
+
+            // Read v2 
             var v2 = viewLoadedParams.CurrentWorkspaceModel.Nodes;
+
+            // Reset the loaded file
+            viewModel.OpenCommand.Execute(v1FileName);
 
             // v1
             //Console.WriteLine(v1.CurrentWorkspaceModel.Nodes);
@@ -134,12 +141,30 @@ namespace Track.src
                 // Do stuff with all added nodes
                 // Then do the same with all removed/modified etc.
                 var node = v2Dict[key];
+
+                //keep the data to another method
+                ToggleAddedNodes();
             }
+
+
         }
+        public void ToggleRemovedNodes()
+        {
+            //Code for comparing added nodes here
+
+            // 1) First add the node on the graph
+
+
+        }
+
 
         public void ToggleAddedNodes()
         {
             //Code for comparing added nodes here
+
+            // 1) First add the node on the graph
+
+
         }
 
     }
