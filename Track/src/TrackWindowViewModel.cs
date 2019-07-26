@@ -31,6 +31,15 @@ namespace Track
 
             List<NodeView> _nodeViews = viewLoadedParams.DynamoWindow.FindVisualChildren<NodeView>().ToList();
             breakTheWheel = _nodeViews;
+
+
+            // THIS IS WORKING
+
+
+            //var nodeView = _nodeViews.First();
+
+            //Application.Current.Dispatcher.BeginInvoke(new Action(() => { ((Rectangle)nodeView.grid.FindName("nodeBackground")).Fill = new SolidColorBrush(Colors.Red); }));
+            
         }
 
         public static List<NodeView> TrainWreck() {

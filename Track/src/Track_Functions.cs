@@ -48,6 +48,31 @@ namespace Track.src
             //Add Laurence's stuff here to generate the lists
 
 
+
+            /*
+
+
+
+            List<NodeView> wheel = TrackWindowViewModel.breakTheWheel;
+
+
+
+            var nodeView = wheel.First(n => n.ViewModel.Id.ToString().Equals("5c6c993a-b8a4-40af-8d1c-283d57103ea5"));
+
+
+            ((Rectangle)nodeView.grid.FindName("nodeBackground")).Fill = new SolidColorBrush(Color.FromArgb(
+                    Convert.ToByte(155),
+                    Convert.ToByte(128),
+                    Convert.ToByte(6),
+                    Convert.ToByte(0)));
+
+
+            */
+
+
+
+
+
             var v1 = viewLoadedParams.CurrentWorkspaceModel.Nodes;
 
             string v1FileName = viewLoadedParams.CurrentWorkspaceModel.FileName;
@@ -147,9 +172,9 @@ namespace Track.src
             // List<NodeView> _nodeViews = viewLoadedParams.DynamoWindow.FindVisualChildren<NodeView>().ToList();
 
             // Prepare to break the wheel
-            List<NodeView> wheel2 = TrackWindowViewModel.TrainWreck();
-            List<NodeView> wheel = TrackWindowViewModel.breakTheWheel;
-            List<NodeView> wheel3 = TrackWindowViewModel.breakTheWheel;
+            //List<NodeView> wheel2 = TrackWindowViewModel.TrainWreck();
+            //List<NodeView> wheel = TrackWindowViewModel.breakTheWheel;
+            //List<NodeView> wheel3 = TrackWindowViewModel.breakTheWheel;
 
 
             /*wheel.grid.FindName("nodeBackground")).Fill = new SolidColorBrush(Color.FromArgb(
@@ -164,7 +189,18 @@ namespace Track.src
                                                     Convert.ToByte(_model.SliderValueG),
                                                     Convert.ToByte(_model.SliderValueB)));*/
 
-            foreach (var key in added)
+            List<NodeView> _nodeViews = viewLoadedParams.DynamoWindow.FindVisualChildren<NodeView>().ToList();
+
+
+            var nodeView = _nodeViews.First();
+
+            Application.Current.Dispatcher.BeginInvoke(new Action(() => {
+
+                ((Rectangle)nodeView.grid.FindName("nodeBackground")).Fill = new SolidColorBrush(Colors.Red);
+
+            }));
+
+            foreach (var key in remaining)
             {
 
 
@@ -172,10 +208,24 @@ namespace Track.src
 
                 // Do stuff with all added nodes
                 // Then do the same with all removed/modified etc.
-                var node = v2Dict[key];
+                var node = v1Dict[key];
 
 
-                var nodeView = wheel.First(n => n.ViewModel.Id.ToString().Equals(key));
+                //var nodeView = wheel.First(n => n.ViewModel.Id.ToString().Equals(key));
+
+                //var nodeView = wheel.First();
+
+
+                //Application.Current.Dispatcher.BeginInvoke(new Action(() => { ((Rectangle)nodeView.grid.FindName("nodeBackground")).Fill = new SolidColorBrush(Colors.Red); })); 
+
+                
+
+
+                /*((Rectangle)nodeView.grid.FindName("nodeBackground")).Fill = new SolidColorBrush(Color.FromArgb(
+                                                    Convert.ToByte(155),
+                                                    Convert.ToByte(128),
+                                                    Convert.ToByte(6),
+                                                    Convert.ToByte(0)));*/
 
                 //keep the data to another method
                 ToggleAddedNodes();
