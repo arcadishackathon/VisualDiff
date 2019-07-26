@@ -33,9 +33,15 @@ namespace Track.src
         //Fields
         Dictionary<string, NodeModel> AddedNodesDictionary = new Dictionary<string, NodeModel>();
         Dictionary<string, NodeModel> DeletedNodesDictionary = new Dictionary<string, NodeModel>();
+        Dictionary<string, NodeModel> RemainingNodesDictionary = new Dictionary<string, NodeModel>();
 
         DynamoViewModel viewModelField;
         ViewLoadedParams ViewLoadedParamsField;
+
+
+        string referenceFilePath;
+        string currentFilePath;
+
 
         //Methods
         public bool CheckReferenceDynamoGraphFileLocationValidity(string FilePath)
@@ -61,6 +67,10 @@ namespace Track.src
 
             //store the filename so it can be reopened later
             string CurrentDynamoGraphFileName = viewLoadedParams.CurrentWorkspaceModel.FileName;
+
+            // Store in class
+            currentFilePath = CurrentDynamoGraphFileName;
+            referenceFilePath = FilePath;
 
             //Store the viewModel and ViewLoadedParams als fields so they can be used in other methods
             viewModelField = viewLoadedParams.DynamoWindow.DataContext as DynamoViewModel;
@@ -92,7 +102,7 @@ namespace Track.src
             var ReferenceDynamoGraph = viewLoadedParams.CurrentWorkspaceModel.Nodes;
 
             // Reset the loaded file by reopening the initially opened (current) graph
-            viewModelField.OpenCommand.Execute(CurrentDynamoGraphFileName);
+            //viewModelField.OpenCommand.Execute(CurrentDynamoGraphFileName);
 
             // v1
             //Console.WriteLine(v1.CurrentWorkspaceModel.Nodes);
@@ -166,6 +176,15 @@ namespace Track.src
                 var node = referenceNodeDict[key];
                 DeletedNodesDictionary.Add(key, node);
             }
+
+            //Put the __remaining__ nodes list in the private field list
+            foreach (var key in remaining)
+            {
+                // Do stuff with all added nodes
+                // Then do the same with all removed/modified etc.
+                var node = referenceNodeDict[key];
+                RemainingNodesDictionary.Add(key, node);
+            }
             //ToggleRemovedNodes();
 
             //test zone
@@ -181,8 +200,61 @@ namespace Track.src
         //    that would save some extra lines of code
         // 2) wiring is deleted when showing the added nodes. I will have to make sure that is put back on the graph
 
+        public void ColourAllNodes(SolidColorBrush brush)
+        {
 
-        public void FadeNodes(ViewLoadedParams ViewLoadedParamsField) {
+            List<NodeView> _nodeViews = ViewLoadedParamsField.DynamoWindow.FindVisualChildren<NodeView>().ToList();
+
+            // Colour each node
+            foreach (var n in _nodeViews)
+            {
+                Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    ((Rectangle)n.grid.FindName("nodeBackground")).Fill = brush;
+
+                    ((Rectangle)n.grid.FindName("NameBackground")).Fill = brush;
+
+                    ((Rectangle)n.grid.FindName("nodeBorder")).Stroke = brush;
+
+                    ((Rectangle)n.grid.FindName("NameBackground")).Stroke = brush;
+
+                }));
+            }
+        }
+
+        public void MakeNodesRed()
+        {
+            ColourAllNodes(new SolidColorBrush(Colors.Red));
+        }
+
+        public void MakeNodesGreen()
+        {
+            ColourAllNodes(new SolidColorBrush(Colors.Green));
+        }
+
+        public void MakeNodesFadedGreen()
+        {
+            ColourAllNodes(new SolidColorBrush(Color.FromArgb(
+                Convert.ToByte(50),
+                Convert.ToByte(0),
+                Convert.ToByte(203),
+                Convert.ToByte(0)
+            )));
+        }
+
+        public void MakeNodesFadedRed()
+        {
+
+            ColourAllNodes(new SolidColorBrush(Color.FromArgb(
+                Convert.ToByte(50),
+                Convert.ToByte(203),
+                Convert.ToByte(0),
+                Convert.ToByte(0)
+            )));
+        }
+
+        public void FadeNodes()
+        {
 
             List<NodeView> _nodeViews = ViewLoadedParamsField.DynamoWindow.FindVisualChildren<NodeView>().ToList();
 
@@ -225,7 +297,7 @@ namespace Track.src
 
 
 
-        public void UnFadeNodes(ViewLoadedParams ViewLoadedParamsField)
+        public void UnFadeNodes()
         {
 
             List<NodeView> _nodeViews = ViewLoadedParamsField.DynamoWindow.FindVisualChildren<NodeView>().ToList();
@@ -277,85 +349,53 @@ namespace Track.src
             // 3) When fed up with looking at it, remove the node upon toggle disable or closing the viewextention
 
             //add the node on the graph
-            if (IsChecked)
+            if (IsChecked == true)
             {
+                //DynamoViewModel model = ViewLoadedParamsField.DynamoWindow.DataContext as DynamoViewModel;
+
+                // Replace the reference file with the current file
+                //model.OpenCommand.Execute(referenceFilePath);
+
+                //ViewLoadedParamsField.OpenCommand
+
                 //create the nodes
-                foreach (var node in DeletedNodesDictionary)
+                foreach (var node in RemainingNodesDictionary)
                 {
+                    // Delete ALL REMAINING nodes. Leaving only added!
+                    ViewLoadedParamsField.CommandExecutive.ExecuteCommand(new DeleteModelCommand(node.Value.GUID), "", "");
+
+                    // Re-add ALL REMAINING nodes. These will be styled by default.
                     ViewLoadedParamsField.CommandExecutive.ExecuteCommand(new CreateNodeCommand(node.Value,
                         node.Value.X, node.Value.Y, false, false), "", "");
                     //will the ModelBase.X actually become obsolete? If this happens, ask Michael Kirschner
-
-
                 }
 
                 //colour the node
                 //put Rob&Laurence's code here
-                /*
 
-                List<NodeView> _nodeViews = ViewLoadedParamsField.DynamoWindow.FindVisualChildren<NodeView>().ToList();
+                //FadeNodes(ViewLoadedParamsField);
 
-                // COlour each node
-                foreach (var n in _nodeViews)
-                {*/
-                // ViewLoadedParamsField.CommandExecutive.ExecuteCommand(new DeleteModelCommand(node.Value.GUID), "", "");
-
-
-                //var nodeView = _nodeViews.First();
-
-                /*Application.Current.Dispatcher.BeginInvoke(new Action(() => {
-
-                    //((Rectangle)n.grid.FindName("nodeBackground")).Fill = new SolidColorBrush(Colors.Red);
-
-                    ((Rectangle)n.grid.FindName("nodeBackground")).Fill = new SolidColorBrush(Color.FromArgb(
-                        Convert.ToByte(50),
-                        Convert.ToByte(203),
-                        Convert.ToByte(198),
-                        Convert.ToByte(190)
-                    ));
-
-                    ((Rectangle)n.grid.FindName("NameBackground")).Fill = new SolidColorBrush(Color.FromArgb(
-                        Convert.ToByte(50),
-                        Convert.ToByte(203),
-                        Convert.ToByte(198),
-                        Convert.ToByte(190)
-                    ));
-
-                    ((Rectangle)n.grid.FindName("nodeBorder")).Stroke = new SolidColorBrush(Color.FromArgb(
-                        Convert.ToByte(50),
-                        Convert.ToByte(203),
-                        Convert.ToByte(198),
-                        Convert.ToByte(190)
-                    ));
-
-                    ((Rectangle)n.grid.FindName("NameBackground")).Stroke = new SolidColorBrush(Color.FromArgb(
-                        Convert.ToByte(50),
-                        Convert.ToByte(203),
-                        Convert.ToByte(198),
-                        Convert.ToByte(190)
-                    ));
-
-
-
-
-                }));*/
-
-                //}
-                FadeNodes(ViewLoadedParamsField);
+                // This ONLY colours original nodes. Not nodes added by CreateNodeCommand.
+                MakeNodesRed();
             }
 
             //Remove the node from the graph
             if (IsChecked == false)
             {
                 //delete the node
-                foreach (var node in DeletedNodesDictionary)
+                /*foreach (var node in AddedNodesDictionary)
                 {
                     ViewLoadedParamsField.CommandExecutive.ExecuteCommand(new DeleteModelCommand(node.Value.GUID), "", "");
-                }
+                }*/
+
+                UnFadeNodes();
 
                 //colour the node
                 //put Rob&Laurence's code here
-                UnFadeNodes(ViewLoadedParamsField);
+                //UnFadeNodes(ViewLoadedParamsField);
+
+                // This ONLY colours original nodes. Not nodes added by CreateNodeCommand.
+                //MakeNodesGreen(ViewLoadedParamsField);
             }
         }
         public void ToggleAddedNodes(bool IsChecked)
@@ -367,12 +407,21 @@ namespace Track.src
             // 3) When fed up with looking at it, remove the node upon toggle disable or closing the viewextention
 
             //add the node on the graph
-            if (IsChecked) 
+            if (IsChecked == false)
             {
-                //create the nodes
-                foreach (var node in AddedNodesDictionary)
-                {
+                //DynamoViewModel model = ViewLoadedParamsField.DynamoWindow.DataContext as DynamoViewModel;
 
+                // Replace the reference file with the current file
+                //model.OpenCommand.Execute(referenceFilePath);
+
+
+                //create the nodes
+                foreach (var node in RemainingNodesDictionary)
+                {
+                    // Delete ALL REMAINING nodes. Leaving only added!
+                    ViewLoadedParamsField.CommandExecutive.ExecuteCommand(new DeleteModelCommand(node.Value.GUID), "", "");
+
+                    // Re-add ALL REMAINING nodes. These will be styled by default.
                     ViewLoadedParamsField.CommandExecutive.ExecuteCommand(new CreateNodeCommand(node.Value,
                         node.Value.X, node.Value.Y, false, false), "", "");
                     //will the ModelBase.X actually become obsolete? If this happens, ask Michael Kirschner
@@ -380,12 +429,16 @@ namespace Track.src
 
                 //colour the node
                 //put Rob&Laurence's code here
-                FadeNodes(ViewLoadedParamsField);
+                //FadeNodes(ViewLoadedParamsField);
+
+                // This ONLY colours original nodes. Not nodes added by CreateNodeCommand.
+                MakeNodesGreen();
             }
-            if (IsChecked == false) 
+            if (IsChecked == true) 
             {
-                //delete the node
-                foreach (var node in AddedNodesDictionary)
+                // Delete the ADDED node
+                // ERROR. WE'RE USING THE DELETED nodes dictionary for this.
+                foreach (var node in DeletedNodesDictionary)
                 {
                     ViewLoadedParamsField.CommandExecutive.ExecuteCommand(new DeleteModelCommand(node.Value.GUID), "", "");
                 }
@@ -393,7 +446,13 @@ namespace Track.src
                 //colour the node
                 //put Rob&Laurence's code here
 
-                UnFadeNodes(ViewLoadedParamsField);
+                //UnFadeNodes(ViewLoadedParamsField);
+
+
+                // This ONLY colours original nodes. Not nodes added by CreateNodeCommand.
+                //MakeNodesRed(ViewLoadedParamsField);
+
+
             }
         }
 
