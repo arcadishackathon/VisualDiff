@@ -45,6 +45,8 @@ namespace Track.src
 
             var v1 = viewLoadedParams.CurrentWorkspaceModel.Nodes;
 
+            string v1FileName = viewLoadedParams.CurrentWorkspaceModel.FileName;
+
             DynamoViewModel viewModel = viewLoadedParams.DynamoWindow.DataContext as DynamoViewModel;
 
             // DynamoViewModel dynamoViewModel => viewLoadedParams.DynamoWindow.DataContext as DynamoViewModel;
@@ -73,7 +75,12 @@ namespace Track.src
                 //UnfancifyMsg += "Unfancified " + graph + "\n";
             }
 
+
+            // Read v2 
             var v2 = viewLoadedParams.CurrentWorkspaceModel.Nodes;
+
+            // Reset the loaded file
+            viewModel.OpenCommand.Execute(v1FileName);
 
             // v1
             //Console.WriteLine(v1.CurrentWorkspaceModel.Nodes);
