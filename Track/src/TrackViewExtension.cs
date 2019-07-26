@@ -55,7 +55,7 @@ namespace Track
             sampleMenuItem = new MenuItem { Header = "Start the Tracker tool" };
             sampleMenuItem.Click += (sender, args) =>
             {
-                var viewModel = new TrackWindowViewModel();
+                var viewModel = new TrackWindowViewModel(viewLoadedParams);
                 var window = new TrackWindow(viewLoadedParams)
                 {
                     // Set the data context for the main grid in the window.

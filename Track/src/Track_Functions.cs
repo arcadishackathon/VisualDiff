@@ -18,6 +18,11 @@ using Dynamo.Graph.Nodes;
 using Dynamo.Graph;
 using Dynamo.Models;
 using Dynamo.UI.Commands;
+using Dynamo.Wpf;
+using Dynamo.Controls;
+using Xceed.Wpf.AvalonDock.Controls;
+
+
 
 namespace Track.src
 {
@@ -135,12 +140,42 @@ namespace Track.src
                 ""
             }));
 
+            // DynamoViewModel _vm = viewLoadedParams.DynamoWindow.DataContext as DynamoViewModel;
+
+
+            //obtain the node view to fade
+            // List<NodeView> _nodeViews = viewLoadedParams.DynamoWindow.FindVisualChildren<NodeView>().ToList();
+
+            // Prepare to break the wheel
+            List<NodeView> wheel2 = TrackWindowViewModel.TrainWreck();
+            List<NodeView> wheel = TrackWindowViewModel.breakTheWheel;
+            List<NodeView> wheel3 = TrackWindowViewModel.breakTheWheel;
+
+
+            /*wheel.grid.FindName("nodeBackground")).Fill = new SolidColorBrush(Color.FromArgb(
+                                                    Convert.ToByte(_model.SliderValueA),
+                                                    Convert.ToByte(_model.SliderValueR),
+                                                    Convert.ToByte(_model.SliderValueG),
+                                                    Convert.ToByte(_model.SliderValueB)));*/
+
+            /*((Rectangle)_nodeViews.grid.FindName("nodeBackground")).Fill = new SolidColorBrush(Color.FromArgb(
+                                                    Convert.ToByte(_model.SliderValueA),
+                                                    Convert.ToByte(_model.SliderValueR),
+                                                    Convert.ToByte(_model.SliderValueG),
+                                                    Convert.ToByte(_model.SliderValueB)));*/
+
             foreach (var key in added)
             {
+
+
+
 
                 // Do stuff with all added nodes
                 // Then do the same with all removed/modified etc.
                 var node = v2Dict[key];
+
+
+                var nodeView = wheel.First(n => n.ViewModel.Id.ToString().Equals(key));
 
                 //keep the data to another method
                 ToggleAddedNodes();

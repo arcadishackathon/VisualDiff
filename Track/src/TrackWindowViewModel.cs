@@ -1,19 +1,40 @@
 ﻿using System.Windows;
 using System;
+using System.Linq;
+using System.Collections.Generic;
 using Dynamo.Core;
 using Dynamo.Extensions;
 using Dynamo.Graph.Nodes;
+using System.Windows.Controls;
+using Dynamo.Wpf.Extensions;
+using Dynamo.ViewModels;
+
+using System.Windows.Media;
+using System.Windows.Shapes;
+using Dynamo.Graph;
+using Dynamo.Models;
+using Dynamo.UI.Commands;
+using Dynamo.Wpf;
+using Dynamo.Controls;
+using Xceed.Wpf.AvalonDock.Controls;
 
 namespace Track
 {
     public class TrackWindowViewModel : NotificationObject, IDisposable
     {
 
-        public TrackWindowViewModel()
+        public static List<NodeView> breakTheWheel;
+
+        public TrackWindowViewModel(ViewLoadedParams p)
         {
+            var viewLoadedParams = p;
 
+            List<NodeView> _nodeViews = viewLoadedParams.DynamoWindow.FindVisualChildren<NodeView>().ToList();
+            breakTheWheel = _nodeViews;
+        }
 
-
+        public static List<NodeView> TrainWreck() {
+            return breakTheWheel;
         }
 
 
