@@ -36,6 +36,10 @@ namespace Track.src
         Dictionary<string, ConnectorModel> AddedConnectorsDictionary = new Dictionary<string, ConnectorModel>();
         Dictionary<string, ConnectorModel> DeletedConnectorsDictionary = new Dictionary<string, ConnectorModel>();
 
+        List<NodeView> AddedNodeViewsList = new List<NodeView>();
+        List<NodeView> ReferenceNodeViewsList = new List<NodeView>();
+
+
         DynamoViewModel viewModelField;
         ViewLoadedParams ViewLoadedParamsField;
 
@@ -61,12 +65,21 @@ namespace Track.src
             var CurrentDynamoGraphNodes = viewLoadedParams.CurrentWorkspaceModel.Nodes;
             var CurrentDynamoGraphConnectors = viewLoadedParams.CurrentWorkspaceModel.Connectors;
 
+
+
+
             //store the filename so it can be reopened later
             string CurrentDynamoGraphFileName = viewLoadedParams.CurrentWorkspaceModel.FileName;
 
             //Store the viewModel and ViewLoadedParams als fields so they can be used in other methods
             viewModelField = viewLoadedParams.DynamoWindow.DataContext as DynamoViewModel;
             ViewLoadedParamsField = viewLoadedParams;
+
+
+
+            List<NodeView> CurrentDynamoGraphNodeViews = ViewLoadedParamsField.DynamoWindow.FindVisualChildren<NodeView>().ToList();
+
+
 
             //Check if the opened file is actually a Dynamo graph and if so open it
             var ext = System.IO.Path.GetExtension(FilePath);
@@ -87,11 +100,20 @@ namespace Track.src
                 //graphCount += 1;
                 // Update the message in the UI
                 //UnfancifyMsg += "Unfancified " + graph + "\n";
+
             }
 
             // Read the reference graph
             var ReferenceDynamoGraphNodes = viewLoadedParams.CurrentWorkspaceModel.Nodes;
             var ReferenceDynamoGraphConnectors = viewLoadedParams.CurrentWorkspaceModel.Connectors;
+            viewLoadedParams =   viewLoadedParams.DynamoWindow.DataContext as DynamoViewModel;
+
+        ViewLoadedParamsField = viewLoadedParams;
+
+
+            var ReferenceDynamoGraphNodeViews = ViewLoadedParamsField.DynamoWindow.FindVisualChildren<NodeView>().ToList();
+
+
 
             // Reset the loaded file by reopening the initially opened (current) graph
             viewModelField.OpenCommand.Execute(CurrentDynamoGraphFileName);
@@ -109,6 +131,37 @@ namespace Track.src
             // Dictionary of reference nodes
             foreach (var node2 in ReferenceDynamoGraphNodes)
                 referenceNodeDict.Add(node2.GUID.ToString(), node2);
+
+
+
+            //test area
+
+            // Create the difference sets of the nodesview
+            IEnumerable<NodeView> addedNodeViews = CurrentDynamoGraphNodeViews.Except(ReferenceDynamoGraphNodeViews);
+            IEnumerable<NodeView> deletedNodeViews = ReferenceDynamoGraphNodeViews.Except(CurrentDynamoGraphNodeViews);
+          
+            //Put the __added__ nodeview list in the private field list
+            foreach (var item in addedNodeViews)
+            {
+                // Do stuff with all added nodes
+                // Then do the same with all removed/modified etc.
+
+                AddedNodeViewsList.Add(item);
+            }
+
+            //Put the __deleted__ nodeview list in the private field list
+            foreach (var item in deletedNodeViews)
+            {
+                // Do stuff with all added nodes
+                // Then do the same with all removed/modified etc.
+
+                ReferenceNodeViewsList.Add(item);
+            }
+
+
+
+
+
 
             // Create the difference sets of the nodes
             IEnumerable<string> addedNodes = currentNodeDict.Keys.Except(referenceNodeDict.Keys);
@@ -169,20 +222,6 @@ namespace Track.src
                 var connector = referenceConnectorDict[key];
                 DeletedConnectorsDictionary.Add(key, connector);
             }
-
-
-
-
-
-
-
-
-            //ToggleRemovedNodes();
-
-            //test zone
-
-
-
         }
 
 
@@ -432,19 +471,66 @@ namespace Track.src
                 //colour the node
                 //put Rob&Laurence's code here
                 FadeNodes(ViewLoadedParamsField);
+
             }
             if (IsChecked == false) 
             {
-                //delete the node
-                foreach (var node in AddedNodesDictionary)
-                {
-                    ViewLoadedParamsField.CommandExecutive.ExecuteCommand(new DeleteModelCommand(node.Value.GUID), "", "");
-                }
+                //unfade nodes first
+                //UnFadeNodes(ViewLoadedParamsField);
+
+                MichaelFadeNodes(AddedNodeViewsList);
+
+                ////delete the node
+                //foreach (var node in AddedNodesDictionary)
+                //{
+                //    ViewLoadedParamsField.CommandExecutive.ExecuteCommand(new DeleteModelCommand(node.Value.GUID), "", "");
+                //}
 
                 //colour the node
                 //put Rob&Laurence's code here
 
-                UnFadeNodes(ViewLoadedParamsField);
+            }
+        }
+        public void MichaelFadeNodes(List<NodeView> AddedNodeViewsList  )
+        {
+
+            List<NodeView> _nodeViews = ViewLoadedParamsField.DynamoWindow.FindVisualChildren<NodeView>().ToList();
+
+           
+            // Colour each node
+            foreach (var n in AddedNodeViewsList)
+            {
+                Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    ((Rectangle)n.grid.FindName("nodeBackground")).Fill = new SolidColorBrush(Color.FromArgb(
+                       Convert.ToByte(255),
+                       Convert.ToByte(203),
+                       Convert.ToByte(198),
+                       Convert.ToByte(190)
+                   ));
+
+                    ((Rectangle)n.grid.FindName("NameBackground")).Fill = new SolidColorBrush(Color.FromArgb(
+                        Convert.ToByte(255),
+                        Convert.ToByte(94),
+                        Convert.ToByte(92),
+                        Convert.ToByte(90)
+                    ));
+
+                    ((Rectangle)n.grid.FindName("nodeBorder")).Stroke = new SolidColorBrush(Color.FromArgb(
+                        Convert.ToByte(255),
+                        Convert.ToByte(203),
+                        Convert.ToByte(198),
+                        Convert.ToByte(190)
+                    ));
+
+                    ((Rectangle)n.grid.FindName("NameBackground")).Stroke = new SolidColorBrush(Color.FromArgb(
+                        Convert.ToByte(255),
+                        Convert.ToByte(203),
+                        Convert.ToByte(198),
+                        Convert.ToByte(190)
+                    ));
+
+                }));
             }
         }
 
