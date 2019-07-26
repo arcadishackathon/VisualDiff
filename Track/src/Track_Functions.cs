@@ -22,6 +22,9 @@ using Dynamo.Graph.Connectors;
 using Dynamo.Graph.Nodes.ZeroTouch;
 using Dynamo.Nodes;
 using static Dynamo.Models.DynamoModel;
+using Dynamo.Controls;
+using Xceed.Wpf.AvalonDock.Controls;
+
 
 namespace Track.src
 {
@@ -190,7 +193,90 @@ namespace Track.src
         // 2) wiring is deleted when hiding the added nodes. I will have to make sure that is put back on the graph
 
 
+        public void FadeNodes(ViewLoadedParams ViewLoadedParamsField) {
 
+            List<NodeView> _nodeViews = ViewLoadedParamsField.DynamoWindow.FindVisualChildren<NodeView>().ToList();
+
+            // Colour each node
+            foreach (var n in _nodeViews)
+            {
+                Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    ((Rectangle)n.grid.FindName("nodeBackground")).Fill = new SolidColorBrush(Color.FromArgb(
+                       Convert.ToByte(50),
+                       Convert.ToByte(203),
+                       Convert.ToByte(198),
+                       Convert.ToByte(190)
+                   ));
+
+                    ((Rectangle)n.grid.FindName("NameBackground")).Fill = new SolidColorBrush(Color.FromArgb(
+                        Convert.ToByte(50),
+                        Convert.ToByte(94),
+                        Convert.ToByte(92),
+                        Convert.ToByte(90)
+                    ));
+
+                    ((Rectangle)n.grid.FindName("nodeBorder")).Stroke = new SolidColorBrush(Color.FromArgb(
+                        Convert.ToByte(50),
+                        Convert.ToByte(203),
+                        Convert.ToByte(198),
+                        Convert.ToByte(190)
+                    ));
+
+                    ((Rectangle)n.grid.FindName("NameBackground")).Stroke = new SolidColorBrush(Color.FromArgb(
+                        Convert.ToByte(50),
+                        Convert.ToByte(203),
+                        Convert.ToByte(198),
+                        Convert.ToByte(190)
+                    ));
+
+                }));
+            }
+        }
+
+
+
+        public void UnFadeNodes(ViewLoadedParams ViewLoadedParamsField)
+        {
+
+            List<NodeView> _nodeViews = ViewLoadedParamsField.DynamoWindow.FindVisualChildren<NodeView>().ToList();
+
+            // Colour each node
+            foreach (var n in _nodeViews)
+            {
+                Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    ((Rectangle)n.grid.FindName("nodeBackground")).Fill = new SolidColorBrush(Color.FromArgb(
+                       Convert.ToByte(255),
+                       Convert.ToByte(203),
+                       Convert.ToByte(198),
+                       Convert.ToByte(190)
+                   ));
+
+                    ((Rectangle)n.grid.FindName("NameBackground")).Fill = new SolidColorBrush(Color.FromArgb(
+                        Convert.ToByte(255),
+                        Convert.ToByte(94),
+                        Convert.ToByte(92),
+                        Convert.ToByte(90)
+                    ));
+
+                    ((Rectangle)n.grid.FindName("nodeBorder")).Stroke = new SolidColorBrush(Color.FromArgb(
+                        Convert.ToByte(255),
+                        Convert.ToByte(203),
+                        Convert.ToByte(198),
+                        Convert.ToByte(190)
+                    ));
+
+                    ((Rectangle)n.grid.FindName("NameBackground")).Stroke = new SolidColorBrush(Color.FromArgb(
+                        Convert.ToByte(255),
+                        Convert.ToByte(203),
+                        Convert.ToByte(198),
+                        Convert.ToByte(190)
+                    ));
+
+                }));
+            }
+        }
 
 
         public void ToggleRemovedNodes(bool IsChecked)
@@ -210,6 +296,8 @@ namespace Track.src
                     ViewLoadedParamsField.CommandExecutive.ExecuteCommand(new CreateNodeCommand(node.Value,
                         node.Value.X, node.Value.Y, false, false), "", "");
                     //will the ModelBase.X actually become obsolete? If this happens, ask Michael Kirschner
+
+
                 }
 
                 //create the connectors
@@ -235,6 +323,57 @@ namespace Track.src
 
                 //colour the node
                 //put Rob&Laurence's code here
+                /*
+
+                List<NodeView> _nodeViews = ViewLoadedParamsField.DynamoWindow.FindVisualChildren<NodeView>().ToList();
+
+                // COlour each node
+                foreach (var n in _nodeViews)
+                {*/
+                // ViewLoadedParamsField.CommandExecutive.ExecuteCommand(new DeleteModelCommand(node.Value.GUID), "", "");
+
+
+                //var nodeView = _nodeViews.First();
+
+                /*Application.Current.Dispatcher.BeginInvoke(new Action(() => {
+
+                    //((Rectangle)n.grid.FindName("nodeBackground")).Fill = new SolidColorBrush(Colors.Red);
+
+                    ((Rectangle)n.grid.FindName("nodeBackground")).Fill = new SolidColorBrush(Color.FromArgb(
+                        Convert.ToByte(50),
+                        Convert.ToByte(203),
+                        Convert.ToByte(198),
+                        Convert.ToByte(190)
+                    ));
+
+                    ((Rectangle)n.grid.FindName("NameBackground")).Fill = new SolidColorBrush(Color.FromArgb(
+                        Convert.ToByte(50),
+                        Convert.ToByte(203),
+                        Convert.ToByte(198),
+                        Convert.ToByte(190)
+                    ));
+
+                    ((Rectangle)n.grid.FindName("nodeBorder")).Stroke = new SolidColorBrush(Color.FromArgb(
+                        Convert.ToByte(50),
+                        Convert.ToByte(203),
+                        Convert.ToByte(198),
+                        Convert.ToByte(190)
+                    ));
+
+                    ((Rectangle)n.grid.FindName("NameBackground")).Stroke = new SolidColorBrush(Color.FromArgb(
+                        Convert.ToByte(50),
+                        Convert.ToByte(203),
+                        Convert.ToByte(198),
+                        Convert.ToByte(190)
+                    ));
+
+
+
+
+                }));*/
+
+                //}
+                FadeNodes(ViewLoadedParamsField);
             }
 
             //Remove the node from the graph
@@ -248,6 +387,7 @@ namespace Track.src
 
                 //colour the node
                 //put Rob&Laurence's code here
+                UnFadeNodes(ViewLoadedParamsField);
             }
         }
         public void ToggleAddedNodes(bool IsChecked)
@@ -291,6 +431,7 @@ namespace Track.src
                 }
                 //colour the node
                 //put Rob&Laurence's code here
+                FadeNodes(ViewLoadedParamsField);
             }
             if (IsChecked == false) 
             {
@@ -302,6 +443,8 @@ namespace Track.src
 
                 //colour the node
                 //put Rob&Laurence's code here
+
+                UnFadeNodes(ViewLoadedParamsField);
             }
         }
 
