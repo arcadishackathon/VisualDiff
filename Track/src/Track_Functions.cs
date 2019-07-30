@@ -172,20 +172,9 @@ namespace Track.src
                 var connector = referenceConnectorDict[key];
                 DeletedConnectorsDictionary.Add(key, connector);
             }
-
-
-
-
-
-
-
-
             //ToggleRemovedNodes();
 
             //test zone
-
-
-
         }
 
 
@@ -194,7 +183,6 @@ namespace Track.src
         // 1) should I put all this code in one function and just fill another list with the nodes to handle? 
         //    that would save some extra lines of code -- not right now
         // 2) wiring is deleted when hiding the added nodes. I will have to make sure that is put back on the graph
-
 
         public async void FadeNodes()
         {
@@ -239,7 +227,6 @@ namespace Track.src
         }
         public async void ColourNodes(Color colour, Dictionary<string, NodeModel> nodes)
         {
-
             await Task.Delay(delay);
 
             List<NodeView> _nodeViews = ViewLoadedParamsField.DynamoWindow.FindVisualChildren<NodeView>().ToList();
@@ -260,6 +247,7 @@ namespace Track.src
                     ((Rectangle)n.grid.FindName("NameBackground")).Stroke = new SolidColorBrush(colour);
                 }
                 else {
+                    continue;
                     // Else style as default
                     // @todo style by STATE
                     /*((Rectangle)n.grid.FindName("nodeBackground")).Fill = new SolidColorBrush(Color.FromArgb(
@@ -496,6 +484,20 @@ namespace Track.src
 
                 ColourNodesGrey(Colors.Gray, AddedNodesDictionary);
             }
+        }
+        public void ToggleChangedNodes(bool IsChecked)
+        {
+            //Code for comparing existing nodes in both graphs
+            //Steps to accomplish:
+            //1) Compare the 2 graphs, and find the similar nodes in there.
+            //2) Among the similar nodes:
+            //   a) If the 2 nodes are exactly the same(i.e. location and connections are the same) skip it.
+            //   b) If the 2 nodes are different, color them both blue.
+            // 3) When fed up with looking at it, remove the node upon toggle disable or closing the viewextention
+            
+            //When integration with git happens, maybe add a little note box at the top of the node referencing the commit id?
+
+
         }
 
     }
