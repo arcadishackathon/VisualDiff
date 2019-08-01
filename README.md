@@ -1,5 +1,5 @@
 
-![](https://github.com/teamtreedyn/Binoculars/blob/master/Resources/workflow.gif)
+![](https://github.com/ArcadisHackathon/TrainWreck/blob/master/Resources/workflow.gif)
 
 A View Extension for Dynamo to Visually Track changes between two Dynamo Graphs in order to improve collaborative workflows in visual programming.
 
