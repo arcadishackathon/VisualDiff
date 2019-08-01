@@ -65,7 +65,7 @@ namespace Track
                 //start the comparison using the filelocation
                 functions.CompareSomeGraphs(viewLoadedParams, FilePath);
                 functions.ToggleRemovedNodes(true);
-                functions.ToggleAddedNodes(false);
+                functions.ToggleAddedNodes(true);
 
                 MessageBox.Show("File exists, ready to compare graphs", "Reference Dynamo graph", 
                     MessageBoxButton.OK, MessageBoxImage.Information);
@@ -119,13 +119,13 @@ namespace Track
 
         private void CheckBox_ShowAddedNodes_Unchecked(object sender, RoutedEventArgs e)
         {
-            bool checkbox = true;
+            bool checkbox = false;
             functions.ToggleAddedNodes(checkbox);
 
         }
         private void CheckBox_ShowAddedNodes_Checked(object sender, RoutedEventArgs e)
         {
-            bool checkbox = false;
+            bool checkbox = true;
             functions.ToggleAddedNodes(checkbox);
 
         }
@@ -137,7 +137,7 @@ namespace Track
         private void UnloadAllChanges()
         {
             //Disable all active states to return to the current graph
-            functions.ToggleAddedNodes(true);
+            functions.ToggleAddedNodes(false);
             functions.ToggleRemovedNodes(false);
         }
     }
