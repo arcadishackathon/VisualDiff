@@ -21,43 +21,42 @@ namespace Track
     /// </summary>
     public class TrackViewExtension : IViewExtension
     {
-        private MenuItem sampleMenuItem;
+        private MenuItem MenuItem;
 
+        private ViewLoadedParams ViewLoadedParams;
 
-        private ViewLoadedParams viewLoadedParams;
-
-        private DynamoViewModel dynamoViewModel => viewLoadedParams.DynamoWindow.DataContext as DynamoViewModel;
+        private DynamoViewModel DynamoViewModel => ViewLoadedParams.DynamoWindow.DataContext as DynamoViewModel;
 
         public void Dispose()
         {
         }
 
-        public void Startup(ViewStartupParams p)
+        public void Startup(ViewStartupParams vsp)
         {
         }
 
-        public void Loaded(ViewLoadedParams p)
+        public void Loaded(ViewLoadedParams vlp)
         {
 
             // Hold a reference to the Dynamo params to be used later
-            viewLoadedParams = p;
-            //p.CommandExecutive.ExecuteCommand(new CreateNodeCommand()
+            ViewLoadedParams = vlp;
 
-            // Save a reference to your loaded parameters.
-            // You'll need these later when you want to use
-            // the supplied workspaces
-
-            sampleMenuItem = new MenuItem { Header = "Start the Tracker tool" };
-            sampleMenuItem.Click += (sender, args) =>
+            // Create a menu item
+            MenuItem = new MenuItem { Header = "Start the Tracker tool" };
+            MenuItem.Click += (sender, args) =>
             {
+                // Load the Extension ViewModel
                 var viewModel = new TrackWindowViewModel();
-                var window = new TrackWindow(viewLoadedParams)
+
+                // Load the Window
+                // This is where the magic begins!
+                var window = new TrackWindow(ViewLoadedParams)
                 {
                     // Set the data context for the main grid in the window.
                     MainGrid = { DataContext = viewModel },
 
                     // Set the owner of the window to the Dynamo window.
-                    Owner = p.DynamoWindow
+                    Owner = ViewLoadedParams.DynamoWindow
                 };
 
                 window.Left = window.Owner.Left + 400;
@@ -66,7 +65,9 @@ namespace Track
                 // Show a modeless window.
                 window.Show();
             };
-            p.AddMenuItem(MenuBarType.View, sampleMenuItem);
+            
+            // Add the menu item under "View"
+            ViewLoadedParams.AddMenuItem(MenuBarType.View, MenuItem);
         }
 
         public void Shutdown()
