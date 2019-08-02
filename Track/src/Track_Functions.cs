@@ -86,7 +86,7 @@ namespace Track.src
             // Reset the loaded file by reopening the initially opened (current) graph
             viewModelField.OpenCommand.Execute(CurrentDynamoGraphFileName);
 
-            // -----> do stuff with nodes <----- 
+            // -----> do stuff with nodes <-----
 
             //create dictionaries containing the nodes
             var currentNodeDict = new Dictionary<string, NodeModel>();
@@ -95,7 +95,7 @@ namespace Track.src
             // Dictionary of current nodes
             foreach (var node1 in CurrentDynamoGraphNodes)
                 currentNodeDict.Add(node1.GUID.ToString(), node1);
-             
+
             // Dictionary of reference nodes
             foreach (var node2 in ReferenceDynamoGraphNodes)
                 referenceNodeDict.Add(node2.GUID.ToString(), node2);
@@ -123,7 +123,7 @@ namespace Track.src
                 DeletedNodesDictionary.Add(key, node);
             }
 
-            // -----> do stuff with wires (connectors) <----- 
+            // -----> do stuff with wires (connectors) <-----
             //create dictionaries containing the nodes
             var currentConnectorDict = new Dictionary<string, ConnectorModel>();
             var referenceConnectorDict = new Dictionary<string, ConnectorModel>();
@@ -166,7 +166,7 @@ namespace Track.src
         }
 
         //Two ideas for the code below
-        // 1) should I put all this code in one function and just fill another list with the nodes to handle? 
+        // 1) should I put all this code in one function and just fill another list with the nodes to handle?
         //    that would save some extra lines of code -- not right now
         // 2) wiring is deleted when hiding the added nodes. I will have to make sure that is put back on the graph
 
@@ -217,7 +217,7 @@ namespace Track.src
             await Task.Delay(delay);
 
             List<NodeView> _nodeViews = ViewLoadedParamsField.DynamoWindow.FindVisualChildren<NodeView>().ToList();
-            
+
             //var nodeView = _nodeViews.First(n => n.ViewModel.Id.ToString().Equals(node.GUID.ToString()));
 
             // Colour each node
@@ -373,12 +373,12 @@ namespace Track.src
                     var startGUID = connector.Value.Start.Owner.GUID;
                     var startPortIndex = connector.Value.Start.Index;
                     var startPortType = connector.Value.Start.PortType;
-                    var startMode = MakeConnectionCommand.Mode.Begin; 
+                    var startMode = MakeConnectionCommand.Mode.Begin;
 
                     var endGUID = connector.Value.End.Owner.GUID;
                     var endPortIndex = connector.Value.End.Index;
                     var endPortType = connector.Value.End.PortType;
-                    var endMode = MakeConnectionCommand.Mode.End; 
+                    var endMode = MakeConnectionCommand.Mode.End;
 
                     ////start
                     ViewLoadedParamsField.CommandExecutive.ExecuteCommand(new MakeConnectionCommand(
@@ -415,7 +415,7 @@ namespace Track.src
             // 3) When fed up with looking at it, remove the node upon toggle disable or closing the viewextention
 
             //add the node on the graph
-            if (IsChecked == true) 
+            if (IsChecked == true)
             {
                 //create the nodes
                 foreach (var node in AddedNodesDictionary)
@@ -449,7 +449,7 @@ namespace Track.src
                 //put Rob&Laurence's code here
                 ColourNodes(Colors.Green, AddedNodesDictionary);
             }
-            if (IsChecked == false) 
+            if (IsChecked == false)
             {
                 //delete the node
                 /*foreach (var node in AddedNodesDictionary)

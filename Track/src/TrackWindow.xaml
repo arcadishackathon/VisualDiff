@@ -2,12 +2,12 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Track"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
             Width="408" Height="300" Closed="Window_Closed" Title="Trainwreck tracker tool - Arcadis team Toronto Hackathon">
-    <Grid Name="MainGrid" 
+    <Grid Name="MainGrid"
           HorizontalAlignment="Stretch"
           VerticalAlignment="Stretch" Margin="0,0,-6.4,0.4">
         <Grid.ColumnDefinitions>
@@ -37,9 +37,9 @@
         <Image Source="pack://siteoforigin:,,,/Resources/arcadis-og.png" Grid.ColumnSpan="4" HorizontalAlignment="Left" Height="31" Margin="209,104,0,0" VerticalAlignment="Top" Width="175"/>
 
         <!--<TextBlock HorizontalAlignment="Stretch" Text="{Binding ActiveNodeTypes}"
-                   FontFamily="Arial" 
-                   Padding="10" 
-                   FontWeight="Medium" 
+                   FontFamily="Arial"
+                   Padding="10"
+                   FontWeight="Medium"
                    FontSize="18"
                    Background="#2d2d2d"
                    Foreground="White"/>-->

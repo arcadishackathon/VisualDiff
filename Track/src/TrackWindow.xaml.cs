@@ -26,7 +26,7 @@ namespace Track
             functions = new src.Track_Functions();
             //DataContext = this;
         }
-  
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             //don't need this but keep for reference
@@ -40,7 +40,7 @@ namespace Track
 
             //1) check if the location if OK
             bool FileExists = functions.CheckReferenceDynamoGraphFileLocationValidity(FilePath);
-            //test location for Michael 
+            //test location for Michael
             //C:\Users\vantelgm7702\OneDrive - ARCADIS\Michael\Computation\35. Toronto Hackaton\01. Dynamo files\Version 1.dyn
 
             //2) Unlock checkboxes, set text to grey and grey out the textbox
@@ -63,7 +63,7 @@ namespace Track
                 functions.ToggleRemovedNodes(true);
                 functions.ToggleAddedNodes(true);
 
-                MessageBox.Show("File exists, ready to compare graphs", "Reference Dynamo graph", 
+                MessageBox.Show("File exists, ready to compare graphs", "Reference Dynamo graph",
                     MessageBoxButton.OK, MessageBoxImage.Information);
 
             }
