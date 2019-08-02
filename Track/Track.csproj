@@ -74,6 +74,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="src\Style.cs" />
     <Compile Include="src\TrackViewExtension.cs" />
     <Compile Include="src\TrackWindowViewModel.cs" />
     <Compile Include="src\TrackWindow.xaml.cs">

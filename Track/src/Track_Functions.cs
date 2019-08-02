@@ -183,61 +183,48 @@ namespace Track.src
         // @todo 1) should I put all this code in one function and just fill another list with the nodes to handle? that would save some extra lines of code -- not right now
         // @todo 2) wiring is deleted when hiding the added nodes. I will have to make sure that is put back on the graph
 
-        public async void ColourNodes(Color colour, Dictionary<string, NodeModel> nodes)
+        public async void ColourNodes(Dictionary<string, NodeModel> nodes, int r, int g, int b, int a = 255)
         {
             await Task.Delay(_delay);
 
+            // Get all the nodesViews
             List<NodeView> nodeViews = ViewLoadedParams.DynamoWindow.FindVisualChildren<NodeView>().ToList();
 
-            // Colour each node
+            // Colour each node if the key is in the specified nodes dictionary
             foreach (var n in nodeViews)
             {
                 if (nodes.ContainsKey(n.ViewModel.Id.ToString()))
                 {
-                    ((Rectangle)n.grid.FindName("nodeBackground")).Fill = new SolidColorBrush(colour);
-                    ((Rectangle)n.grid.FindName("NameBackground")).Fill = new SolidColorBrush(colour);
-                    ((Rectangle)n.grid.FindName("nodeBorder")).Stroke = new SolidColorBrush(colour);
-                    ((Rectangle)n.grid.FindName("NameBackground")).Stroke = new SolidColorBrush(colour);
+                    // Style the nodes
+                    Style style = new Style(n);
+                    // Use the specified colour for the node
+                    style.nodeBackground(r, g, b, a);
+                    style.nodeBorder(r, g, b, a);
+                    // Set the name/title and ports to a translucent black
+                    style.nameBackground(0, 0, 0, 45);
+                    style.nameBorder(0, 0, 0, 45);
                 }
             }
         }
 
-        public async void ColourNodesGrey(Color colour, Dictionary<string, NodeModel> nodes)
+        public async void ResetNodeDefault(Dictionary<string, NodeModel> nodes)
         {
             await Task.Delay(_delay);
 
+            // Get all the nodesViews
             List<NodeView> nodeViews = ViewLoadedParams.DynamoWindow.FindVisualChildren<NodeView>().ToList();
 
-            // Colour each node
+            // Colour each node if the key is in the specified nodes dictionary
             foreach (var n in nodeViews)
             {
-                //Color brush = Colors.Gray;
                 if (nodes.ContainsKey(n.ViewModel.Id.ToString()))
                 {
-                    ((Rectangle)n.grid.FindName("nodeBackground")).Fill = new SolidColorBrush(Color.FromArgb(
-                        Convert.ToByte(255),
-                        Convert.ToByte(203),
-                        Convert.ToByte(198),
-                        Convert.ToByte(190)
-                    ));
-                    ((Rectangle)n.grid.FindName("NameBackground")).Fill = new SolidColorBrush(Color.FromArgb(
-                        Convert.ToByte(255),
-                        Convert.ToByte(94),
-                        Convert.ToByte(92),
-                        Convert.ToByte(90)
-                    ));
-                    ((Rectangle)n.grid.FindName("nodeBorder")).Stroke = new SolidColorBrush(Color.FromArgb(
-                        Convert.ToByte(255),
-                        Convert.ToByte(203),
-                        Convert.ToByte(198),
-                        Convert.ToByte(190)
-                    ));
-                    ((Rectangle)n.grid.FindName("NameBackground")).Stroke = new SolidColorBrush(Color.FromArgb(
-                        Convert.ToByte(255),
-                        Convert.ToByte(203),
-                        Convert.ToByte(198),
-                        Convert.ToByte(190)
-                    ));
+                    // Style the nodes grey
+                    Style style = new Style(n);
+                    style.nodeBackground(203, 198, 190);
+                    style.nameBackground(94, 92, 90);
+                    style.nodeBorder(203, 198, 190);
+                    style.nameBorder(203, 198, 190);
                 }
 
             }
@@ -281,7 +268,9 @@ namespace Track.src
                         endGUID, endPortIndex, endPortType, endMode), "", "");
                 }
 
-                ColourNodes(Colors.Red, DeletedNodesDictionary);
+                // Colour the nodes
+                // Use http://clrs.cc/ red
+                ColourNodes(DeletedNodesDictionary, 255, 65, 54);
             }
             // If not checked then delete the DELETED nodes
             // @todo Their connectors disappear automatically is this best practice?
@@ -330,11 +319,13 @@ namespace Track.src
                         endGUID, endPortIndex, endPortType, endMode), "", "");
                 }
 
-                ColourNodes(Colors.Green, AddedNodesDictionary);
+                // Colour the nodes
+                // Use http://clrs.cc/ green
+                ColourNodes(AddedNodesDictionary, 46, 204, 64);
             }
             else
             {
-                ColourNodesGrey(Colors.Gray, AddedNodesDictionary);
+                ResetNodeDefault(AddedNodesDictionary);
             }
         }
 
