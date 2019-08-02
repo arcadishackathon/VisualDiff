@@ -288,38 +288,8 @@ namespace Track.src
         {
             // Colour the nodes in the CURRENT graph that are not in the REFERENCE graph
             // @todo Colour the added connectors
-            if (IsChecked == true)
+            if (IsChecked)
             {
-                //create the nodes
-                foreach (var node in AddedNodesDictionary)
-                {
-
-                    ViewLoadedParams.CommandExecutive.ExecuteCommand(new CreateNodeCommand(node.Value,
-                        node.Value.X, node.Value.Y, false, false), "", "");
-                    //@todo will the ModelBase.X actually become obsolete? If this happens, ask Michael Kirschner
-                }
-                //create the connectors
-                foreach (var connector in AddedConnectorsDictionary)
-                {
-                    // First set the START
-                    var startGUID = connector.Value.Start.Owner.GUID;
-                    var startPortIndex = connector.Value.Start.Index;
-                    var startPortType = connector.Value.Start.PortType;
-                    var startMode = MakeConnectionCommand.Mode.Begin;
-
-                    ViewLoadedParams.CommandExecutive.ExecuteCommand(new MakeConnectionCommand(
-                        startGUID, startPortIndex, startPortType, startMode), "", "");
-
-                    // Then set the END
-                    var endGUID = connector.Value.End.Owner.GUID;
-                    var endPortIndex = connector.Value.End.Index;
-                    var endPortType = connector.Value.End.PortType;
-                    var endMode = MakeConnectionCommand.Mode.End;
-
-                    ViewLoadedParams.CommandExecutive.ExecuteCommand(new MakeConnectionCommand(
-                        endGUID, endPortIndex, endPortType, endMode), "", "");
-                }
-
                 // Colour the nodes
                 // Use http://clrs.cc/ green
                 ColourNodes(AddedNodesDictionary, 46, 204, 64);
