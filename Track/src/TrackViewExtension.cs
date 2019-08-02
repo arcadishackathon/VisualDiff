@@ -32,7 +32,6 @@ namespace Track
 
         private DynamoViewModel dynamoViewModel => viewLoadedParams.DynamoWindow.DataContext as DynamoViewModel;
 
-
         public void Dispose()
         {
         }

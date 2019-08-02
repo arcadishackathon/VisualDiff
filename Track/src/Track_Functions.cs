@@ -36,7 +36,6 @@ namespace Track.src
         Dictionary<string, ConnectorModel> AddedConnectorsDictionary = new Dictionary<string, ConnectorModel>();
         Dictionary<string, ConnectorModel> DeletedConnectorsDictionary = new Dictionary<string, ConnectorModel>();
 
-
         int delay = 200;
 
         DynamoViewModel viewModelField;
@@ -50,7 +49,6 @@ namespace Track.src
             else
                 return false;
         }
-
 
         public void CompareSomeGraphs(ViewLoadedParams viewLoadedParams, string FilePath)
         {
@@ -136,7 +134,6 @@ namespace Track.src
                 DeletedNodesDictionary.Add(key, node);
             }
 
-
             // -----> do stuff with wires (connectors) <----- 
             //create dictionaries containing the nodes
             var currentConnectorDict = new Dictionary<string, ConnectorModel>();
@@ -173,28 +170,16 @@ namespace Track.src
                 DeletedConnectorsDictionary.Add(key, connector);
             }
 
-
-
-
-
-
-
-
             //ToggleRemovedNodes();
 
             //test zone
 
-
-
         }
-
-
 
         //Two ideas for the code below
         // 1) should I put all this code in one function and just fill another list with the nodes to handle? 
         //    that would save some extra lines of code -- not right now
         // 2) wiring is deleted when hiding the added nodes. I will have to make sure that is put back on the graph
-
 
         public async void FadeNodes()
         {
@@ -288,7 +273,6 @@ namespace Track.src
                     ));*/
                 }
 
-
             }
         }
 
@@ -334,8 +318,6 @@ namespace Track.src
             }
         }
 
-
-
         public async void UnFadeNodes()
         {
             await Task.Delay(500);
@@ -376,7 +358,6 @@ namespace Track.src
             }
         }
 
-
         public void ToggleRemovedNodes(bool IsChecked)
         {
             //Code for comparing added nodes here
@@ -394,7 +375,6 @@ namespace Track.src
                     ViewLoadedParamsField.CommandExecutive.ExecuteCommand(new CreateNodeCommand(node.Value,
                         node.Value.X, node.Value.Y, false, false), "", "");
                     //will the ModelBase.X actually become obsolete? If this happens, ask Michael Kirschner
-
 
                 }
 
@@ -418,7 +398,6 @@ namespace Track.src
                     ViewLoadedParamsField.CommandExecutive.ExecuteCommand(new MakeConnectionCommand(
                         endGUID, endPortIndex, endPortType, endMode), "", "");
                 }
-
 
                 //}
                 ColourNodes(Colors.Red, DeletedNodesDictionary);

@@ -29,13 +29,10 @@ namespace Track
         {
         }
 
-
         //non-deleted stuff from the original viewextension, could be useful in the future
-
 
         //private string activeNodeTypes;
         //private ReadyParams readyParams;
-
 
         //// Displays active nodes in the workspace
         //public string ActiveNodeTypes
@@ -60,8 +57,6 @@ namespace Track
 
         //    return output;
         //}
-
-
 
         //public TrackWindowViewModel(ReadyParams p)
         //{

@@ -14,10 +14,8 @@ namespace Track
 
         private ViewLoadedParams viewLoadedParams;
 
-
         //Fields
         src.Track_Functions functions;
-
 
         public TrackWindow(ViewLoadedParams p)
         {
@@ -40,7 +38,6 @@ namespace Track
             //2) Unlock the checkboxes
             //3) grey out the textbox
 
-
             //1) check if the location if OK
             bool FileExists = functions.CheckReferenceDynamoGraphFileLocationValidity(FilePath);
             //test location for Michael 
@@ -60,7 +57,6 @@ namespace Track
 
                 CheckBox_ShowAddedNodes.IsChecked = true;
                 CheckBox_ShowDeletedNodes.IsChecked = true;
-
 
                 //start the comparison using the filelocation
                 functions.CompareSomeGraphs(viewLoadedParams, FilePath);
@@ -99,8 +95,6 @@ namespace Track
                     MessageBoxButton.OK, MessageBoxImage.Information);
 
             }
-
-
 
             //MessageBox.Show("The Dynamo location is: " + (MainGrid.DataContext as TrackWindowViewModel).DynamoReferenceFilePath );
         }

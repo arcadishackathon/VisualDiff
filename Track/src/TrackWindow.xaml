@@ -36,7 +36,6 @@
         <CheckBox x:Name="CheckBox_ShowDeletedWires" Content="Show deleted connectors - to be implemented" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,236,0,0" Grid.Column="2" Height="15" Width="276" IsEnabled="False"/>
         <Image Source="pack://siteoforigin:,,,/Resources/arcadis-og.png" Grid.ColumnSpan="4" HorizontalAlignment="Left" Height="31" Margin="209,104,0,0" VerticalAlignment="Top" Width="175"/>
 
-
         <!--<TextBlock HorizontalAlignment="Stretch" Text="{Binding ActiveNodeTypes}"
                    FontFamily="Arial" 
                    Padding="10" 
@@ -44,7 +43,6 @@
                    FontSize="18"
                    Background="#2d2d2d"
                    Foreground="White"/>-->
-
 
     </Grid>
 </Window>
