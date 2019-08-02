@@ -4,36 +4,36 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Track"
-             mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300"
-            Width="408" Height="300" Closed="Window_Closed" Title="Trainwreck tracker tool - Arcadis team Toronto Hackathon">
+             mc:Ignorable="d" d:DesignWidth="300"
+            Width="408" Height="277.333" Closed="Window_Closed" Title="Trainwreck tracker tool - Arcadis team Toronto Hackathon">
     <Grid Name="MainGrid" 
           HorizontalAlignment="Stretch"
           VerticalAlignment="Stretch" Margin="0,0,-6.4,0.4">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0*"/>
             <ColumnDefinition Width="0*"/>
-            <ColumnDefinition Width="316*"/>
-            <ColumnDefinition Width="77*"/>
-            <ColumnDefinition Width="6*"/>
+            <ColumnDefinition Width="200*"/>
+            <ColumnDefinition Width="0*"/>
+            <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
 
         <!--Please supply the Reference graph location on the hard drive-->
-        <Label Content="Please supply the reference graph location on the hard drive:" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.ColumnSpan="5" FontWeight="Bold" Width="394" Height="26" Margin="10,0,-4,0"/>
-        <TextBox x:Name="FilePathBox" HorizontalAlignment="Left" Height="39" TextWrapping="Wrap" Text="{Binding Test, Mode = TwoWay}" VerticalAlignment="Top" Width="374" RenderTransformOrigin="1.012,2.765" Margin="10,26,0,0" Grid.ColumnSpan="4" Foreground="Black" />
-        <Button x:Name="ButtonLoadDispose" Grid.ColumnSpan="4" Content="Lock and load reference graph" HorizontalAlignment="Left" VerticalAlignment="Top" Width="374" Margin="10,71,0,0" Click="Button_Click"/>
+        <Label Content="Please supply the reference graph location on the hard drive:" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.ColumnSpan="5" FontWeight="Bold" Width="394" Height="26" Margin="10,0,0,0"/>
+        <TextBox x:Name="FilePathBox" HorizontalAlignment="Left" Height="18" TextWrapping="Wrap" Text="{Binding Test, Mode = TwoWay}" VerticalAlignment="Top" Width="344" RenderTransformOrigin="1.012,2.765" Margin="10,31,0,0" Grid.ColumnSpan="3" Foreground="Black" />
+        <Button x:Name="ButtonLoadDispose" Grid.ColumnSpan="3" Content="Lock and load reference graph" HorizontalAlignment="Left" VerticalAlignment="Top" Width="374" Margin="10,54,0,0" Click="Button_Click" Height="20"/>
 
 
-        <Separator Height="10" Margin="10,94,17.6,0" VerticalAlignment="Top" Grid.Column="2" Grid.ColumnSpan="2"/>
-        <Label Content="Toggle active node states:" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.ColumnSpan="5" FontWeight="Bold" Margin="0,104,0,0" Width="394" Height="26"/>
-        <Label Content="Toggle active connector states:" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.ColumnSpan="4" FontWeight="Bold" Margin="0,190,0,0" Width="394" Height="26"/>
+        <Separator Height="10" Margin="10,77,1,0" VerticalAlignment="Top" Grid.Column="2"/>
+        <Label Content="Toggle active node states:" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.ColumnSpan="3" FontWeight="Bold" Margin="0,87,0,0" Width="394" Height="26"/>
+        <Label Content="Toggle active connector states:" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.ColumnSpan="3" FontWeight="Bold" Margin="0,173,0,0" Width="394" Height="26"/>
 
         <!--Active states checkboxes-->
-        <CheckBox x:Name="CheckBox_ShowAddedNodes" Content="Show added nodes" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,130,0,0" Grid.Column="2" Height="15" Width="248" IsEnabled="False" Unchecked="CheckBox_ShowAddedNodes_Unchecked" Checked="CheckBox_ShowAddedNodes_Checked"/>
-        <CheckBox x:Name="CheckBox_ShowDeletedNodes" Content="Show deleted nodes" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,150,0,0" Grid.Column="2" Height="15" Width="158" IsEnabled="False" Checked="CheckBox_ShowDeletedNodes_Checked" Unchecked="CheckBox_ShowDeletedNodes_Unchecked"/>
-        <CheckBox x:Name="CheckBox_CompareModifiedNodes" Content="Show modified nodes - to be implemented" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,170,0,0" Grid.Column="2" Height="15" Width="276" IsEnabled="False"/>
-        <CheckBox x:Name="CheckBox_ShowAddedWires" Content="Show added connectors - to be implemented" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,216,0,0" Grid.Column="2" Height="15" Width="276" IsEnabled="False"/>
-        <CheckBox x:Name="CheckBox_ShowDeletedWires" Content="Show deleted connectors - to be implemented" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,236,0,0" Grid.Column="2" Height="15" Width="276" IsEnabled="False"/>
+        <CheckBox x:Name="CheckBox_ShowAddedNodes" Content="Show added nodes" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,113,0,0" Grid.Column="2" Height="15" Width="248" IsEnabled="False" Unchecked="CheckBox_ShowAddedNodes_Unchecked" Checked="CheckBox_ShowAddedNodes_Checked"/>
+        <CheckBox x:Name="CheckBox_ShowDeletedNodes" Content="Show deleted nodes" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,133,0,0" Grid.Column="2" Height="15" Width="158" IsEnabled="False" Checked="CheckBox_ShowDeletedNodes_Checked" Unchecked="CheckBox_ShowDeletedNodes_Unchecked"/>
+        <CheckBox x:Name="CheckBox_CompareModifiedNodes" Content="Show modified nodes" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,153,0,0" Grid.Column="2" Height="15" Width="276" IsEnabled="False" Checked="CheckBox_CompareModifiedNodes_Checked" Unchecked="CheckBox_CompareModifiedNodes_Unchecked"/>
+        <CheckBox x:Name="CheckBox_ShowAddedWires" Content="Show added connectors - to be implemented" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,199,0,0" Grid.Column="2" Height="15" Width="276" IsEnabled="False"/>
+        <CheckBox x:Name="CheckBox_ShowDeletedWires" Content="Show deleted connectors - to be implemented" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,219,0,0" Grid.Column="2" Height="15" Width="276" IsEnabled="False"/>
+        <Button x:Name="Button_SelectFile" Content="..." Grid.Column="2" HorizontalAlignment="Left" Margin="362,31,0,0" VerticalAlignment="Top" Width="22" Height="18" Click="Button_SelectFile_Click"/>
 
 
         <!--<TextBlock HorizontalAlignment="Stretch" Text="{Binding ActiveNodeTypes}"

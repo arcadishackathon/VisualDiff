@@ -33,8 +33,12 @@ namespace Track.src
         //Fields
         Dictionary<string, NodeModel> AddedNodesDictionary = new Dictionary<string, NodeModel>();
         Dictionary<string, NodeModel> DeletedNodesDictionary = new Dictionary<string, NodeModel>();
+        Dictionary<string, NodeModel> ChangedNodesDictionary = new Dictionary<string, NodeModel>();
+
         Dictionary<string, ConnectorModel> AddedConnectorsDictionary = new Dictionary<string, ConnectorModel>();
         Dictionary<string, ConnectorModel> DeletedConnectorsDictionary = new Dictionary<string, ConnectorModel>();
+
+        //Changed nodes fields
 
 
         int delay = 200;
@@ -59,6 +63,7 @@ namespace Track.src
             //maybe by creating a new instance of this class?
             AddedNodesDictionary.Clear();
             DeletedNodesDictionary.Clear();
+            ChangedNodesDictionary.Clear();
 
             //Get the data from the currently opened Dynamo graph, nodes and connectors
             var CurrentDynamoGraphNodes = viewLoadedParams.CurrentWorkspaceModel.Nodes;
@@ -106,17 +111,20 @@ namespace Track.src
             var referenceNodeDict = new Dictionary<string, NodeModel>();
 
             // Dictionary of current nodes
-            foreach (var node1 in CurrentDynamoGraphNodes)
-                currentNodeDict.Add(node1.GUID.ToString(), node1);
+            foreach (var node in CurrentDynamoGraphNodes)
+                currentNodeDict.Add(node.GUID.ToString(), node);
              
             // Dictionary of reference nodes
-            foreach (var node2 in ReferenceDynamoGraphNodes)
-                referenceNodeDict.Add(node2.GUID.ToString(), node2);
+            foreach (var node in ReferenceDynamoGraphNodes)
+                referenceNodeDict.Add(node.GUID.ToString(), node);
 
             // Create the difference sets of the nodes
             IEnumerable<string> addedNodes = currentNodeDict.Keys.Except(referenceNodeDict.Keys);
             IEnumerable<string> deletedNodes = referenceNodeDict.Keys.Except(currentNodeDict.Keys);
             IEnumerable<string> remainingNodes = currentNodeDict.Keys.Except(addedNodes.ToList());
+            //Nodes that were changed
+            IEnumerable<string> changedNodes = referenceNodeDict.Keys.Intersect(currentNodeDict.Keys);
+
 
             //Put the __added__ nodes list in the private field list
             foreach (var key in addedNodes)
@@ -136,7 +144,6 @@ namespace Track.src
                 DeletedNodesDictionary.Add(key, node);
             }
 
-
             // -----> do stuff with wires (connectors) <----- 
             //create dictionaries containing the nodes
             var currentConnectorDict = new Dictionary<string, ConnectorModel>();
@@ -153,7 +160,6 @@ namespace Track.src
             // Create the difference sets of the connectors
             IEnumerable<string> addedConnectors = currentConnectorDict.Keys.Except(referenceConnectorDict.Keys);
             IEnumerable<string> deletedConnectors = referenceConnectorDict.Keys.Except(currentConnectorDict.Keys);
-            IEnumerable<string> remainingConnectors = currentConnectorDict.Keys.Except(addedConnectors.ToList());
 
             //Put the __added__ connectors list in the private field list
             foreach (var key in addedConnectors)
@@ -382,8 +388,6 @@ namespace Track.src
                     ViewLoadedParamsField.CommandExecutive.ExecuteCommand(new CreateNodeCommand(node.Value,
                         node.Value.X, node.Value.Y, false, false), "", "");
                     //will the ModelBase.X actually become obsolete? If this happens, ask Michael Kirschner
-
-
                 }
 
                 //create the connectors
@@ -487,16 +491,6 @@ namespace Track.src
         }
         public void ToggleChangedNodes(bool IsChecked)
         {
-            //Code for comparing existing nodes in both graphs
-            //Steps to accomplish:
-            //1) Compare the 2 graphs, and find the similar nodes in there.
-            //2) Among the similar nodes:
-            //   a) If the 2 nodes are exactly the same(i.e. location and connections are the same) skip it.
-            //   b) If the 2 nodes are different, color them both blue.
-            // 3) When fed up with looking at it, remove the node upon toggle disable or closing the viewextention
-            
-            //When integration with git happens, maybe add a little note box at the top of the node referencing the commit id?
-
 
         }
 

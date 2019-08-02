@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using Dynamo.Wpf.Extensions;
 using Dynamo.ViewModels;
+using System.Windows.Forms;
 
 namespace Track
 {
@@ -67,13 +68,13 @@ namespace Track
                 functions.ToggleRemovedNodes(true);
                 functions.ToggleAddedNodes(false);
 
-                MessageBox.Show("File exists, ready to compare graphs", "Reference Dynamo graph", 
+                System.Windows.MessageBox.Show("File exists, ready to compare graphs", "Reference Dynamo graph", 
                     MessageBoxButton.OK, MessageBoxImage.Information);
 
             }
             else if (ButtonLoadDispose.Content.ToString() == "Lock and load reference graph")
             {
-                MessageBox.Show("File was not found, please try again", "Reference Dynamo graph",
+                System.Windows.MessageBox.Show("File was not found, please try again", "Reference Dynamo graph",
                     MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else
@@ -95,7 +96,7 @@ namespace Track
 
                 UnloadAllChanges();
 
-                MessageBox.Show("File unloaded", "Reference Dynamo graph",
+                System.Windows.MessageBox.Show("File unloaded", "Reference Dynamo graph",
                     MessageBoxButton.OK, MessageBoxImage.Information);
 
             }
@@ -129,7 +130,16 @@ namespace Track
             functions.ToggleAddedNodes(checkbox);
 
         }
-
+        private void CheckBox_CompareModifiedNodes_Checked(object sender, RoutedEventArgs e)
+        {
+            bool checkbox = true;
+            functions.ToggleChangedNodes(checkbox);
+        }
+        private void CheckBox_CompareModifiedNodes_Unchecked(object sender, RoutedEventArgs e)
+        {
+            bool checkbox = false;
+            functions.ToggleChangedNodes(checkbox);
+        }
         private void Window_Closed(object sender, System.EventArgs e)
         {
             UnloadAllChanges();
@@ -139,6 +149,18 @@ namespace Track
             //Disable all active states to return to the current graph
             functions.ToggleAddedNodes(true);
             functions.ToggleRemovedNodes(false);
+        }
+
+        private void Button_SelectFile_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog fileOpen = new OpenFileDialog();
+            fileOpen.Filter = "Dynamo Graph|*.dyn";
+            DialogResult dialog = fileOpen.ShowDialog();
+            if(dialog == System.Windows.Forms.DialogResult.Cancel)
+            {
+                return;
+            }
+            FilePathBox.Text = fileOpen.FileName;
         }
     }
 }
