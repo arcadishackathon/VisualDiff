@@ -226,14 +226,22 @@ namespace Track.src
             // Colour each node
             foreach (var n in _nodeViews)
             {
-                ColourFill(n, "nodeBackground", RGBA(203, 198, 190, 50));
-                ColourFill(n, "NameBackground", RGBA(94, 92, 90, 50));
-                ColourStroke(n, "nodeBorder", RGBA(203, 198, 190, 50));
-                ColourStroke(n, "NameBackground", RGBA(203, 198, 190, 50));
+                //ColourFill(n, "nodeBackground", RGBA(203, 198, 190, 50));
+                //ColourFill(n, "NameBackground", RGBA(94, 92, 90, 50));
+                //ColourStroke(n, "nodeBorder", RGBA(203, 198, 190, 50));
+                //ColourStroke(n, "NameBackground", RGBA(203, 198, 190, 50));
+
+                Style style = new Style(n);
+
+                style.nodeBackground(0, 0, 190, 50);
+                style.nameBackground(0, 0, 90, 50);
+                style.nodeBorder(0, 0, 190, 50);
+                style.nameBorder(0, 0, 190, 50);
+
             }
         }
 
-        public async void ColourNodes(SolidColorBrush brush, Dictionary<string, NodeModel> nodes)
+        public async void ColourNodes(Dictionary<string, NodeModel> nodes, int r, int g, int b, int a = 255)
         {
             await Task.Delay(delay);
 
@@ -257,34 +265,31 @@ namespace Track.src
                 
                 if (nodes.ContainsKey(n.ViewModel.Id.ToString()))
                 {
-
-
-                    ItemsControl ports = (ItemsControl)n.grid.FindName("inputPortControl");
-
-                    var rects = ports.FindVisualChildren<Rectangle>().ToList();
-
-                    var blah = rects;
+                    /*ItemsControl ports = (ItemsControl)n.grid.FindName("inputPortControl");
 
                     if (ports.Items.Count > 0)
                     {
-                        //ColourFill(n, "highlightOverlay", RGBA(255, 0, 0, 38));
-                        //brush = RGBA(255, 0, 0, 38)
-                        
+                        var rects = ports.FindVisualChildren<Rectangle>().ToList();
                         foreach (Rectangle r in rects)
                         {
                             ((Rectangle)r.FindName("highlightOverlay")).Fill = RGBA(255, 255, 0, 255);
                             ((Rectangle)r.FindName("highlightOverlayForArrow")).Fill = RGBA(255, 255, 0, 255);
                         }
 
-                    }
+                    }*/
 
+                    //ColourFill(n, "nodeBackground", brush);
+                    //ColourFill(n, "NameBackground", RGBA(0, 0, 0, 38));
+                    //ColourStroke(n, "nodeBorder", brush);
+                    //ColourStroke(n, "NameBackground", RGBA(0, 0, 0, 38));
 
-                    var pa = ports;
-                    ColourFill(n, "nodeBackground", brush);
-                    ColourFill(n, "NameBackground", RGBA(0, 0, 0, 38));
-                    ColourStroke(n, "nodeBorder", brush);
-                    ColourStroke(n, "NameBackground", RGBA(0, 0, 0, 38));
-                    //ColourFill(n, "highlightOverlay", RGBA(255, 0, 0, 38));
+                    Style style = new Style(n);
+
+                    style.nodeBackground(r, g, b, a);
+                    style.nodeBorder(r, g, b, a);
+                    style.nameBackground(0, 0, 0, 38);
+                    style.nameBorder(0, 0, 0, 38);
+                    style.portBackground(0, 0, 0, 38);
                 }
             }
         }
@@ -339,7 +344,7 @@ namespace Track.src
                     ViewLoadedParamsField.CommandExecutive.ExecuteCommand(new MakeConnectionCommand(
                         endGUID, endPortIndex, endPortType, endMode), "", "");
                 }
-                ColourNodes(RGBA(255, 65, 54), DeletedNodesDictionary);
+                ColourNodes(DeletedNodesDictionary, 255, 65, 54);
             }
             else
             {
@@ -381,7 +386,7 @@ namespace Track.src
                     ViewLoadedParamsField.CommandExecutive.ExecuteCommand(new MakeConnectionCommand(
                         endGUID, endPortIndex, endPortType, endMode), "", "");
                 }
-                ColourNodes(RGBA(46, 204, 64), AddedNodesDictionary);
+                ColourNodes(AddedNodesDictionary, 46, 204, 64);
             }
             else
             {
