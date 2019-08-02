@@ -24,7 +24,9 @@ using Dynamo.Nodes;
 using static Dynamo.Models.DynamoModel;
 using Dynamo.Controls;
 using Xceed.Wpf.AvalonDock.Controls;
+using System.Windows.Controls;
 
+using Dynamo.Views;
 
 namespace Track.src
 {
@@ -196,9 +198,27 @@ namespace Track.src
         // 2) wiring is deleted when hiding the added nodes. I will have to make sure that is put back on the graph
 
 
+        public SolidColorBrush RGBA(int r, int g, int b, int a = 255) {
+            return new SolidColorBrush(Color.FromArgb(
+                Convert.ToByte(a),
+                Convert.ToByte(r),
+                Convert.ToByte(g),
+                Convert.ToByte(b)
+            ));
+        }
+
+        public void ColourFill(NodeView n, string name, SolidColorBrush brush)
+        {
+            ((Rectangle)n.grid.FindName(name)).Fill = brush;
+        }
+
+        public void ColourStroke(NodeView n, string name, SolidColorBrush brush)
+        {
+            ((Rectangle)n.grid.FindName(name)).Stroke = brush;
+        }
+
         public async void FadeNodes()
         {
-
             await Task.Delay(delay);
 
             List<NodeView> _nodeViews = ViewLoadedParamsField.DynamoWindow.FindVisualChildren<NodeView>().ToList();
@@ -206,95 +226,71 @@ namespace Track.src
             // Colour each node
             foreach (var n in _nodeViews)
             {
-
-                ((Rectangle)n.grid.FindName("nodeBackground")).Fill = new SolidColorBrush(Color.FromArgb(
-                    Convert.ToByte(50),
-                    Convert.ToByte(203),
-                    Convert.ToByte(198),
-                    Convert.ToByte(190)
-                ));
-
-                ((Rectangle)n.grid.FindName("NameBackground")).Fill = new SolidColorBrush(Color.FromArgb(
-                    Convert.ToByte(50),
-                    Convert.ToByte(94),
-                    Convert.ToByte(92),
-                    Convert.ToByte(90)
-                ));
-
-                ((Rectangle)n.grid.FindName("nodeBorder")).Stroke = new SolidColorBrush(Color.FromArgb(
-                    Convert.ToByte(50),
-                    Convert.ToByte(203),
-                    Convert.ToByte(198),
-                    Convert.ToByte(190)
-                ));
-
-                ((Rectangle)n.grid.FindName("NameBackground")).Stroke = new SolidColorBrush(Color.FromArgb(
-                    Convert.ToByte(50),
-                    Convert.ToByte(203),
-                    Convert.ToByte(198),
-                    Convert.ToByte(190)
-                ));
-
+                ColourFill(n, "nodeBackground", RGBA(203, 198, 190, 50));
+                ColourFill(n, "NameBackground", RGBA(94, 92, 90, 50));
+                ColourStroke(n, "nodeBorder", RGBA(203, 198, 190, 50));
+                ColourStroke(n, "NameBackground", RGBA(203, 198, 190, 50));
             }
         }
-        public async void ColourNodes(Color colour, Dictionary<string, NodeModel> nodes)
-        {
 
+        public async void ColourNodes(SolidColorBrush brush, Dictionary<string, NodeModel> nodes)
+        {
             await Task.Delay(delay);
 
             List<NodeView> _nodeViews = ViewLoadedParamsField.DynamoWindow.FindVisualChildren<NodeView>().ToList();
-            
-            //var nodeView = _nodeViews.First(n => n.ViewModel.Id.ToString().Equals(node.GUID.ToString()));
+
 
             // Colour each node
             foreach (var n in _nodeViews)
             {
-                //Color brush = Colors.Gray;
+
+                //n.inputcontrol
+
+                /*if (ports.Count() > 0)
+                {
+                    //ColourFill(n, "highlightOverlay", RGBA(255, 0, 0, 38));
+                    //brush = RGBA(255, 0, 0, 38)
+                    ((Rectangle)n.inputGrid.FindName("highlightOverlay")).Fill = RGBA(255, 0, 0, 38);
+
+                }*/
+
+                
                 if (nodes.ContainsKey(n.ViewModel.Id.ToString()))
                 {
-                    //brush = colour;
-                    //SolidColorBrush brush = colour;
-                    ((Rectangle)n.grid.FindName("nodeBackground")).Fill = new SolidColorBrush(colour);
-                    ((Rectangle)n.grid.FindName("NameBackground")).Fill = new SolidColorBrush(colour);
-                    ((Rectangle)n.grid.FindName("nodeBorder")).Stroke = new SolidColorBrush(colour);
-                    ((Rectangle)n.grid.FindName("NameBackground")).Stroke = new SolidColorBrush(colour);
-                }
-                else {
-                    // Else style as default
-                    // @todo style by STATE
-                    /*((Rectangle)n.grid.FindName("nodeBackground")).Fill = new SolidColorBrush(Color.FromArgb(
-                        Convert.ToByte(255),
-                        Convert.ToByte(203),
-                        Convert.ToByte(198),
-                        Convert.ToByte(190)
-                    ));
-                    ((Rectangle)n.grid.FindName("NameBackground")).Fill = new SolidColorBrush(Color.FromArgb(
-                        Convert.ToByte(255),
-                        Convert.ToByte(94),
-                        Convert.ToByte(92),
-                        Convert.ToByte(90)
-                    ));
-                    ((Rectangle)n.grid.FindName("nodeBorder")).Stroke = new SolidColorBrush(Color.FromArgb(
-                        Convert.ToByte(255),
-                        Convert.ToByte(203),
-                        Convert.ToByte(198),
-                        Convert.ToByte(190)
-                    ));
-                    ((Rectangle)n.grid.FindName("NameBackground")).Stroke = new SolidColorBrush(Color.FromArgb(
-                        Convert.ToByte(255),
-                        Convert.ToByte(203),
-                        Convert.ToByte(198),
-                        Convert.ToByte(190)
-                    ));*/
-                }
 
 
+                    ItemsControl ports = (ItemsControl)n.grid.FindName("inputPortControl");
+
+                    var rects = ports.FindVisualChildren<Rectangle>().ToList();
+
+                    var blah = rects;
+
+                    if (ports.Items.Count > 0)
+                    {
+                        //ColourFill(n, "highlightOverlay", RGBA(255, 0, 0, 38));
+                        //brush = RGBA(255, 0, 0, 38)
+                        
+                        foreach (Rectangle r in rects)
+                        {
+                            ((Rectangle)r.FindName("highlightOverlay")).Fill = RGBA(255, 255, 0, 255);
+                            ((Rectangle)r.FindName("highlightOverlayForArrow")).Fill = RGBA(255, 255, 0, 255);
+                        }
+
+                    }
+
+
+                    var pa = ports;
+                    ColourFill(n, "nodeBackground", brush);
+                    ColourFill(n, "NameBackground", RGBA(0, 0, 0, 38));
+                    ColourStroke(n, "nodeBorder", brush);
+                    ColourStroke(n, "NameBackground", RGBA(0, 0, 0, 38));
+                    //ColourFill(n, "highlightOverlay", RGBA(255, 0, 0, 38));
+                }
             }
         }
 
-        public async void ColourNodesGrey(Color colour, Dictionary<string, NodeModel> nodes)
+        public async void ColourNodesGrey(Dictionary<string, NodeModel> nodes)
         {
-
             await Task.Delay(delay);
 
             List<NodeView> _nodeViews = ViewLoadedParamsField.DynamoWindow.FindVisualChildren<NodeView>().ToList();
@@ -302,103 +298,28 @@ namespace Track.src
             // Colour each node
             foreach (var n in _nodeViews)
             {
-                //Color brush = Colors.Gray;
                 if (nodes.ContainsKey(n.ViewModel.Id.ToString()))
                 {
-                    ((Rectangle)n.grid.FindName("nodeBackground")).Fill = new SolidColorBrush(Color.FromArgb(
-                        Convert.ToByte(255),
-                        Convert.ToByte(203),
-                        Convert.ToByte(198),
-                        Convert.ToByte(190)
-                    ));
-                    ((Rectangle)n.grid.FindName("NameBackground")).Fill = new SolidColorBrush(Color.FromArgb(
-                        Convert.ToByte(255),
-                        Convert.ToByte(94),
-                        Convert.ToByte(92),
-                        Convert.ToByte(90)
-                    ));
-                    ((Rectangle)n.grid.FindName("nodeBorder")).Stroke = new SolidColorBrush(Color.FromArgb(
-                        Convert.ToByte(255),
-                        Convert.ToByte(203),
-                        Convert.ToByte(198),
-                        Convert.ToByte(190)
-                    ));
-                    ((Rectangle)n.grid.FindName("NameBackground")).Stroke = new SolidColorBrush(Color.FromArgb(
-                        Convert.ToByte(255),
-                        Convert.ToByte(203),
-                        Convert.ToByte(198),
-                        Convert.ToByte(190)
-                    ));
+                    ColourFill(n, "nodeBackground", RGBA(203, 198, 190));
+                    ColourFill(n, "NameBackground", RGBA(94, 92, 90));
+                    ColourStroke(n, "nodeBorder", RGBA(203, 198, 190));
+                    ColourStroke(n, "NameBackground", RGBA(203, 198, 190));
                 }
-
             }
         }
-
-
-
-        public async void UnFadeNodes()
-        {
-            await Task.Delay(500);
-
-            List<NodeView> _nodeViews = ViewLoadedParamsField.DynamoWindow.FindVisualChildren<NodeView>().ToList();
-
-            // Colour each node
-            foreach (var n in _nodeViews)
-            {
-                ((Rectangle)n.grid.FindName("nodeBackground")).Fill = new SolidColorBrush(Color.FromArgb(
-                    Convert.ToByte(255),
-                    Convert.ToByte(203),
-                    Convert.ToByte(198),
-                    Convert.ToByte(190)
-                ));
-
-                ((Rectangle)n.grid.FindName("NameBackground")).Fill = new SolidColorBrush(Color.FromArgb(
-                    Convert.ToByte(255),
-                    Convert.ToByte(94),
-                    Convert.ToByte(92),
-                    Convert.ToByte(90)
-                ));
-
-                ((Rectangle)n.grid.FindName("nodeBorder")).Stroke = new SolidColorBrush(Color.FromArgb(
-                    Convert.ToByte(255),
-                    Convert.ToByte(203),
-                    Convert.ToByte(198),
-                    Convert.ToByte(190)
-                ));
-
-                ((Rectangle)n.grid.FindName("NameBackground")).Stroke = new SolidColorBrush(Color.FromArgb(
-                    Convert.ToByte(255),
-                    Convert.ToByte(203),
-                    Convert.ToByte(198),
-                    Convert.ToByte(190)
-                ));
-
-            }
-        }
-
 
         public void ToggleRemovedNodes(bool IsChecked)
         {
-            //Code for comparing added nodes here
-            //DeletedNodesDictionary
-            // 1) First add the node on the graph
-            // 2) Colour the node on the graph
-            // 3) When fed up with looking at it, remove the node upon toggle disable or closing the viewextention
-
-            //add the node on the graph
             if (IsChecked)
             {
-                //create the nodes
+                // Create the nodes
                 foreach (var node in DeletedNodesDictionary)
                 {
                     ViewLoadedParamsField.CommandExecutive.ExecuteCommand(new CreateNodeCommand(node.Value,
                         node.Value.X, node.Value.Y, false, false), "", "");
-                    //will the ModelBase.X actually become obsolete? If this happens, ask Michael Kirschner
-
-
                 }
 
-                //create the connectors
+                // Create the connectors
                 foreach (var connector in DeletedConnectorsDictionary)
                 {
                     var startGUID = connector.Value.Start.Owner.GUID;
@@ -418,46 +339,29 @@ namespace Track.src
                     ViewLoadedParamsField.CommandExecutive.ExecuteCommand(new MakeConnectionCommand(
                         endGUID, endPortIndex, endPortType, endMode), "", "");
                 }
-
-
-                //}
-                ColourNodes(Colors.Red, DeletedNodesDictionary);
+                ColourNodes(RGBA(255, 65, 54), DeletedNodesDictionary);
             }
-
-            //Remove the node from the graph
-            if (IsChecked == false)
+            else
             {
-                //delete the node
+                // Delete the node
                 foreach (var node in DeletedNodesDictionary)
                 {
                     ViewLoadedParamsField.CommandExecutive.ExecuteCommand(new DeleteModelCommand(node.Value.GUID), "", "");
                 }
-
-                //colour the node
-                //put Rob&Laurence's code here
-                //UnFadeNodes();
             }
         }
         public void ToggleAddedNodes(bool IsChecked)
         {
-            //Code for comparing added nodes here
-            //DeletedNodesDictionary
-            // 1) First add the node on the graph
-            // 2) Colour the node on the graph
-            // 3) When fed up with looking at it, remove the node upon toggle disable or closing the viewextention
-
-            //add the node on the graph
-            if (IsChecked == true) 
+            if (IsChecked) 
             {
-                //create the nodes
+                // Create the nodes
                 foreach (var node in AddedNodesDictionary)
                 {
-
                     ViewLoadedParamsField.CommandExecutive.ExecuteCommand(new CreateNodeCommand(node.Value,
                         node.Value.X, node.Value.Y, false, false), "", "");
                     //will the ModelBase.X actually become obsolete? If this happens, ask Michael Kirschner
                 }
-                //create the connectors
+                // Create the connectors
                 foreach (var connector in AddedConnectorsDictionary)
                 {
                     var startGUID = connector.Value.Start.Owner.GUID;
@@ -477,24 +381,11 @@ namespace Track.src
                     ViewLoadedParamsField.CommandExecutive.ExecuteCommand(new MakeConnectionCommand(
                         endGUID, endPortIndex, endPortType, endMode), "", "");
                 }
-                //colour the node
-                //put Rob&Laurence's code here
-                ColourNodes(Colors.Green, AddedNodesDictionary);
+                ColourNodes(RGBA(46, 204, 64), AddedNodesDictionary);
             }
-            if (IsChecked == false) 
+            else
             {
-                //delete the node
-                /*foreach (var node in AddedNodesDictionary)
-                {
-                    ViewLoadedParamsField.CommandExecutive.ExecuteCommand(new DeleteModelCommand(node.Value.GUID), "", "");
-                }*/
-
-                //colour the node
-                //put Rob&Laurence's code here
-
-                //UnFadeNodes();
-
-                ColourNodesGrey(Colors.Gray, AddedNodesDictionary);
+                ColourNodesGrey(AddedNodesDictionary);
             }
         }
 
