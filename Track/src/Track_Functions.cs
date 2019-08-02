@@ -203,6 +203,7 @@ namespace Track.src
                     // Set the name/title and ports to a translucent black
                     style.nameBackground(0, 0, 0, 45);
                     style.nameBorder(0, 0, 0, 45);
+                    style.portBackground(0, 0, 0, 45);
                 }
             }
         }
@@ -225,8 +226,8 @@ namespace Track.src
                     style.nameBackground(94, 92, 90);
                     style.nodeBorder(203, 198, 190);
                     style.nameBorder(203, 198, 190);
+                    style.portBackground(255, 255, 255);
                 }
-
             }
         }
 

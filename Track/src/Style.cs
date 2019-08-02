@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Linq;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using Dynamo.Controls;
+using Xceed.Wpf.AvalonDock.Controls;
+using System.Windows.Controls;
 //using System.Drawing;
 
 namespace Track
@@ -44,6 +47,35 @@ namespace Track
         public void nameBorder(int r, int g, int b, int a = 255)
         {
             ((Rectangle)NodeView.grid.FindName("NameBackground")).Stroke = RGBA(r, g, b, a);
+        }
+
+        public void portBackground(int r, int g, int b, int a = 255)
+        {
+            ItemsControl inputs = (ItemsControl)NodeView.grid.FindName("inputPortControl");
+
+            if (inputs.Items.Count > 0)
+            {
+                var rectangles = inputs.FindVisualChildren<Rectangle>().ToList();
+                foreach (Rectangle rectangle in rectangles)
+                {
+                    ((Rectangle)rectangle.FindName("highlightOverlay")).Fill = RGBA(r, g, b, a);
+                    ((Rectangle)rectangle.FindName("highlightOverlayForArrow")).Fill = RGBA(r, g, b, a);
+                }
+
+            }
+
+            ItemsControl outputs = (ItemsControl)NodeView.grid.FindName("outputPortControl");
+
+            if (outputs.Items.Count > 0)
+            {
+                var rectangles = outputs.FindVisualChildren<Rectangle>().ToList();
+                foreach (Rectangle rectangle in rectangles)
+                {
+                    ((Rectangle)rectangle.FindName("highlightOverlay")).Fill = RGBA(r, g, b, a);
+                    ((Rectangle)rectangle.FindName("highlightOverlayForArrow")).Fill = RGBA(r, g, b, a);
+                }
+
+            }
         }
 
     }
