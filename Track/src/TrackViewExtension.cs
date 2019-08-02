@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
 using System.Windows.Controls;
-using Dynamo.Wpf.Extensions;
 using Dynamo.ViewModels;
+using Dynamo.Wpf.Extensions;
 
 namespace Track
 {

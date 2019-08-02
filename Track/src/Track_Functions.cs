@@ -1,28 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
-using System.Collections;
-using System.Windows;
-using Dynamo.Wpf.Extensions;
-using Dynamo.ViewModels;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using Dynamo.Core;
-using Dynamo.Extensions;
-using Dynamo.Graph.Nodes;
-using Dynamo.Graph;
-using Dynamo.Models;
-using Dynamo.UI.Commands;
-using CoreNodeModels;
-using Dynamo.Graph.Connectors;
-using Dynamo.Graph.Nodes.ZeroTouch;
-using Dynamo.Nodes;
-using static Dynamo.Models.DynamoModel;
 using Dynamo.Controls;
+using Dynamo.Graph.Connectors;
+using Dynamo.Graph.Nodes;
+using Dynamo.Models;
+using static Dynamo.Models.DynamoModel;
+using Dynamo.ViewModels;
+using Dynamo.Wpf.Extensions;
 using Xceed.Wpf.AvalonDock.Controls;
 
 
