@@ -6,9 +6,9 @@ using Dynamo.ViewModels;
 namespace Track
 {
     /// <summary>
-    /// Interaction logic for TrackWindow.xaml
+    /// Interaction logic for UI.xaml
     /// </summary>
-    public partial class TrackWindow : Window 
+    public partial class UI : Window 
     {
         /// <summary>
         /// Reference to the current Dynamo ViewLoadedParams
@@ -22,7 +22,7 @@ namespace Track
 
         bool ReferenceFileLoaded = false;
 
-        public TrackWindow(ViewLoadedParams vlp)
+        public UI(ViewLoadedParams vlp)
         {
             //Store the ViewLoadedParams as a field so it can be used in other methods
             ViewLoadedParams = vlp;
@@ -111,7 +111,7 @@ namespace Track
             if(ReferenceFileLoaded == false)
             {
                 //don't need this but keep for reference
-                //(MainGrid.DataContext as TrackWindowViewModel).DynamoReferenceFilePath = FilePathBox.Text;
+                //(MainGrid.DataContext as UIViewModel).DynamoReferenceFilePath = FilePathBox.Text;
 
                 string referenceFilePath = FilePathBox.Text;
 
@@ -140,7 +140,7 @@ namespace Track
                 ReferenceFileLoaded = false;
             }
 
-            //MessageBox.Show("The Dynamo location is: " + (MainGrid.DataContext as TrackWindowViewModel).DynamoReferenceFilePath );
+            //MessageBox.Show("The Dynamo location is: " + (MainGrid.DataContext as UIViewModel).DynamoReferenceFilePath );
         }
 
         //checkbox functionalty

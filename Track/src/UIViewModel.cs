@@ -3,10 +3,10 @@ using Dynamo.Core;
 
 namespace Track
 {
-    public class TrackWindowViewModel : NotificationObject, IDisposable
+    public class UIViewModel : NotificationObject, IDisposable
     {
 
-        public TrackWindowViewModel()
+        public UIViewModel()
         {
         }
 

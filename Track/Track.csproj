@@ -77,15 +77,15 @@
     <Compile Include="src\Utilities.cs" />
     <Compile Include="src\Style.cs" />
     <Compile Include="src\TrackViewExtension.cs" />
-    <Compile Include="src\TrackWindowViewModel.cs" />
-    <Compile Include="src\TrackWindow.xaml.cs">
-      <DependentUpon>TrackWindow.xaml</DependentUpon>
+    <Compile Include="src\UIViewModel.cs" />
+    <Compile Include="src\UI.xaml.cs">
+      <DependentUpon>UI.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="src\Compare.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="src\TrackWindow.xaml">
+    <Page Include="src\UI.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

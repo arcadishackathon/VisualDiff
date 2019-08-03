@@ -46,11 +46,11 @@ namespace Track
             MenuItem.Click += (sender, args) =>
             {
                 // Load the Extension ViewModel
-                var viewModel = new TrackWindowViewModel();
+                var viewModel = new UIViewModel();
 
                 // Load the Window
                 // This is where the magic begins!
-                var window = new TrackWindow(ViewLoadedParams)
+                var window = new UI(ViewLoadedParams)
                 {
                     // Set the data context for the main grid in the window.
                     MainGrid = { DataContext = viewModel },
