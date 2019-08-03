@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:Track"
              mc:Ignorable="d"
              d:DesignWidth="525" d:DesignHeight="240"
-            Width="525" Height="240" Closed="Window_Closed" Title="Visually Track Changes">
+            Width="525" Height="240" Closed="Window_Closed" Title="Visually compare the current graph with a reference graph">
     <Grid Name="MainGrid"
           HorizontalAlignment="Stretch"
           VerticalAlignment="Stretch" Margin="10,10,10,10">
@@ -58,7 +58,7 @@
                FontSize="8" LineHeight="10" TextWrapping="Wrap" TextAlignment="Right" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
 
         <Image Source="../Resources/arcadis-og.png"
-                Margin="5,0,0,10" Grid.Column="4" Grid.ColumnSpan="1" VerticalAlignment="Bottom" />
+                Margin="5,0,0,1" Grid.Column="4" Grid.ColumnSpan="1" VerticalAlignment="Bottom" />
 
         <!--<TextBlock HorizontalAlignment="Stretch" Text="{Binding ActiveNodeTypes}"
                    FontFamily="Arial"
