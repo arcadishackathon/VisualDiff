@@ -24,15 +24,11 @@ namespace Track
 
         public TrackWindow(ViewLoadedParams vlp)
         {
-
             //Store the ViewLoadedParams as a field so it can be used in other methods
             ViewLoadedParams = vlp;
 
             // Load the XAML (I think..)
             InitializeComponent();
-
-            // Include a reference to the Track_Functions
-            Trigger = new src.Track_Functions();
         }
 
         private void ToggleEnabledCheckboxes(bool value)
@@ -72,6 +68,9 @@ namespace Track
 
             // Enable the checkboxes
             ToggleEnabledCheckboxes(true);
+
+            // Load a new instance of the Functions Class
+            Trigger = new src.Track_Functions();
 
             // Set checkbox defaults
             SetCheckboxDefaults();
@@ -136,6 +135,9 @@ namespace Track
             else
             {
                 UnloadReferenceGraph();
+
+                // Reset ReferenceFileLoaded so we know to try to load it on next button press
+                ReferenceFileLoaded = false;
             }
 
             //MessageBox.Show("The Dynamo location is: " + (MainGrid.DataContext as TrackWindowViewModel).DynamoReferenceFilePath );

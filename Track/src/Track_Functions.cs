@@ -64,13 +64,6 @@ namespace Track.src
             ViewModel = vlp.DynamoWindow.DataContext as DynamoViewModel;
             ViewLoadedParams = vlp;
 
-
-            //Clear any old stuff that may be present in the dictionaries
-            //for now just clear the dictionaries. There should be a better way to do it, 
-            //maybe by creating a new instance of this class?
-            AddedNodesDictionary.Clear();
-            DeletedNodesDictionary.Clear();
-
             //Get the nodes and connectors from the CURRENT Dynamo Graph
             var CurrentGraphNodes = ViewLoadedParams.CurrentWorkspaceModel.Nodes;
             var CurrentGraphConnectors = ViewLoadedParams.CurrentWorkspaceModel.Connectors;
