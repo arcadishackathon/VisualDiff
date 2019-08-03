@@ -15,9 +15,9 @@ using Dynamo.Wpf.Extensions;
 using Xceed.Wpf.AvalonDock.Controls;
 
 
-namespace Track.src
+namespace Track
 {
-    class Track_Functions
+    class Compare
     {
 
         /// <summary>

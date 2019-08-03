@@ -16,9 +16,9 @@ namespace Track
         ViewLoadedParams ViewLoadedParams;
 
         /// <summary>
-        /// Reference to Track_Functions so all its methods can be triggered
+        /// Reference to Compare so all its methods can be triggered
         /// </summary>
-        src.Track_Functions Trigger;
+        Compare Compare;
 
         bool ReferenceFileLoaded = false;
 
@@ -70,17 +70,17 @@ namespace Track
             ToggleEnabledCheckboxes(true);
 
             // Load a new instance of the Functions Class
-            Trigger = new src.Track_Functions();
+            Compare = new Compare();
 
             // Set checkbox defaults
             SetCheckboxDefaults();
 
             //start the comparison using the referenceFilePath
-            Trigger.CompareSomeGraphs(ViewLoadedParams, referenceFilePath);
+            Compare.CompareSomeGraphs(ViewLoadedParams, referenceFilePath);
 
             // Trigger ADDED and DELETED to match the CheckboxDefaults
-            Trigger.ShowDeletedNodes();
-            Trigger.HighlightAddedNodes();
+            Compare.ShowDeletedNodes();
+            Compare.HighlightAddedNodes();
 
             MessageBox.Show("File exists, ready to compare graphs", "Reference Dynamo graph",
                 MessageBoxButton.OK, MessageBoxImage.Information);
@@ -146,23 +146,23 @@ namespace Track
         //checkbox functionalty
         private void CheckBox_ShowDeletedNodes_Checked(object sender, RoutedEventArgs e)
         {
-            Trigger.ShowDeletedNodes();
+            Compare.ShowDeletedNodes();
         }
 
         private void CheckBox_ShowDeletedNodes_Unchecked(object sender, RoutedEventArgs e)
         {
-            Trigger.RemoveDeletedNodes();
+            Compare.RemoveDeletedNodes();
         }
 
         private void CheckBox_ShowAddedNodes_Unchecked(object sender, RoutedEventArgs e)
         {
-            Trigger.UnhighlightAddedNodes();
+            Compare.UnhighlightAddedNodes();
 
         }
 
         private void CheckBox_ShowAddedNodes_Checked(object sender, RoutedEventArgs e)
         {
-            Trigger.HighlightAddedNodes();
+            Compare.HighlightAddedNodes();
 
         }
 
@@ -174,8 +174,8 @@ namespace Track
         private void UnloadAllChanges()
         {
             //Disable all active states to return to the current graph
-            Trigger.UnhighlightAddedNodes();
-            Trigger.RemoveDeletedNodes();
+            Compare.UnhighlightAddedNodes();
+            Compare.RemoveDeletedNodes();
         }
     }
 }
