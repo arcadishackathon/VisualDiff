@@ -107,7 +107,7 @@ namespace Track
                 string referenceFilePath = TextBox_FilePath.Text;
 
                 // Check the file is valid
-                (bool isValid, string message) = Utilies.CheckReferenceFileIsValid(referenceFilePath, ViewLoadedParams);
+                (bool isValid, string message) = Utilities.CheckReferenceFileIsValid(referenceFilePath, ViewLoadedParams);
 
                 if(isValid)
                 {
@@ -182,7 +182,7 @@ namespace Track
                 Compare.RemoveDeletedNodes();
 
                 // Reload the current graph
-                Utilies.LoadGraph(Compare.CurrentGraphFileName, Compare.ViewModel);
+                Utilities.LoadGraph(Compare.CurrentGraphFileName, Compare.ViewModel);
             }
         }
     }

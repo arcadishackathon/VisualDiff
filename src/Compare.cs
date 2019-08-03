@@ -82,14 +82,14 @@ namespace Track
             CurrentGraphFileName = ViewLoadedParams.CurrentWorkspaceModel.FileName;
 
             // Load the REFERENCE graph
-            Utilies.LoadGraph(ReferenceGraphFileName, ViewModel);
+            Utilities.LoadGraph(ReferenceGraphFileName, ViewModel);
 
             //Get the nodes and connectors from the REFERENCE Dynamo Graph
             ReferenceGraphNodes = ViewLoadedParams.CurrentWorkspaceModel.Nodes;
             ReferenceGraphConnectors = ViewLoadedParams.CurrentWorkspaceModel.Connectors;
 
             // Reset the loaded file by reopening the initially opened (CURRENT) graph
-            Utilies.LoadGraph(CurrentGraphFileName, ViewModel);
+            Utilities.LoadGraph(CurrentGraphFileName, ViewModel);
 
             // -----> do stuff with nodes <-----
 

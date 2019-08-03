@@ -7,7 +7,7 @@ using Dynamo.ViewModels;
 
 namespace Track
 {
-    public static class Utilies
+    public static class Utilities
     {
         public static Tuple<bool, string> CheckReferenceFileIsValid(string filePath, ViewLoadedParams vlp)
         {
