@@ -14,7 +14,6 @@ using Dynamo.ViewModels;
 using Dynamo.Wpf.Extensions;
 using Xceed.Wpf.AvalonDock.Controls;
 
-
 namespace Track
 {
     class Compare
@@ -57,7 +56,7 @@ namespace Track
 
         //Methods
 
-        public void CompareSomeGraphs(ViewLoadedParams vlp, string ReferenceGraphFileName)
+        public Compare(ViewLoadedParams vlp, string ReferenceGraphFileName)
         {
 
             //Store the ViewModel and ViewLoadedParams as fields so they can be used in other methods

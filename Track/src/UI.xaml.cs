@@ -69,14 +69,11 @@ namespace Track
             // Enable the checkboxes
             ToggleEnabledCheckboxes(true);
 
-            // Load a new instance of the Functions Class
-            Compare = new Compare();
+            // Start a new comparison using the referenceFilePath
+            Compare = new Compare(ViewLoadedParams, referenceFilePath);
 
             // Set checkbox defaults
             SetCheckboxDefaults();
-
-            //start the comparison using the referenceFilePath
-            Compare.CompareSomeGraphs(ViewLoadedParams, referenceFilePath);
 
             // Trigger ADDED and DELETED to match the CheckboxDefaults
             Compare.ShowDeletedNodes();
