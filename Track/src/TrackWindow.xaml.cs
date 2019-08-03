@@ -19,6 +19,8 @@ namespace Track
         /// </summary>
         src.Track_Functions Trigger;
 
+        bool ReferenceFileLoaded = false;
+
         public TrackWindow(ViewLoadedParams vlp)
         {
 
@@ -104,32 +106,29 @@ namespace Track
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            //don't need this but keep for reference
-            //(MainGrid.DataContext as TrackWindowViewModel).DynamoReferenceFilePath = FilePathBox.Text;
-
-            string referenceFilePath = FilePathBox.Text;
-            //steps:
-            //1) invoke a method to check validity of the Reference graph location
-            //2) Unlock the checkboxes
-            //3) grey out the textbox
-
-            //1) check if the location if OK
-            bool FileExists = Trigger.CheckReferenceFileIsValid(referenceFilePath);
-
-            //2) Unlock checkboxes, set text to grey and grey out the textbox
-
-            // If a file was selected and it is valid
-            if (FileExists && ButtonLoadDispose.Content.ToString() == "Lock and load reference graph")
+            // What we do on the button being clicked depends on the context.
+            // If no reference file is loaded then try to load it
+            if(ReferenceFileLoaded == false)
             {
-                LoadReferenceGraph(referenceFilePath);
+                //don't need this but keep for reference
+                //(MainGrid.DataContext as TrackWindowViewModel).DynamoReferenceFilePath = FilePathBox.Text;
+
+                string referenceFilePath = FilePathBox.Text;
+
+                if (Trigger.CheckReferenceFileIsValid(referenceFilePath))
+                {
+                    LoadReferenceGraph(FilePathBox.Text);
+
+                    // Set ReferenceFileLoaded so we know to unload it on next button press
+                    ReferenceFileLoaded = true;
+                }
+                else
+                {
+                    MessageBox.Show("File was not found, please try again", "Reference Dynamo graph",
+                        MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
-            // If a file was selected but it wasn't valid.
-            else if (ButtonLoadDispose.Content.ToString() == "Lock and load reference graph")
-            {
-                MessageBox.Show("File was not found, please try again", "Reference Dynamo graph",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            // Else file has been unloaded
+            // If a reference file is already loaded then unloaded it
             else
             {
                 UnloadReferenceGraph();
