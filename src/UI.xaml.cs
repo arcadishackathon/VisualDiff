@@ -180,6 +180,9 @@ namespace Track
                 //Disable all active states to return to the current graph
                 Compare.UnhighlightAddedNodes();
                 Compare.RemoveDeletedNodes();
+
+                // Reload the current graph
+                Utilies.LoadGraph(Compare.CurrentGraphFileName, Compare.ViewModel);
             }
         }
     }

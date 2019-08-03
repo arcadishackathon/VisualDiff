@@ -47,12 +47,23 @@ namespace Track
         /// <summary>
         /// Reference to the current Dynamo DynamoViewModel
         /// </summary>
-        DynamoViewModel ViewModel;
+        public DynamoViewModel ViewModel;
 
         /// <summary>
         /// Reference to the current Dynamo ViewLoadedParams
         /// </summary>
         ViewLoadedParams ViewLoadedParams;
+
+        IEnumerable<NodeModel> CurrentGraphNodes;
+        IEnumerable<ConnectorModel> CurrentGraphConnectors;
+
+        public string CurrentGraphFileName;
+
+        IEnumerable<NodeModel> ReferenceGraphNodes;
+        IEnumerable<ConnectorModel> ReferenceGraphConnectors;
+
+        Dictionary<string, NodeModel> CurrentNodeDict;
+        Dictionary<string, NodeModel> ReferenceNodeDict;
 
         //Methods
 
@@ -64,58 +75,56 @@ namespace Track
             ViewLoadedParams = vlp;
 
             //Get the nodes and connectors from the CURRENT Dynamo Graph
-            var CurrentGraphNodes = ViewLoadedParams.CurrentWorkspaceModel.Nodes;
-            var CurrentGraphConnectors = ViewLoadedParams.CurrentWorkspaceModel.Connectors;
+            CurrentGraphNodes = ViewLoadedParams.CurrentWorkspaceModel.Nodes;
+            CurrentGraphConnectors = ViewLoadedParams.CurrentWorkspaceModel.Connectors;
 
             //Store the filename of the CURRENT Dynamo Graph
-            string CurrentGraphFileName = ViewLoadedParams.CurrentWorkspaceModel.FileName;
+            CurrentGraphFileName = ViewLoadedParams.CurrentWorkspaceModel.FileName;
 
-            // Open the graph
-            ViewModel.OpenCommand.Execute(ReferenceGraphFileName);
-            // Set the graph run type to manual mode (otherwise some graphs might auto-execute at this point)
-            ViewModel.CurrentSpaceViewModel.RunSettingsViewModel.Model.RunType = RunType.Manual;
+            // Load the REFERENCE graph
+            Utilies.LoadGraph(ReferenceGraphFileName, ViewModel);
 
             //Get the nodes and connectors from the REFERENCE Dynamo Graph
-            var ReferenceGraphNodes = ViewLoadedParams.CurrentWorkspaceModel.Nodes;
-            var ReferenceGraphConnectors = ViewLoadedParams.CurrentWorkspaceModel.Connectors;
+            ReferenceGraphNodes = ViewLoadedParams.CurrentWorkspaceModel.Nodes;
+            ReferenceGraphConnectors = ViewLoadedParams.CurrentWorkspaceModel.Connectors;
 
             // Reset the loaded file by reopening the initially opened (CURRENT) graph
-            ViewModel.OpenCommand.Execute(CurrentGraphFileName);
+            Utilies.LoadGraph(CurrentGraphFileName, ViewModel);
 
             // -----> do stuff with nodes <-----
 
             //create dictionaries containing the nodes
-            var currentNodeDict = new Dictionary<string, NodeModel>();
-            var referenceNodeDict = new Dictionary<string, NodeModel>();
+            CurrentNodeDict = new Dictionary<string, NodeModel>();
+            ReferenceNodeDict = new Dictionary<string, NodeModel>();
 
             // Create a dictionary of CURRENT nodes by GUID
             foreach (NodeModel node in CurrentGraphNodes)
             {
-                currentNodeDict.Add(node.GUID.ToString(), node);
+                CurrentNodeDict.Add(node.GUID.ToString(), node);
             }
 
             // Create a dictionary of REFERENCE nodes by GUID
             foreach (NodeModel node in ReferenceGraphNodes)
             {
-                referenceNodeDict.Add(node.GUID.ToString(), node);
+                ReferenceNodeDict.Add(node.GUID.ToString(), node);
             }
 
             // Calculate the difference between CURRENT and REFERENCE nodes
-            IEnumerable<string> addedNodes = currentNodeDict.Keys.Except(referenceNodeDict.Keys);
-            IEnumerable<string> deletedNodes = referenceNodeDict.Keys.Except(currentNodeDict.Keys);
-            IEnumerable<string> remainingNodes = currentNodeDict.Keys.Except(addedNodes.ToList());
+            IEnumerable<string> addedNodes = CurrentNodeDict.Keys.Except(ReferenceNodeDict.Keys);
+            IEnumerable<string> deletedNodes = ReferenceNodeDict.Keys.Except(CurrentNodeDict.Keys);
+            IEnumerable<string> remainingNodes = CurrentNodeDict.Keys.Except(addedNodes.ToList());
 
             //Put the ADDED nodes list in the private field list
             foreach (var key in addedNodes)
             {
-                NodeModel node = currentNodeDict[key];
+                NodeModel node = CurrentNodeDict[key];
                 AddedNodesDictionary.Add(key, node);
             }
 
             //Put the DELETED nodes list in the private field list
             foreach (var key in deletedNodes)
             {
-                NodeModel node = referenceNodeDict[key];
+                NodeModel node = ReferenceNodeDict[key];
                 DeletedNodesDictionary.Add(key, node);
             }
 

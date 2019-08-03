@@ -2,6 +2,7 @@
 using System.IO;
 using Dynamo.Wpf.Extensions;
 using Dynamo.Graph.Workspaces;
+using Dynamo.Models;
 using Dynamo.ViewModels;
 
 namespace Track
@@ -41,6 +42,18 @@ namespace Track
                 message = "Your current graph has unsaved changes. Save them first";
             }
             return Tuple.Create(valid, message);
+        }
+
+        public static void LoadGraph(string fileName, DynamoViewModel viewModel, bool loadManual = true)
+        {
+            // Open the graph
+            viewModel.OpenCommand.Execute(fileName);
+
+            if (loadManual)
+            {
+                // Set the graph run type to manual mode (otherwise some graphs might auto-execute at this point)
+                viewModel.CurrentSpaceViewModel.RunSettingsViewModel.Model.RunType = RunType.Manual;
+            }
         }
     }
 }
