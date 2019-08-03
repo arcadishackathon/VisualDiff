@@ -231,74 +231,71 @@ namespace Track.src
             }
         }
 
-        public void ToggleDeletedNodes(bool IsChecked)
+        public void ShowDeletedNodes()
         {
             // Add the nodes from the REFERENCE graph that were deleted in the CURRENT graph
             // Add the connectors from the REFERENCE graph that were deleted in the CURRENT graph 
             // Colour the DELETED nodes red
             // @todo Colour the deleted connectors
-            if (IsChecked)
+
+            // Go through the DELETED nodes and add each one
+            foreach (var node in DeletedNodesDictionary)
             {
-                // Go through the DELETED nodes and add each one
-                foreach (var node in DeletedNodesDictionary)
-                {
-                    ViewLoadedParams.CommandExecutive.ExecuteCommand(new CreateNodeCommand(node.Value,
-                        node.Value.X, node.Value.Y, false, false), "", "");
-                    // @todo will the ModelBase.X actually become obsolete? If this happens, ask Michael Kirschner
-                }
-
-                // Go through the DELTED connectors and add each one
-                foreach (var connector in DeletedConnectorsDictionary)
-                {
-                    // First set the START
-                    var startGUID = connector.Value.Start.Owner.GUID;
-                    var startPortIndex = connector.Value.Start.Index;
-                    var startPortType = connector.Value.Start.PortType;
-                    var startMode = MakeConnectionCommand.Mode.Begin;
-
-                    ViewLoadedParams.CommandExecutive.ExecuteCommand(new MakeConnectionCommand(
-                        startGUID, startPortIndex, startPortType, startMode), "", "");
-
-                    // Then set the END
-                    var endGUID = connector.Value.End.Owner.GUID;
-                    var endPortIndex = connector.Value.End.Index;
-                    var endPortType = connector.Value.End.PortType;
-                    var endMode = MakeConnectionCommand.Mode.End;
-
-                    ViewLoadedParams.CommandExecutive.ExecuteCommand(new MakeConnectionCommand(
-                        endGUID, endPortIndex, endPortType, endMode), "", "");
-                }
-
-                // Colour the nodes
-                // Use http://clrs.cc/ red
-                ColourNodes(DeletedNodesDictionary, 255, 65, 54);
+                ViewLoadedParams.CommandExecutive.ExecuteCommand(new CreateNodeCommand(node.Value,
+                    node.Value.X, node.Value.Y, false, false), "", "");
+                // @todo will the ModelBase.X actually become obsolete? If this happens, ask Michael Kirschner
             }
+
+            // Go through the DELTED connectors and add each one
+            foreach (var connector in DeletedConnectorsDictionary)
+            {
+                // First set the START
+                var startGUID = connector.Value.Start.Owner.GUID;
+                var startPortIndex = connector.Value.Start.Index;
+                var startPortType = connector.Value.Start.PortType;
+                var startMode = MakeConnectionCommand.Mode.Begin;
+
+                ViewLoadedParams.CommandExecutive.ExecuteCommand(new MakeConnectionCommand(
+                    startGUID, startPortIndex, startPortType, startMode), "", "");
+
+                // Then set the END
+                var endGUID = connector.Value.End.Owner.GUID;
+                var endPortIndex = connector.Value.End.Index;
+                var endPortType = connector.Value.End.PortType;
+                var endMode = MakeConnectionCommand.Mode.End;
+
+                ViewLoadedParams.CommandExecutive.ExecuteCommand(new MakeConnectionCommand(
+                    endGUID, endPortIndex, endPortType, endMode), "", "");
+            }
+
+            // Colour the nodes
+            // Use http://clrs.cc/ red
+            ColourNodes(DeletedNodesDictionary, 255, 65, 54);
+        }
+
+        public void RemoveDeletedNodes()
+        {
             // If not checked then delete the DELETED nodes
             // @todo Their connectors disappear automatically is this best practice?
-            else
+            // Go through the DELETED nodes and delete each one
+            foreach (var node in DeletedNodesDictionary)
             {
-                // Go through the DELETED nodes and delete each one
-                foreach (var node in DeletedNodesDictionary)
-                {
-                    ViewLoadedParams.CommandExecutive.ExecuteCommand(new DeleteModelCommand(node.Value.GUID), "", "");
-                }
+                ViewLoadedParams.CommandExecutive.ExecuteCommand(new DeleteModelCommand(node.Value.GUID), "", "");
             }
         }
-        public void ToggleAddedNodes(bool IsChecked)
+        public void HighlightAddedNodes()
         {
             // Colour the nodes in the CURRENT graph that are not in the REFERENCE graph
             // @todo Colour the added connectors
-            if (IsChecked)
-            {
-                // Colour the nodes
-                // Use http://clrs.cc/ green
-                ColourNodes(AddedNodesDictionary, 46, 204, 64);
-            }
-            else
-            {
-                ResetNodeDefault(AddedNodesDictionary);
-            }
-        }
 
+            // Colour the nodes
+            // Use http://clrs.cc/ green
+            ColourNodes(AddedNodesDictionary, 46, 204, 64);
+        }
+        public void UnhighlightAddedNodes()
+        {
+            ResetNodeDefault(AddedNodesDictionary);
+        }
     }
+
 }

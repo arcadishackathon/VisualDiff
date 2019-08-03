@@ -69,8 +69,8 @@ namespace Track
                 Trigger.CompareSomeGraphs(ViewLoadedParams, referenceFilePath);
 
                 // Toggle the ADDED and DELETED on by default.
-                Trigger.ToggleDeletedNodes(true);
-                Trigger.ToggleAddedNodes(true);
+                Trigger.ShowDeletedNodes();
+                Trigger.HighlightAddedNodes();
 
                 MessageBox.Show("File exists, ready to compare graphs", "Reference Dynamo graph",
                     MessageBoxButton.OK, MessageBoxImage.Information);
@@ -117,27 +117,23 @@ namespace Track
         //checkbox functionalty
         private void CheckBox_ShowDeletedNodes_Checked(object sender, RoutedEventArgs e)
         {
-            bool checkbox = true;
-            Trigger.ToggleDeletedNodes(checkbox);
+            Trigger.ShowDeletedNodes();
         }
 
         private void CheckBox_ShowDeletedNodes_Unchecked(object sender, RoutedEventArgs e)
         {
-            bool checkbox = false;
-            Trigger.ToggleDeletedNodes(checkbox);
+            Trigger.RemoveDeletedNodes();
         }
 
         private void CheckBox_ShowAddedNodes_Unchecked(object sender, RoutedEventArgs e)
         {
-            bool checkbox = false;
-            Trigger.ToggleAddedNodes(checkbox);
+            Trigger.UnhighlightAddedNodes();
 
         }
 
         private void CheckBox_ShowAddedNodes_Checked(object sender, RoutedEventArgs e)
         {
-            bool checkbox = true;
-            Trigger.ToggleAddedNodes(checkbox);
+            Trigger.HighlightAddedNodes();
 
         }
 
@@ -149,8 +145,8 @@ namespace Track
         private void UnloadAllChanges()
         {
             //Disable all active states to return to the current graph
-            Trigger.ToggleAddedNodes(false);
-            Trigger.ToggleDeletedNodes(false);
+            Trigger.UnhighlightAddedNodes();
+            Trigger.RemoveDeletedNodes();
         }
     }
 }
