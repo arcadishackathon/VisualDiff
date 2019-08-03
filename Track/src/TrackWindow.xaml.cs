@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using Dynamo.Wpf.Extensions;
 using Dynamo.ViewModels;
 
@@ -115,7 +116,10 @@ namespace Track
 
                 string referenceFilePath = FilePathBox.Text;
 
-                if (Trigger.CheckReferenceFileIsValid(referenceFilePath))
+                // Check the file is valid
+                (bool isValid, string message) = Utilies.CheckReferenceFileIsValid(referenceFilePath);
+
+                if(isValid)
                 {
                     LoadReferenceGraph(FilePathBox.Text);
 
@@ -124,7 +128,7 @@ namespace Track
                 }
                 else
                 {
-                    MessageBox.Show("File was not found, please try again", "Reference Dynamo graph",
+                    MessageBox.Show(message, "Reference Dynamo graph",
                         MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
@@ -132,7 +136,6 @@ namespace Track
             else
             {
                 UnloadReferenceGraph();
-
             }
 
             //MessageBox.Show("The Dynamo location is: " + (MainGrid.DataContext as TrackWindowViewModel).DynamoReferenceFilePath );

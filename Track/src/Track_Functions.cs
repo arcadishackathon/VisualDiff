@@ -56,13 +56,6 @@ namespace Track.src
         ViewLoadedParams ViewLoadedParams;
 
         //Methods
-        public bool CheckReferenceFileIsValid(string FilePath)
-        {
-            if (File.Exists(FilePath))
-                return true;
-            else
-                return false;
-        }
 
         public void CompareSomeGraphs(ViewLoadedParams vlp, string ReferenceGraphFileName)
         {
@@ -85,18 +78,10 @@ namespace Track.src
             //Store the filename of the CURRENT Dynamo Graph
             string CurrentGraphFileName = ViewLoadedParams.CurrentWorkspaceModel.FileName;
 
-            //Check if the ReferenceGraphFileName is actually a Dynamo graph and if so open it
-            var ext = System.IO.Path.GetExtension(ReferenceGraphFileName);
-
-            // We're only interested in *.dyn files
-            // @todo move this to CheckReferenceFileIsValid()
-            if (ext == ".dyn")
-            {
-                // Open the graph
-                ViewModel.OpenCommand.Execute(ReferenceGraphFileName);
-                // Set the graph run type to manual mode (otherwise some graphs might auto-execute at this point)
-                ViewModel.CurrentSpaceViewModel.RunSettingsViewModel.Model.RunType = RunType.Manual;
-            }
+            // Open the graph
+            ViewModel.OpenCommand.Execute(ReferenceGraphFileName);
+            // Set the graph run type to manual mode (otherwise some graphs might auto-execute at this point)
+            ViewModel.CurrentSpaceViewModel.RunSettingsViewModel.Model.RunType = RunType.Manual;
 
             //Get the nodes and connectors from the REFERENCE Dynamo Graph
             var ReferenceGraphNodes = ViewLoadedParams.CurrentWorkspaceModel.Nodes;
