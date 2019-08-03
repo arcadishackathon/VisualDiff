@@ -32,6 +32,33 @@ namespace Track
             Trigger = new src.Track_Functions();
         }
 
+        private void ToggleEnabledCheckboxes(bool value)
+        {
+            CheckBox_ShowAddedNodes.IsEnabled = value;
+            CheckBox_ShowDeletedNodes.IsEnabled = value;
+            CheckBox_CompareModifiedNodes.IsEnabled = value;
+            CheckBox_ShowAddedWires.IsEnabled = value;
+            CheckBox_ShowDeletedWires.IsEnabled = value;
+        }
+
+        private void ToggleCheckedCheckboxes(bool value)
+        {
+            CheckBox_ShowAddedNodes.IsChecked = value;
+            CheckBox_ShowDeletedNodes.IsChecked = value;
+            CheckBox_CompareModifiedNodes.IsChecked = value;
+            CheckBox_ShowAddedWires.IsChecked = value;
+            CheckBox_ShowDeletedWires.IsChecked = value;
+        }
+
+        private void SetCheckboxDefaults()
+        {
+            CheckBox_ShowAddedNodes.IsChecked = true;
+            CheckBox_ShowDeletedNodes.IsChecked = true;
+            //CheckBox_CompareModifiedNodes.IsChecked = false;
+            //CheckBox_ShowAddedWires.IsChecked = false;
+            //CheckBox_ShowDeletedWires.IsChecked = false;
+        }
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             //don't need this but keep for reference
@@ -51,24 +78,22 @@ namespace Track
             // If a file was selected and it is valid
             if (FileExists && ButtonLoadDispose.Content.ToString() == "Lock and load reference graph")
             {
+                // Disable the reference file path box
                 FilePathBox.IsEnabled = false;
+
+                // Change the button value
                 ButtonLoadDispose.Content = "Dispose of current reference graph";
 
                 // Enable the checkboxes
-                CheckBox_ShowAddedNodes.IsEnabled = true;
-                CheckBox_ShowDeletedNodes.IsEnabled = true;
-                CheckBox_CompareModifiedNodes.IsEnabled = true;
-                CheckBox_ShowAddedWires.IsEnabled = true;
-                CheckBox_ShowDeletedWires.IsEnabled = true;
+                ToggleEnabledCheckboxes(true);
 
                 // Set checkbox defaults
-                CheckBox_ShowAddedNodes.IsChecked = true;
-                CheckBox_ShowDeletedNodes.IsChecked = true;
+                SetCheckboxDefaults();
 
                 //start the comparison using the referenceFilePath
                 Trigger.CompareSomeGraphs(ViewLoadedParams, referenceFilePath);
 
-                // Toggle the ADDED and DELETED on by default.
+                // Trigger ADDED and DELETED to match the CheckboxDefaults
                 Trigger.ShowDeletedNodes();
                 Trigger.HighlightAddedNodes();
 
@@ -90,19 +115,11 @@ namespace Track
                 FilePathBox.Text = "";
 
                 // Disable the checkboxes
-                CheckBox_ShowAddedNodes.IsEnabled = false;
-                CheckBox_ShowDeletedNodes.IsEnabled = false;
-                CheckBox_CompareModifiedNodes.IsEnabled = false;
-                CheckBox_ShowAddedWires.IsEnabled = false;
-                CheckBox_ShowDeletedWires.IsEnabled = false;
+                ToggleEnabledCheckboxes(false);
 
                 // Untick all checkboxes
                 //@todo Why are we doing this? Shouldn't we define the default values here?
-                CheckBox_ShowAddedNodes.IsChecked = false;
-                CheckBox_ShowDeletedNodes.IsChecked = false;
-                CheckBox_CompareModifiedNodes.IsChecked = false;
-                CheckBox_ShowAddedWires.IsChecked = false;
-                CheckBox_ShowDeletedWires.IsChecked = false;
+                ToggleCheckedCheckboxes(false);
 
                 UnloadAllChanges();
 
