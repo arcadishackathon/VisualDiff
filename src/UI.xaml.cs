@@ -107,7 +107,7 @@ namespace Track
                 string referenceFilePath = TextBox_FilePath.Text;
 
                 // Check the file is valid
-                (bool isValid, string message) = Utilies.CheckReferenceFileIsValid(referenceFilePath);
+                (bool isValid, string message) = Utilies.CheckReferenceFileIsValid(referenceFilePath, ViewLoadedParams);
 
                 if(isValid)
                 {
@@ -119,7 +119,7 @@ namespace Track
                 else
                 {
                     System.Windows.MessageBox.Show(message, "Reference Dynamo graph",
-                        MessageBoxButton.OK, MessageBoxImage.Error);
+                        MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
             // If a reference file is already loaded then unloaded it
