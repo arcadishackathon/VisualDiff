@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using Dynamo.ViewModels;
 using Dynamo.Wpf.Extensions;
 
@@ -41,8 +43,26 @@ namespace Track
             // Hold a reference to the Dynamo params to be used later
             ViewLoadedParams = vlp;
 
-            // Create a menu item
-            MenuItem = new MenuItem { Header = "Start the Tracker tool" };
+            // Add a separator to the View menu
+            ViewLoadedParams.AddSeparator(MenuBarType.View, new Separator());
+
+            // Create a new menu item
+            MenuItem = new MenuItem { Header = "Visually compare the current graph with a reference graph" };
+
+            // Make it stand out with a colour
+            MenuItem.Foreground = new SolidColorBrush(Color.FromArgb(
+                Convert.ToByte(255),
+                Convert.ToByte(255),
+                Convert.ToByte(255),
+                Convert.ToByte(255)
+            ));
+
+            MenuItem.Icon = new Image
+            {
+                Source = new BitmapImage(new Uri("/Track;component/Resources/arcadis-icon.png", UriKind.Relative))
+            };
+
+            // Start our extension on click
             MenuItem.Click += (sender, args) =>
             {
                 // Load the Extension ViewModel
@@ -66,7 +86,7 @@ namespace Track
                 window.Show();
             };
             
-            // Add the menu item under "View"
+            // Add the menu item to the View menu
             ViewLoadedParams.AddMenuItem(MenuBarType.View, MenuItem);
         }
 

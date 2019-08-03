@@ -12,10 +12,10 @@
           VerticalAlignment="Stretch" Margin="10,10,10,10">
         
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
 
         <!-- Reference file selection -->
@@ -53,12 +53,16 @@
 
         <!-- Credits -->
 
-        <TextBlock Text="Developed by Michael van Telgen, Robert Wood, and Laurence Elsdon at the Dynamo and Generative Design Hackathon in Toronto"
-               Margin="0,0,5,0" Grid.ColumnSpan="3" MaxWidth="250"
-               FontSize="8" LineHeight="10" TextWrapping="Wrap" TextAlignment="Right" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
+        <TextBlock Text="Developed by Michael van Telgen, Robert Wood, and Laurence Elsdon"
+               Margin="0,0,5,10" Grid.ColumnSpan="2"
+               FontSize="8" TextWrapping="Wrap" TextAlignment="Right" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
 
-        <Image Source="../Resources/arcadis-og.png"
-                Margin="5,0,0,1" Grid.Column="4" Grid.ColumnSpan="1" VerticalAlignment="Bottom" />
+        <TextBlock Text="at the Dynamo and Generative Design Hackathon in Toronto"
+               Margin="0,0,5,0" Grid.ColumnSpan="2"
+               FontSize="8" TextWrapping="Wrap" TextAlignment="Right" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
+
+        <Image Source="../Resources/arcadis-full.png"
+                Margin="5,0,0,1" MaxHeight="20" Grid.Column="2" Grid.ColumnSpan="2" VerticalAlignment="Bottom" />
 
         <!--<TextBlock HorizontalAlignment="Stretch" Text="{Binding ActiveNodeTypes}"
                    FontFamily="Arial"
