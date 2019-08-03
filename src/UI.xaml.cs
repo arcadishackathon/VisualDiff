@@ -168,16 +168,19 @@ namespace Track
 
         }
 
-        private void Window_Closed(object sender, System.EventArgs e)
+        private void Window_Closed(object sender, EventArgs e)
         {
             UnloadAllChanges();
         }
 
         private void UnloadAllChanges()
         {
-            //Disable all active states to return to the current graph
-            Compare.UnhighlightAddedNodes();
-            Compare.RemoveDeletedNodes();
+            if (ReferenceFileLoaded)
+            {
+                //Disable all active states to return to the current graph
+                Compare.UnhighlightAddedNodes();
+                Compare.RemoveDeletedNodes();
+            }
         }
     }
 }
