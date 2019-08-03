@@ -34,7 +34,7 @@
         <CheckBox x:Name="CheckBox_CompareModifiedNodes" Content="Show modified nodes - to be implemented" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,170,0,0" Grid.Column="2" Height="15" Width="276" IsEnabled="False"/>
         <CheckBox x:Name="CheckBox_ShowAddedWires" Content="Show added connectors - to be implemented" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,216,0,0" Grid.Column="2" Height="15" Width="276" IsEnabled="False"/>
         <CheckBox x:Name="CheckBox_ShowDeletedWires" Content="Show deleted connectors - to be implemented" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,236,0,0" Grid.Column="2" Height="15" Width="276" IsEnabled="False"/>
-        <Image Source="pack://siteoforigin:,,,/Resources/arcadis-og.png" Grid.ColumnSpan="4" HorizontalAlignment="Left" Height="31" Margin="209,104,0,0" VerticalAlignment="Top" Width="175"/>
+        <Image Source="../Resources/arcadis-og.png" Grid.ColumnSpan="4" HorizontalAlignment="Left" Height="31" Margin="209,104,0,0" VerticalAlignment="Top" Width="175"/>
 
         <!--<TextBlock HorizontalAlignment="Stretch" Text="{Binding ActiveNodeTypes}"
                    FontFamily="Arial"
