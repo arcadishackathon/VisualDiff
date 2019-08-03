@@ -59,6 +59,49 @@ namespace Track
             //CheckBox_ShowDeletedWires.IsChecked = false;
         }
 
+        private void LoadReferenceGraph(string referenceFilePath)
+        {
+            // Disable the reference file path box
+            FilePathBox.IsEnabled = false;
+
+            // Change the button value
+            ButtonLoadDispose.Content = "Dispose of current reference graph";
+
+            // Enable the checkboxes
+            ToggleEnabledCheckboxes(true);
+
+            // Set checkbox defaults
+            SetCheckboxDefaults();
+
+            //start the comparison using the referenceFilePath
+            Trigger.CompareSomeGraphs(ViewLoadedParams, referenceFilePath);
+
+            // Trigger ADDED and DELETED to match the CheckboxDefaults
+            Trigger.ShowDeletedNodes();
+            Trigger.HighlightAddedNodes();
+
+            MessageBox.Show("File exists, ready to compare graphs", "Reference Dynamo graph",
+                MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void UnloadReferenceGraph() {
+            FilePathBox.IsEnabled = true;
+            ButtonLoadDispose.Content = "Lock and load reference graph";
+            FilePathBox.Text = "";
+
+            // Disable the checkboxes
+            ToggleEnabledCheckboxes(false);
+
+            // Untick all checkboxes
+            //@todo Why are we doing this? Shouldn't we define the default values here?
+            ToggleCheckedCheckboxes(false);
+
+            UnloadAllChanges();
+
+            MessageBox.Show("File unloaded", "Reference Dynamo graph",
+                MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             //don't need this but keep for reference
@@ -78,28 +121,7 @@ namespace Track
             // If a file was selected and it is valid
             if (FileExists && ButtonLoadDispose.Content.ToString() == "Lock and load reference graph")
             {
-                // Disable the reference file path box
-                FilePathBox.IsEnabled = false;
-
-                // Change the button value
-                ButtonLoadDispose.Content = "Dispose of current reference graph";
-
-                // Enable the checkboxes
-                ToggleEnabledCheckboxes(true);
-
-                // Set checkbox defaults
-                SetCheckboxDefaults();
-
-                //start the comparison using the referenceFilePath
-                Trigger.CompareSomeGraphs(ViewLoadedParams, referenceFilePath);
-
-                // Trigger ADDED and DELETED to match the CheckboxDefaults
-                Trigger.ShowDeletedNodes();
-                Trigger.HighlightAddedNodes();
-
-                MessageBox.Show("File exists, ready to compare graphs", "Reference Dynamo graph",
-                    MessageBoxButton.OK, MessageBoxImage.Information);
-
+                LoadReferenceGraph(referenceFilePath);
             }
             // If a file was selected but it wasn't valid.
             else if (ButtonLoadDispose.Content.ToString() == "Lock and load reference graph")
@@ -110,21 +132,7 @@ namespace Track
             // Else file has been unloaded
             else
             {
-                FilePathBox.IsEnabled = true;
-                ButtonLoadDispose.Content = "Lock and load reference graph";
-                FilePathBox.Text = "";
-
-                // Disable the checkboxes
-                ToggleEnabledCheckboxes(false);
-
-                // Untick all checkboxes
-                //@todo Why are we doing this? Shouldn't we define the default values here?
-                ToggleCheckedCheckboxes(false);
-
-                UnloadAllChanges();
-
-                MessageBox.Show("File unloaded", "Reference Dynamo graph",
-                    MessageBoxButton.OK, MessageBoxImage.Information);
+                UnloadReferenceGraph();
 
             }
 
