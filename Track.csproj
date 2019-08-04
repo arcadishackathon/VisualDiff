@@ -75,6 +75,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="src\Git.cs" />
+    <Compile Include="src\GitUI.xaml.cs">
+      <DependentUpon>GitUI.xaml</DependentUpon>
+    </Compile>
     <Compile Include="src\Utilities.cs" />
     <Compile Include="src\Style.cs" />
     <Compile Include="src\TrackViewExtension.cs" />
@@ -86,6 +90,10 @@
     <Compile Include="src\Compare.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="src\GitUI.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="src\UI.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

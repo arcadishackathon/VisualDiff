@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Dynamo.Core;
 
 namespace Track
@@ -9,6 +11,8 @@ namespace Track
         public UIViewModel()
         {
         }
+
+        public Dictionary<string, string> Commits { get; set; }
 
 
         private string dynamoReferenceFilePath = "";

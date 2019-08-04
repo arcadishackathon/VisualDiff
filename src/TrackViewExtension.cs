@@ -23,7 +23,8 @@ namespace Track
     /// </summary>
     public class TrackViewExtension : IViewExtension
     {
-        private MenuItem MenuItem;
+        private MenuItem UIMenuItem;
+        private MenuItem GitUIMenuItem;
 
         private ViewLoadedParams ViewLoadedParams;
 
@@ -47,23 +48,23 @@ namespace Track
             ViewLoadedParams.AddSeparator(MenuBarType.View, new Separator());
 
             // Create a new menu item
-            MenuItem = new MenuItem { Header = "Visually compare the current graph with a reference graph" };
+            UIMenuItem = new MenuItem { Header = "Visually compare the current graph with a reference graph" };
 
             // Make it stand out with a colour
-            MenuItem.Foreground = new SolidColorBrush(Color.FromArgb(
+            UIMenuItem.Foreground = new SolidColorBrush(Color.FromArgb(
                 Convert.ToByte(255),
                 Convert.ToByte(255),
                 Convert.ToByte(255),
                 Convert.ToByte(255)
             ));
 
-            MenuItem.Icon = new Image
+            UIMenuItem.Icon = new Image
             {
                 Source = new BitmapImage(new Uri("/Track;component/Resources/arcadis-icon.png", UriKind.Relative))
             };
 
             // Start our extension on click
-            MenuItem.Click += (sender, args) =>
+            UIMenuItem.Click += (sender, args) =>
             {
                 // Load the Extension ViewModel
                 var viewModel = new UIViewModel();
@@ -85,9 +86,52 @@ namespace Track
                 // Show a modeless window.
                 window.Show();
             };
-            
+
             // Add the menu item to the View menu
-            ViewLoadedParams.AddMenuItem(MenuBarType.View, MenuItem);
+            ViewLoadedParams.AddMenuItem(MenuBarType.View, UIMenuItem);
+
+            // Create a new menu item
+            GitUIMenuItem = new MenuItem { Header = "Compare with Git" };
+
+            // Make it stand out with a colour
+            GitUIMenuItem.Foreground = new SolidColorBrush(Color.FromArgb(
+                Convert.ToByte(255),
+                Convert.ToByte(255),
+                Convert.ToByte(255),
+                Convert.ToByte(255)
+            ));
+
+            GitUIMenuItem.Icon = new Image
+            {
+                Source = new BitmapImage(new Uri("/Track;component/Resources/arcadis-icon.png", UriKind.Relative))
+            };
+
+            // Start our extension on click
+            GitUIMenuItem.Click += (sender, args) =>
+            {
+                // Load the Extension ViewModel
+                var viewModel = new UIViewModel();
+
+                // Load the Window
+                // This is where the magic begins!
+                var window = new GitUI(ViewLoadedParams)
+                {
+                    // Set the data context for the main grid in the window.
+                    MainGrid = { DataContext = viewModel },
+
+                    // Set the owner of the window to the Dynamo window.
+                    Owner = ViewLoadedParams.DynamoWindow
+                };
+
+                window.Left = window.Owner.Left + 400;
+                window.Top = window.Owner.Top + 200;
+
+                // Show a modeless window.
+                window.Show();
+            };
+
+            // Add the menu item to the View menu
+            ViewLoadedParams.AddMenuItem(MenuBarType.View, GitUIMenuItem);
         }
 
         public void Shutdown()

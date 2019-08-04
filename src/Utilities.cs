@@ -10,7 +10,7 @@ namespace Track
 {
     public static class Utilities
     {
-        public static Tuple<bool, string> CheckReferenceFileIsValid(string filePath, ViewLoadedParams vlp)
+        public static Tuple<bool, string> CheckReferenceFileIsValid(string filePath, ViewLoadedParams vlp, bool performCurrentWorkspaceCheck = true)
         {
             // Assume it's true by default
             // We'll change this later if it's not valid
@@ -32,12 +32,12 @@ namespace Track
                 valid = false;
                 message = "File is not a Dynamo Graph";
             }
-            else if (currentWorkspace.FileName == "")
+            else if (performCurrentWorkspaceCheck && currentWorkspace.FileName == "")
             {
                 valid = false;
                 message = "Open a Graph in Dynamo first";
             }
-            else if (currentWorkspace.HasUnsavedChanges)
+            else if (performCurrentWorkspaceCheck && currentWorkspace.HasUnsavedChanges)
             {
                 valid = false;
                 message = "Your current graph has unsaved changes. Save them first";
