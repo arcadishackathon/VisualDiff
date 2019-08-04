@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using Dynamo.Wpf.Extensions;
 using Dynamo.Graph.Workspaces;
@@ -54,6 +55,22 @@ namespace Track
                 // Set the graph run type to manual mode (otherwise some graphs might auto-execute at this point)
                 viewModel.CurrentSpaceViewModel.RunSettingsViewModel.Model.RunType = RunType.Manual;
             }
+        }
+
+        public static void Debug(Exception e, string eMessage = "", string context = "", string action = "")
+        {
+            //Debug.Listeners.Add(new TextWriterTraceListener(Console.Out));
+            //Debug.AutoFlush = true;
+            //Debug.Indent();
+            System.Diagnostics.Debug.WriteLine(string.Join("\n\n", new string[] {
+                "",
+                $"'{e}'",
+                context,
+                eMessage,
+                action,
+                ""
+            }));
+            //Debug.Unindent();
         }
     }
 }

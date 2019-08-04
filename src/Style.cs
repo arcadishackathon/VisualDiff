@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -58,8 +59,19 @@ namespace Track
                 var rectangles = inputs.FindVisualChildren<Rectangle>().ToList();
                 foreach (Rectangle rectangle in rectangles)
                 {
-                    ((Rectangle)rectangle.FindName("highlightOverlay")).Fill = RGBA(r, g, b, a);
-                    ((Rectangle)rectangle.FindName("highlightOverlayForArrow")).Fill = RGBA(r, g, b, a);
+                    try
+                    {
+                        // @todo One of my test scripts is throwing an exception when trying to access the fill of a port that doesn't exist.
+                        // I thought if (inputs.Items.Count > 0) would handle this but apparently not.. Therefore lets catch and ignore the exception.
+                        ((Rectangle)rectangle.FindName("highlightOverlay")).Fill = RGBA(r, g, b, a);
+                        ((Rectangle)rectangle.FindName("highlightOverlayForArrow")).Fill = RGBA(r, g, b, a);
+
+                    }
+                    catch (System.NullReferenceException e)
+                    {
+                        Utilities.Debug(e, e.Message, "Could not locate input port to colour.", "Continuing without colouring the input port...");
+                    }
+                    
                 }
 
             }
@@ -71,8 +83,16 @@ namespace Track
                 var rectangles = outputs.FindVisualChildren<Rectangle>().ToList();
                 foreach (Rectangle rectangle in rectangles)
                 {
-                    ((Rectangle)rectangle.FindName("highlightOverlay")).Fill = RGBA(r, g, b, a);
-                    ((Rectangle)rectangle.FindName("highlightOverlayForArrow")).Fill = RGBA(r, g, b, a);
+                    try
+                    {
+                        ((Rectangle)rectangle.FindName("highlightOverlay")).Fill = RGBA(r, g, b, a);
+                        ((Rectangle)rectangle.FindName("highlightOverlayForArrow")).Fill = RGBA(r, g, b, a);
+
+                    }
+                    catch (System.NullReferenceException e)
+                    {
+                        Utilities.Debug(e, e.Message, "Could not locate output port to colour.", "Continuing without colouring the output port...");
+                    }
                 }
 
             }
