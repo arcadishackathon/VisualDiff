@@ -104,38 +104,6 @@ namespace Track
         private void Button_LoadDispose_Click(object sender, RoutedEventArgs e)
         {
 
-            // https://stackoverflow.com/questions/4977571/how-to-print-out-the-value-that-subprocess-prints-with-c
-            // https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.processstartinfo.redirectstandardoutput?redirectedfrom=MSDN&view=netframework-4.8#System_Diagnostics_ProcessStartInfo_RedirectStandardOutput
-            // Python: 
-            //files = subprocess.check_output(['git', 'diff', '--name-only', 'HEAD', 'HEAD~1'])
-            //files = files.split('\n')
-            //print 'Files changed in last commit:', files
-
-            //string output;
-            //using (Process p = new Process())
-            //{
-            //    p.StartInfo.WorkingDirectory = "C:\\Users\\elsdonl0213\\Repos\\DynamoExamples\\Latest";
-            //    p.StartInfo.FileName = "git";
-            //    p.StartInfo.Arguments = "diff --name-only HEAD HEAD~1";
-            //    p.StartInfo.UseShellExecute = false;
-            //    p.StartInfo.RedirectStandardOutput = true;
-            //    p.Start();
-            //    output = p.StandardOutput.ReadToEnd();
-
-            //    p.WaitForExit();
-            //}
-
-            //Debug.WriteLine(output);
-            //System.Windows.MessageBox.Show(output);
-
-            //List<string> changed = Git.Review();
-
-
-
-
-
-
-
             // What we do on the button being clicked depends on the context.
             // If no reference file is loaded then try to load it
             if (ReferenceFileLoaded == false)
@@ -150,13 +118,6 @@ namespace Track
 
                 if(isValid)
                 {
-
-
-
-
-                    // Load the referenceFilePath so it becomes the currentFilePath
-                    //Utilities.LoadGraph(referenceFilePath, viewModel);
-
                     // Start a new instance of our git interface with the reference file path
                     Git git = new Git(referenceFilePath);
                     //(MainGrid.DataContext as UIViewModel).Commits = git.Log();
