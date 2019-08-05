@@ -198,15 +198,18 @@ namespace Track
             string commithash = ComboBox_Commits.SelectedValue.ToString();
 
             // Checkout the requested commit..
-            git.Checkout(commithash);
+            git.Checkout(commithash, true);
 
             // Make a TEMPORARY copy of the checked out version reference graph
             string tempReferenceFile = Path.GetTempFileName();
             File.Copy(referenceFilePath, tempReferenceFile, true);
             Debug.WriteLine(tempReferenceFile);
 
-            // Checkout master again
-            git.Checkout("master");
+            // Reset staged changes for the file (from when we checked it out)
+            git.Reset("HEAD", true);
+
+            // Now discard the changes for the file
+            git.Checkout("", true);
 
             // Load the referenceFilePath so it becomes the currentFilePath
             Utilities.LoadGraph(referenceFilePath, viewModel);

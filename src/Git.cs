@@ -54,11 +54,32 @@ namespace Track
             return lines;
         }
 
-        public void Checkout(string state)
+        public void Checkout(string state, bool appendFile = false)
         {
+            string str = state;
+
+            if (appendFile)
+            {
+                str += " -- " + FileName;
+            }
+
             // Updates files in the working tree to match the version in the index or the specified tree. 
             // https://git-scm.com/docs/git-checkout
-            ReadProcess("git", "checkout " + state);
+            ReadProcess("git", "checkout " + str);
+        }
+
+        public void Reset(string state, bool appendFile = false)
+        {
+            string str = state;
+
+            if (appendFile)
+            {
+                str += " " + FileName;
+            }
+            
+            // Git reset to previous state
+            // https://git-scm.com/docs/git-reset
+            ReadProcess("git", "reset " + str);
         }
 
         public Dictionary<string, string> Log()
