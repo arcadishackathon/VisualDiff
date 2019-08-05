@@ -40,9 +40,13 @@
 
         <!-- Load button -->
 
-        <Button x:Name="Button_LoadDispose" Content="Load reference graph"
+        <Button x:Name="Button_Load" Content="Load reference graph"
                 Margin="0,0,0,0" Grid.ColumnSpan="4" Grid.Row="2" VerticalAlignment="Top"
-                Click="Button_LoadDispose_Click" />
+                Click="Button_Load_Click" />
+
+        <Button x:Name="Button_Dispose" Content="Unload reference graph" Visibility="Hidden"
+                Margin="0,0,0,0" Grid.ColumnSpan="4" Grid.Row="2" VerticalAlignment="Top"
+                Click="Button_Dispose_Click" />
 
         <Separator Margin="0,30,0,0" Grid.ColumnSpan="5" Grid.Row="2" Height="1" VerticalAlignment="Top" />
 
