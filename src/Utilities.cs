@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using Dynamo.Wpf.Extensions;
 using Dynamo.Graph.Workspaces;
 using Dynamo.Models;
@@ -10,6 +11,9 @@ namespace Track
 {
     public static class Utilities
     {
+
+        public static string[] DynamoFileExtensions = { ".dyn", ".dyf" };
+
         public static Tuple<bool, string> CheckReferenceFileIsValid(string filePath, ViewLoadedParams vlp)
         {
             // Assume it's true by default
@@ -26,8 +30,8 @@ namespace Track
                 valid = false;
                 message = "File not found";
             }
-            // Is is it a .dyn file?
-            else if (Path.GetExtension(filePath) != ".dyn")
+            // Is is it a .dyn or .dyf file?
+            else if ( ! DynamoFileExtensions.Contains(Path.GetExtension(filePath)))
             {
                 valid = false;
                 message = "File is not a Dynamo Graph";
@@ -50,7 +54,8 @@ namespace Track
             // Open the graph
             viewModel.OpenCommand.Execute(fileName);
 
-            if (loadManual)
+            // If the file is a .dyn then load it in Manual mode
+            if (Path.GetExtension(fileName) == ".dyn" && loadManual)
             {
                 // Set the graph run type to manual mode (otherwise some graphs might auto-execute at this point)
                 viewModel.CurrentSpaceViewModel.RunSettingsViewModel.Model.RunType = RunType.Manual;

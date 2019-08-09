@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Forms;
 using Dynamo.Wpf.Extensions;
@@ -138,12 +139,20 @@ namespace Track
         private void Button_SelectFile_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog fileOpen = new OpenFileDialog();
-            fileOpen.Filter = "Dynamo Graph|*.dyn";
+
+            // Join the file types like this: *.dyn;*.dyf
+            string fileTypes = string.Join(";", Utilities.DynamoFileExtensions.Select(x => "*" + x));
+
+            // Create type filter
+            fileOpen.Filter = "Dynamo Graph (" + fileTypes + ")|" + fileTypes;
+
             DialogResult dialog = fileOpen.ShowDialog();
+
             if (dialog == System.Windows.Forms.DialogResult.Cancel)
             {
                 return;
             }
+
             TextBox_FilePath.Text = fileOpen.FileName;
         }
 
