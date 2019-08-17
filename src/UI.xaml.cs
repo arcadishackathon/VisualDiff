@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Forms;
 using Dynamo.Wpf.Extensions;
@@ -50,6 +51,21 @@ namespace Track
             CheckBox_ShowDeletedNodes.IsChecked = value;
         }
 
+        private void SetReferenceFileLoaded(bool value)
+        {
+            ReferenceFileLoaded = value;
+            if (value)
+            {
+                Button_Load.Visibility = Visibility.Hidden;
+                Button_Dispose.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                Button_Load.Visibility = Visibility.Visible;
+                Button_Dispose.Visibility = Visibility.Hidden;
+            }
+        }
+
         private void SetCheckboxDefaults()
         {
             CheckBox_ShowAddedNodes.IsChecked = true;
@@ -61,8 +77,7 @@ namespace Track
             // Disable the reference file path box
             ToggleFileSelection(false);
 
-            // Change the button value
-            Button_LoadDispose.Content = "Unload reference graph";
+            SetReferenceFileLoaded(true);
 
             // Enable the checkboxes
             ToggleEnabledCheckboxes(true);
@@ -80,7 +95,6 @@ namespace Track
 
         private void UnloadReferenceGraph() {
             ToggleFileSelection(true);
-            Button_LoadDispose.Content = "Load reference graph";
 
             // Disable the checkboxes
             ToggleEnabledCheckboxes(false);
@@ -95,53 +109,50 @@ namespace Track
                 MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
-        private void Button_LoadDispose_Click(object sender, RoutedEventArgs e)
+        private void Button_Load_Click(object sender, RoutedEventArgs e)
         {
-            // What we do on the button being clicked depends on the context.
-            // If no reference file is loaded then try to load it
-            if(ReferenceFileLoaded == false)
+            //don't need this but keep for reference
+            //(MainGrid.DataContext as UIViewModel).DynamoReferenceFilePath = FilePathBox.Text;
+
+            string referenceFilePath = TextBox_FilePath.Text;
+
+            // Check the file is valid
+            (bool isValid, string message) = Utilities.CheckReferenceFileIsValid(referenceFilePath, ViewLoadedParams);
+
+            if(isValid)
             {
-                //don't need this but keep for reference
-                //(MainGrid.DataContext as UIViewModel).DynamoReferenceFilePath = FilePathBox.Text;
-
-                string referenceFilePath = TextBox_FilePath.Text;
-
-                // Check the file is valid
-                (bool isValid, string message) = Utilities.CheckReferenceFileIsValid(referenceFilePath, ViewLoadedParams);
-
-                if(isValid)
-                {
-                    LoadReferenceGraph(TextBox_FilePath.Text);
-
-                    // Set ReferenceFileLoaded so we know to unload it on next button press
-                    ReferenceFileLoaded = true;
-                }
-                else
-                {
-                    System.Windows.MessageBox.Show(message, "Reference Dynamo graph",
-                        MessageBoxButton.OK, MessageBoxImage.Warning);
-                }
+                LoadReferenceGraph(TextBox_FilePath.Text);
             }
-            // If a reference file is already loaded then unloaded it
             else
             {
-                UnloadReferenceGraph();
-
-                // Reset ReferenceFileLoaded so we know to try to load it on next button press
-                ReferenceFileLoaded = false;
+                System.Windows.MessageBox.Show(message, "Reference Dynamo graph",
+                        MessageBoxButton.OK, MessageBoxImage.Warning);
             }
-
             //MessageBox.Show("The Dynamo location is: " + (MainGrid.DataContext as UIViewModel).DynamoReferenceFilePath );
         }
+
+        private void Button_Dispose_Click(object sender, RoutedEventArgs e)
+        {
+            UnloadReferenceGraph();
+        }
+
         private void Button_SelectFile_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog fileOpen = new OpenFileDialog();
-            fileOpen.Filter = "Dynamo Graph|*.dyn";
+
+            // Join the file types like this: *.dyn;*.dyf
+            string fileTypes = string.Join(";", Utilities.DynamoFileExtensions.Select(x => "*" + x));
+
+            // Create type filter
+            fileOpen.Filter = "Dynamo Graph (" + fileTypes + ")|" + fileTypes;
+
             DialogResult dialog = fileOpen.ShowDialog();
+
             if (dialog == System.Windows.Forms.DialogResult.Cancel)
             {
                 return;
             }
+
             TextBox_FilePath.Text = fileOpen.FileName;
         }
 
@@ -180,6 +191,8 @@ namespace Track
                 //Disable all active states to return to the current graph
                 Compare.UnhighlightAddedNodes();
                 Compare.RemoveDeletedNodes();
+
+                SetReferenceFileLoaded(false);
 
                 // Reload the current graph
                 Utilities.LoadGraph(Compare.CurrentGraphFileName, Compare.ViewModel);
