@@ -39,6 +39,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -74,16 +75,18 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="src\Utilities.cs" />
+    <Compile Include="src\Style.cs" />
     <Compile Include="src\TrackViewExtension.cs" />
-    <Compile Include="src\TrackWindowViewModel.cs" />
-    <Compile Include="src\TrackWindow.xaml.cs">
-      <DependentUpon>TrackWindow.xaml</DependentUpon>
+    <Compile Include="src\UIViewModel.cs" />
+    <Compile Include="src\UI.xaml.cs">
+      <DependentUpon>UI.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="src\Track_Functions.cs" />
+    <Compile Include="src\Compare.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="src\TrackWindow.xaml">
+    <Page Include="src\UI.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -97,9 +100,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ReadMe.txt" />
-    <None Include="Resources\arcadis-og.png">
+    <Resource Include="Resources\arcadis-full.png" />
+    <Resource Include="Resources\arcadis-icon.png" />
+    <Resource Include="Resources\arcadis.png" />
+    <Resource Include="Resources\arcadis-og.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    </Resource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -108,7 +114,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>

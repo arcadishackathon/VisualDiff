@@ -1,0 +1,76 @@
+﻿<Window x:Class="Track.UI"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Track"
+             mc:Ignorable="d"
+             d:DesignWidth="525" d:DesignHeight="240"
+            Width="525" Height="240" Closed="Window_Closed" Title="Visually compare the current graph with a reference graph">
+    <Grid Name="MainGrid"
+          HorizontalAlignment="Stretch"
+          VerticalAlignment="Stretch" Margin="10,10,10,10">
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Reference file selection -->
+
+        <Label Content="Select the reference graph to compare against"
+               Grid.ColumnSpan="4" Margin="0" Height="30" VerticalAlignment="Top" />
+        
+        <TextBox x:Name="TextBox_FilePath" 
+                 Margin="0,30,5,0" Grid.ColumnSpan="3" Height="20" Text="{Binding Test, Mode = TwoWay}" Foreground="Black" VerticalAlignment="Top" />
+
+        <Button x:Name="Button_SelectFile"  
+                Margin="5,30,0,0" Grid.Column="3" Grid.ColumnSpan="4" Height="20" Content="Browse..." VerticalAlignment="Top"
+                Click="Button_SelectFile_Click" />
+
+        <!-- Load button -->
+
+        <Button x:Name="Button_LoadDispose" Content="Load reference graph"
+                Margin="0,60,0,0" Grid.ColumnSpan="4" VerticalAlignment="Top"
+                Click="Button_LoadDispose_Click" />
+
+        <Separator Margin="0,90,0,0" Grid.ColumnSpan="5" VerticalAlignment="Top" />
+
+        <!-- Checkbox toggles -->
+
+        <CheckBox x:Name="CheckBox_ShowAddedNodes" Content="Highlight added nodes"
+                  Margin="0,100,0,0" Grid.Column="0" Grid.ColumnSpan="2" Height="15" IsEnabled="False" VerticalAlignment="Top"
+                  Unchecked="CheckBox_ShowAddedNodes_Unchecked" Checked="CheckBox_ShowAddedNodes_Checked" />
+
+        <CheckBox x:Name="CheckBox_ShowDeletedNodes" Content="Show deleted nodes"
+                  Margin="0,120,0,0" Grid.Column="0" Grid.ColumnSpan="2" Height="15" IsEnabled="False" VerticalAlignment="Top"
+                  Unchecked="CheckBox_ShowDeletedNodes_Unchecked" Checked="CheckBox_ShowDeletedNodes_Checked" />
+
+        <CheckBox x:Name="CheckBox_ShowModifiedNodes" Content="Show modified nodes - To be implemented"
+                  Margin="0,140,0,0" Grid.Column="0" Grid.ColumnSpan="3" Height="15" IsEnabled="False" VerticalAlignment="Top" />
+
+        <!-- Credits -->
+
+        <TextBlock Text="Developed by Michael van Telgen, Robert Wood, and Laurence Elsdon"
+               Margin="0,0,5,10" Grid.ColumnSpan="2"
+               FontSize="8" TextWrapping="Wrap" TextAlignment="Right" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
+
+        <TextBlock Text="at the Dynamo and Generative Design Hackathon in Toronto"
+               Margin="0,0,5,0" Grid.ColumnSpan="2"
+               FontSize="8" TextWrapping="Wrap" TextAlignment="Right" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
+
+        <Image Source="../Resources/arcadis-full.png"
+                Margin="5,0,0,1" MaxHeight="20" Grid.Column="2" Grid.ColumnSpan="2" VerticalAlignment="Bottom" />
+
+        <!--<TextBlock HorizontalAlignment="Stretch" Text="{Binding ActiveNodeTypes}"
+                   FontFamily="Arial"
+                   Padding="10"
+                   FontWeight="Medium"
+                   FontSize="18"
+                   Background="#2d2d2d"
+                   Foreground="White"/>-->
+
+    </Grid>
+</Window>
